@@ -1,0 +1,4 @@
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  filter: invert(1);
+}
