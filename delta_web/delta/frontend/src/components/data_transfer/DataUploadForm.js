@@ -123,26 +123,9 @@ const DataUploadForm = (props) =>{
           }
         })
       })
-      acceptedFiles.forEach((file)=>{
-        // check if there is a folder:
-        console.log("*****************")
-        const filePath = file.webkitRelativePath.split('/');
-        const folderName = filePath[0]
-        if (folderName){
-          // dealing with folder as a dataset
-          $("DataSetName").val(folderName)
-          console.log(folderName)
-        }else{
-          // dealing with file as dataset
-          $("DataSetName").val(file.name)
-          console.log(file.name)
-        }
-        // we only care about naming the parent folder or file (dataset), the rest keep their file names
-        console.log("*****************")
-
-
-        setErrors('')
-      })
+      // acceptedFiles.forEach((file)=>{
+      //   setErrors('')
+      // })
     },
     minSize: 0,
     maxSize:maxSize,
@@ -166,6 +149,40 @@ const DataUploadForm = (props) =>{
       
       // For every file that is accepted by the dropzone, do the following.
       acceptedFiles.forEach(file=> {
+
+        // check if there is a folder:
+        console.log("*****************")
+
+        // the split the path based on "/"
+        // the (len of this)-1 represent the number of folders
+        // ie, len 1 is justa file and len 2 has folder + file
+        const file_path_split= file.webkitRelativePath.split('/');
+
+        const folderName = filePath[0]
+        console.log(filePath)
+        // need to get each file path, could be multiple
+        console.log(file.webkitRelativePath)
+        if (file_path_split.length > 1){
+          // dealing with folder(s) as a dataset
+
+          ///// TO DO ///
+          // idea
+          // loop through the folders first. Create the folders.
+          // Then create the file objects underneath those folders.
+          // Done!
+          ////
+          
+          $("DataSetName").val(folderName)
+          console.log(folderName)
+        }else{
+          // dealing with file as dataset
+          $("DataSetName").val(file.name)
+          console.log(file.name)
+        }
+        // we only care about naming the parent folder or file (dataset), the rest keep their file names
+        console.log("*****************")
+
+
         var isPublic= $("#flexCheckPublic").is(":checked");
         var isPublicOrgs = $("#flexCheckPublicToOrg").is(":checked");
         var description = $("#DataSetDescription").val();
