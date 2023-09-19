@@ -33,9 +33,35 @@ from organizations.models import Organization
 
 User = get_user_model()
 
-class DataSet(models.Model):
+class Folder(models.Model):
     # data set class
-    author = models.ForeignKey(User, related_name="datasets",on_delete=models.CASCADE,null=True)
+    author = models.ForeignKey(User, related_name="folders",on_delete=models.CASCADE,null=True)
+
+    # name of dataset
+    folder_name = models.TextField(db_column="folder_name",blank=True,null=True)
+    # path of dataset
+    folder_path = models.TextField(db_column="folder_path",blank=True,null=True)
+
+    timestamp= models.DateTimeField(auto_now_add=True)
+
+    description = models.TextField(blank=True,default="")
+
+    is_public = models.BooleanField(default=False)
+
+    is_public_orgs = models.BooleanField(default=False)
+
+    # number of times the file has been downloaded
+    download_count = models.IntegerField(default=0)
+
+    # the organizations the dataset is under
+    registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_folders")
+
+    # folders can contain other folders
+    parent_folder = models.ForeignKey('self',null=True,blank=True,related_name="parents",on_delete=models.CASCADE)
+
+    # folders have csv files
+
+
 
 # wrapper for CSV file.
 # NOTE: if ever change directory structure, will have to update every file.
@@ -67,6 +93,9 @@ class CSVFile(models.Model):
 
     # the organizations the file is under
     registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_files")
+
+    # may be a part of a folder
+    folder = models.ForeignKey(Folder,on_delete = models.CASCADE,related_name="csv_files",null=True,blank=True)
 
     class Meta:
         unique_together = ('author','file_name')
