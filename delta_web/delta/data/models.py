@@ -33,6 +33,10 @@ from organizations.models import Organization
 
 User = get_user_model()
 
+class DataSet(models.Model):
+    # data set class
+    author = models.ForeignKey(User, related_name="datasets",on_delete=models.CASCADE,null=True)
+
 # wrapper for CSV file.
 # NOTE: if ever change directory structure, will have to update every file.
 # this could get annoying!
@@ -75,7 +79,7 @@ class CSVFile(models.Model):
         if not self.file_name:
             self.file_name = str(os.path.basename(self.file_path))
         super().save(*args,**kwargs)
-    
+
 # when delete the CSVFile model, should also delete the file in the directory
 # see: https://stackoverflow.com/questions/71278989/how-to-call-a-function-when-you-delete-a-model-object-in-django-admin-page-or
 @receiver(post_delete,sender=CSVFile)
