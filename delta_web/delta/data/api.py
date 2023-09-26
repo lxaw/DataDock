@@ -110,12 +110,15 @@ class ViewsetFile(viewsets.ModelViewSet):
         author = self.request.user
         is_public = self.request.data.get("is_public")
         desc = self.request.data.get('description')
-        file_name = self.request.data.get('file_name')
         arr_int_registered_orgs = self.request.data.get('registered_organizations')
         arr_tags = self.request.data.get('tags')
         is_public_orgs = self.request.data.get('is_public_orgs')
+        # user determined file name
+        file_name = self.request.data.get('file_name')
         file_path = self.request.data.get("file")['path']
-        file = self.request.data.get('file')
+
+        # file determined file name
+        file_name_with_ext = file_path.split('/')[-1]
 
         #
         # remove '/' character if present
@@ -128,7 +131,7 @@ class ViewsetFile(viewsets.ModelViewSet):
         strFilePath = f'static/users/{request.user.username}/files/{file_path}'
 
         obj = File(author=author,file_name=file_name,is_public=is_public,file_path=strFilePath,
-                      is_public_orgs=is_public_orgs,description=desc)
+                      is_public_orgs=is_public_orgs,description=desc,original_file_name=file_name_with_ext)
         # here we should test
         obj.save()
 
@@ -220,6 +223,8 @@ class ViewsetFile(viewsets.ModelViewSet):
 # CSV Upload api
 # Uploads a csv file
 class UploadCsvApiView(APIView):
+    # note date we need the file within the actual request, not as some argument
+    # ie, the headers have to change 
     parser_classes = (FileUploadParser,)
     # parser_classes = (MultiPartParser,)
 
@@ -235,13 +240,18 @@ class UploadCsvApiView(APIView):
 
         if(dataFile):
             fileName = str(dataFile)
-            print('***************')
-            print(fileName)
-            print('***************')
+
             # get the last one
             # this should be the one you just created
-            print(File.objects.all())
-            csvFileObj = File.objects.filter(author=request.user,file_name=fileName).last()
+
+            # last one created, since order matters
+            # TODO:
+            # There could be some problems with this.
+            print("**********")
+            print(fileName)
+            print("**********")
+
+            csvFileObj = File.objects.filter(author=request.user,original_file_name = fileName).last()
 
             with open(csvFileObj.file_path,'wb+') as file:
                 for chunk in dataFile.chunks():

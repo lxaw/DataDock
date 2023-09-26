@@ -21,7 +21,7 @@ from .models import File, TagCsvFile
 # create the admin class for File
 class FileAdmin(admin.ModelAdmin):
     fields = ['file_path','file_name',"description","is_public",
-    "is_public_orgs","registered_organizations","author"]
+    "is_public_orgs","registered_organizations","author","original_file_name"]
 
 # create the admin class for TagFile
 class TagCsvFileAdmin(admin.ModelAdmin):

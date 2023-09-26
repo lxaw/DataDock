@@ -51,6 +51,9 @@ class File(models.Model):
     # file name not necessarily same as path
     file_name = models.TextField(db_column="file_name",blank=False,null=False,)
 
+    # original file name at upload
+    original_file_name = models.TextField(blank=True,null=True,unique=False)
+
     # timestamp of creation
     timestamp= models.DateTimeField(auto_now_add=True)
 
@@ -71,7 +74,7 @@ class File(models.Model):
 
     def __str__(self):
         return self.file_name
-
+    
     def save(self,*args,**kwargs):
         # if no file name given, give it the file name generated from the file path
         # 
@@ -85,7 +88,8 @@ class File(models.Model):
 def on_delete_csv(sender,instance,using,**kwargs):
     # delete the file
     if(instance.file_path and os.path.exists(instance.file_path)):
-        shutil.rmtree(instance.file_path)
+        # shutil.rmtree(instance.file_path)
+        pass
         # TODO
         # to prevent folders without any items, perhaps should check if 
         # folder empty after deletion, then 
