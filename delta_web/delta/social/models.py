@@ -19,7 +19,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator,MinValueValidator
 
-from data.models import CSVFile
+from data.models import File
 
 
 User = get_user_model()
@@ -34,7 +34,7 @@ class Review(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE,related_name="review_set",null=True)
 
     # foreign key to file 
-    file = models.ForeignKey(CSVFile,on_delete=models.CASCADE,related_name = "review_set")
+    file = models.ForeignKey(File,on_delete=models.CASCADE,related_name = "review_set")
 
     text = models.CharField(max_length = 350)
     pub_date = models.DateTimeField(default = timezone.now)

@@ -5,7 +5,6 @@ import {fileTokenConfig,tokenConfig} from './auth';
 
 import {ADD_CSV_FILE, DELETE_CSV_FILE, GET_CSV_FILES,GET_CSV_FILE, 
     CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC} from "./types";
-import { addTags } from './tags';
 
 // POST FILE 
 /*
@@ -53,7 +52,6 @@ export const addCsvFile= (dictData) => (dispatch,getState) =>{
         return err;
     })
 }
-
 // GET FILES
 export const getCsvFiles = () => (dispatch,getState) =>{
     axios.get('/api/csv/',tokenConfig(getState))

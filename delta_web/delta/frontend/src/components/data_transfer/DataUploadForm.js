@@ -150,38 +150,9 @@ const DataUploadForm = (props) =>{
       // For every file that is accepted by the dropzone, do the following.
       acceptedFiles.forEach(file=> {
 
-        // check if there is a folder:
-        console.log("*****************")
-
-        // the split the path based on "/"
-        // the (len of this)-1 represent the number of folders
-        // ie, len 1 is justa file and len 2 has folder + file
-        const file_path_split= file.webkitRelativePath.split('/');
-
-        const folderName = filePath[0]
-        console.log(filePath)
-        // need to get each file path, could be multiple
-        console.log(file.webkitRelativePath)
-        if (file_path_split.length > 1){
-          // dealing with folder(s) as a dataset
-
-          ///// TO DO ///
-          // idea
-          // loop through the folders first. Create the folders.
-          // Then create the file objects underneath those folders.
-          // Done!
-          ////
-          
-          $("DataSetName").val(folderName)
-          console.log(folderName)
-        }else{
-          // dealing with file as dataset
-          $("DataSetName").val(file.name)
-          console.log(file.name)
-        }
-        // we only care about naming the parent folder or file (dataset), the rest keep their file names
-        console.log("*****************")
-
+        // note: the backend will check if there was a folder.
+        // we just need to send the right path.
+        const filePath = file.webkitRelativePath;
 
         var isPublic= $("#flexCheckPublic").is(":checked");
         var isPublicOrgs = $("#flexCheckPublicToOrg").is(":checked");
@@ -199,6 +170,7 @@ const DataUploadForm = (props) =>{
           'is_public':isPublic,
           'is_public_orgs':isPublicOrgs,
           'description':description,
+          'path':filePath,
           'file_name':DataSetName,
           'registered_organizations':arrOrgs,
           'tags':tags,
@@ -260,7 +232,9 @@ const DataUploadForm = (props) =>{
                 Data set names should be descriptive of the file being uploaded. Don't worry about appending `.csv` to your files.
               </small>
               <div className="input-group">
-                <input required type="text" className="form-control" placeholder = "Enter name of file" id= "DataSetName"/>
+                <input required type="text" className="form-control" 
+                value="filler"
+                placeholder = "Enter name of file" id= "DataSetName"/>
               </div>
             </div>
 
@@ -272,7 +246,9 @@ const DataUploadForm = (props) =>{
                 Data set descriptions should indicate important information about the file contents, the methods of collecting the data, and any other important information such as rights of use.
               </small>
               <div className="input-group">
-                <textarea required type="text" className="form-control" placeholder="Enter a description of the data set" id = "DataSetDescription"/>
+                <textarea required type="text" className="form-control" 
+                value="filler"
+                placeholder="Enter a description of the data set" id = "DataSetDescription"/>
               </div>
             </div>
 

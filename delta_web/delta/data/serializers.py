@@ -14,7 +14,7 @@
 # The serializers for the data app.
 #
 from rest_framework import serializers
-from .models import (CSVFile,TagCsvFile)
+from .models import (File,TagCsvFile)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -27,7 +27,7 @@ from social.serializers import SerializerReview
 from organizations.serializers import OrganizationSerializer
 
 # serializer for csv file
-class SerializerCSVFile(serializers.ModelSerializer):
+class SerializerFile(serializers.ModelSerializer):
     author_username = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
     # THIS MAY BE BETTER CALCULATED AS JUST AN ATTRIBUTE OF THE
@@ -42,11 +42,11 @@ class SerializerCSVFile(serializers.ModelSerializer):
     org_objs = serializers.SerializerMethodField()
 
     class Meta:
-        model = CSVFile
+        model = File
         fields = "__all__"
         validators = [
             UniqueTogetherValidator(
-                queryset=CSVFile.objects.all(),
+                queryset=File.objects.all(),
                 # dont allow change of file path by user
                 # server does that on its own
                 # NOTE: 
