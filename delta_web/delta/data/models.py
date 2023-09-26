@@ -49,7 +49,7 @@ class File(models.Model):
     file_path= models.TextField(db_column='file_path',blank=True,null=True,unique=True)
 
     # file name not necessarily same as path
-    file_name = models.TextField(db_column="file_name",blank=False,null=False,)
+    file_name = models.TextField(db_column="file_name",blank=False,null=False,unique=False)
 
     # original file name at upload
     original_file_name = models.TextField(blank=True,null=True,unique=False)
@@ -81,6 +81,10 @@ class File(models.Model):
         if not self.file_name:
             self.file_name = str(os.path.basename(self.file_path))
         super().save(*args,**kwargs)
+    
+    def in_folder(self):
+        # check if within a folder
+        return len(os.path.splitext(self.file_path)) > 1
 
 # when delete the File model, should also delete the file in the directory
 # see: https://stackoverflow.com/questions/71278989/how-to-call-a-function-when-you-delete-a-model-object-in-django-admin-page-or
