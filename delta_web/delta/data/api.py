@@ -106,6 +106,9 @@ class ViewsetFile(viewsets.ModelViewSet):
         return self.request.user.csv_files.all()
 
     # https://stackoverflow.com/questions/30650008/django-rest-framework-override-create-in-modelserializer-passing-an-extra-par
+    ###
+    # to do: this should not be here, should only use the uploadcsvview
+    ###
     def create(self,request):
         author = self.request.user
         is_public = self.request.data.get("is_public")
@@ -247,9 +250,6 @@ class UploadApiView(APIView):
             # last one created, since order matters
             # TODO:
             # There could be some problems with this.
-            print("**********")
-            print(fileName)
-            print("**********")
 
             csvFileObj = File.objects.filter(author=request.user,original_file_name = fileName).last()
 
