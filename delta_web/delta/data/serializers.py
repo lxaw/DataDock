@@ -14,7 +14,7 @@
 # The serializers for the data app.
 #
 from rest_framework import serializers
-from .models import (File,TagCsvFile)
+from .models import (File,TagFile)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -75,14 +75,14 @@ class SerializerFile(serializers.ModelSerializer):
         return obj.review_set.count()
     
     def get_tags(self,obj):
-        return SerializerTagCsvFile(obj.tag_set.all().order_by('-pub_date'),many=True).data
+        return SerializerTagFile(obj.tag_set.all().order_by('-pub_date'),many=True).data
     
     def get_org_objs(self,obj):
         return OrganizationSerializer(obj.registered_organizations.all(),many=True).data
 
 # serializer for tag csv file
-class SerializerTagCsvFile(serializers.ModelSerializer):
+class SerializerTagFile(serializers.ModelSerializer):
 
     class Meta:
-        model = TagCsvFile
+        model = TagFile
         fields = "__all__"

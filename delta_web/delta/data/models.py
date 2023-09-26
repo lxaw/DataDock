@@ -92,7 +92,7 @@ def on_delete_csv(sender,instance,using,**kwargs):
         # to prevent folders without any items, perhaps should check if 
         # folder empty after deletion, then 
         # delete if necessary.
-        shutil.rmtree(instance.file_path)
+        os.remove(instance.file_path)
 
 class BaseTag(models.Model):
     # tag text
@@ -105,7 +105,7 @@ class BaseTag(models.Model):
 # FileTag model
 # The FileTag model holds the information about the tags of the CSV file. 
 # This involves the text of the tag.
-class TagCsvFile(BaseTag):
+class TagFile(BaseTag):
     file = models.ForeignKey(File,on_delete = models.CASCADE,related_name="tag_set",null=True,blank=True)
 
     def __str__(self):

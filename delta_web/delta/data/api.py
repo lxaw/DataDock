@@ -16,7 +16,7 @@
 
 # import necessary models
 from django.http import FileResponse
-from .models import File, TagCsvFile
+from .models import File, TagFile
 from rest_framework import status,renderers
 from rest_framework.decorators import action
 
@@ -40,7 +40,7 @@ from rest_framework.parsers import MultiPartParser
 from organizations.models import Organization
 
 # import necessary serializers
-from .serializers import SerializerFile,SerializerTagCsvFile
+from .serializers import SerializerFile,SerializerTagFile
 
 #https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
 # Passes the generated file to the browser
@@ -54,7 +54,7 @@ class PassthroughRenderer(renderers.BaseRenderer):
 # Public CSV viewset api
 # For dealing with public viewing of csv files
 #
-class ViewsetPublicCsvFile(viewsets.ModelViewSet):
+class ViewsetPublicFile(viewsets.ModelViewSet):
     queryset = File.objects.all()
 
     permission_classes = [
@@ -145,7 +145,7 @@ class ViewsetFile(viewsets.ModelViewSet):
             except Organization.DoesNotExist as e:
                 pass
         for tag in arr_tags:
-            tag = TagCsvFile(file=obj,text=tag)
+            tag = TagFile(file=obj,text=tag)
             tag.save()
 
         obj.save()
@@ -173,7 +173,7 @@ class ViewsetFile(viewsets.ModelViewSet):
             obj.save()
 
         # note that file saving to disk is a separate operation!
-        #  see UploadCsvApiView
+        #  see UploadApiView
 
         return Response(self.get_serializer(obj).data)
     
@@ -195,7 +195,7 @@ class ViewsetFile(viewsets.ModelViewSet):
             obj.tag_set.all().delete()
             # create new tags
             for strTag in request.data['tags']:
-                tag = TagCsvFile(file=obj,text=strTag)
+                tag = TagFile(file=obj,text=strTag)
                 tag.save()
     
         return Response(self.get_serializer(obj).data)
@@ -222,7 +222,7 @@ class ViewsetFile(viewsets.ModelViewSet):
 ###################
 # CSV Upload api
 # Uploads a csv file
-class UploadCsvApiView(APIView):
+class UploadApiView(APIView):
     # note date we need the file within the actual request, not as some argument
     # ie, the headers have to change 
     parser_classes = (FileUploadParser,)
@@ -265,16 +265,16 @@ class UploadCsvApiView(APIView):
             return Response(data={"message":"Error upon uploading file"})
 # tagviewset api
 # Sets the view to the tag of a csv file
-class ViewsetTagCsvFile(viewsets.ModelViewSet):
+class ViewsetTagFile(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
     ]
 
-    serializer_class = SerializerTagCsvFile
+    serializer_class = SerializerTagFile
 
     # never use this, just need for api to work
     def get_queryset(self):
-        return TagCsvFile.objects.all()
+        return TagFile.objects.all()
     
     def create(self,request):
         # file is file id
@@ -283,7 +283,7 @@ class ViewsetTagCsvFile(viewsets.ModelViewSet):
         arrTags = request.data.get('tags')
         newTags = []
         for tag in arrTags:
-            tag = TagCsvFile(file=file,text=tag)
+            tag = TagFile(file=file,text=tag)
             tag.save()
             newTags.append(tag)
 

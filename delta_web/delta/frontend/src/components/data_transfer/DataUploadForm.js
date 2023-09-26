@@ -233,7 +233,6 @@ const DataUploadForm = (props) =>{
               </small>
               <div className="input-group">
                 <input required type="text" className="form-control" 
-                value="filler"
                 placeholder = "Enter name of file" id= "DataSetName"/>
               </div>
             </div>
@@ -247,7 +246,6 @@ const DataUploadForm = (props) =>{
               </small>
               <div className="input-group">
                 <textarea required type="text" className="form-control" 
-                value="filler"
                 placeholder="Enter a description of the data set" id = "DataSetDescription"/>
               </div>
             </div>

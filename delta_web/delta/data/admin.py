@@ -16,7 +16,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import File, TagCsvFile
+from .models import File, TagFile
 
 # create the admin class for File
 class FileAdmin(admin.ModelAdmin):
@@ -24,8 +24,8 @@ class FileAdmin(admin.ModelAdmin):
     "is_public_orgs","registered_organizations","author","original_file_name"]
 
 # create the admin class for TagFile
-class TagCsvFileAdmin(admin.ModelAdmin):
+class TagFileAdmin(admin.ModelAdmin):
     fields = ['text','pub_date','file']
 
 admin.site.register(File,FileAdmin)
-admin.site.register(TagCsvFile,TagCsvFileAdmin)
+admin.site.register(TagFile,TagFileAdmin)
