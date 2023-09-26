@@ -5,7 +5,6 @@ import {fileTokenConfig,tokenConfig} from './auth';
 
 import {ADD_CSV_FILE, DELETE_CSV_FILE, GET_CSV_FILES,GET_CSV_FILE, 
     CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC} from "./types";
-import { addTags } from './tags';
 
 // POST FILE 
 /*
@@ -24,7 +23,9 @@ export const addCsvFile= (dictData) => (dispatch,getState) =>{
     // pass in token
 
     // first create the csv data object in Django, then make the file
-    return axios.post('/api/csv/',dictData,tokenConfig(getState))
+    // TO DO:
+    // file token config could probably do this
+    return axios.post('/api/csv/',dictData,fileTokenConfig(getState,dictData['file']))
     .then((res)=>{
         // this means that the creation of the csv file model in django sucessful
         // thus we move onto actually creating the file
@@ -53,7 +54,6 @@ export const addCsvFile= (dictData) => (dispatch,getState) =>{
         return err;
     })
 }
-
 // GET FILES
 export const getCsvFiles = () => (dispatch,getState) =>{
     axios.get('/api/csv/',tokenConfig(getState))
@@ -132,9 +132,8 @@ export const getCsvFilesPublic = () => (dispatch,getState) =>{
 
 // DOWNLOAD A FILE
 //  id is of file object
-// TODO: Make sure that you can only download files that are public
-// or under your organization
-// or are yours
+// to do: 
+// these should all be zips
 export const downloadCsvFile = (id) => (dispatch, getState) =>{
     axios.get(`/api/public_csvs/${id}/download`,tokenConfig(getState))
     .then(res=>{

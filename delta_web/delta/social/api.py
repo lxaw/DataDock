@@ -21,7 +21,7 @@ from .serializers import (SerializerReview,SerializerNotificationReview,
 SerializerConversation,SerializerMessage,SerializerNotificationMessage,
 SerializerNotificationWhatsHot,SerializerNotificationNews
 )
-from data.models import CSVFile
+from data.models import File
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -50,7 +50,7 @@ class ViewsetReview(viewsets.ModelViewSet):
     
     # create an object
     def perform_create(self,serializer):
-        modelCsvFile = CSVFile.objects.get(pk=self.request.data['file'])
+        modelCsvFile = File.objects.get(pk=self.request.data['file'])
         modelReview = serializer.save(author=self.request.user,file=modelCsvFile)
         # create Notification
         #

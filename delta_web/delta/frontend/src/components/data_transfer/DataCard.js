@@ -22,7 +22,7 @@ defines the layout of that data card and how it can be interacted with.
 
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 import tag_styles from "./tags.module.css";

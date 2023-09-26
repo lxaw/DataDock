@@ -80,8 +80,6 @@ const DataUploadForm = (props) =>{
 
   // available organizations
   const [selectOptions, setSelectOptions] = useState([]);
-  // select values
-  const [selectedValues,setSelectedValues] = useState([]);
   // tags
   const [tags,setTags] = useState([]);
   const [errors,setErrors] = useState('');
@@ -104,7 +102,9 @@ const DataUploadForm = (props) =>{
 
   const { isDragActive, getRootProps, getInputProps, isDragReject, acceptedFiles, rejectedFiles } = useDropzone({
     accept:{
-      'text/csv':['.csv']
+
+      // TO DO: only allow specific file types
+      // for now, just accept anything
     },
 
     // UTILITY: When a user drops selected file(s), display error messages 
@@ -118,20 +118,19 @@ const DataUploadForm = (props) =>{
           if(err.code === "file-invalid-type"){
             setErrors(`Error: ${err.message}`);
           }
+          else{
+            setErrors(`Error: ${err.message}`)
+          }
         })
       })
-      acceptedFiles.forEach((file)=>{
-        $("fileName").val(file.name)
-        setErrors('')
-      })
+      // acceptedFiles.forEach((file)=>{
+      //   setErrors('')
+      // })
     },
     minSize: 0,
     maxSize:maxSize,
-    multiple:false,
+    multiple:true,
   });
-
-  const isFileTooLarge = false;
-  // const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
 
 
   const onSelectChange = (arrSelects) =>{
@@ -150,10 +149,15 @@ const DataUploadForm = (props) =>{
       
       // For every file that is accepted by the dropzone, do the following.
       acceptedFiles.forEach(file=> {
+
+        // note: the backend will check if there was a folder.
+        // we just need to send the right path.
+        const filePath = file.webkitRelativePath;
+
         var isPublic= $("#flexCheckPublic").is(":checked");
         var isPublicOrgs = $("#flexCheckPublicToOrg").is(":checked");
-        var description = $("#fileDescription").val();
-        var fileName = $("#fileName").val();
+        var description = $("#DataSetDescription").val();
+        var DataSetName = $("#DataSetName").val();
 
         if(isPublicOrgs && arrOrgs.length == 0){
           // show error
@@ -166,7 +170,8 @@ const DataUploadForm = (props) =>{
           'is_public':isPublic,
           'is_public_orgs':isPublicOrgs,
           'description':description,
-          'file_name':fileName,
+          'path':filePath,
+          'file_name':DataSetName,
           'registered_organizations':arrOrgs,
           'tags':tags,
           'file':file,
@@ -178,7 +183,7 @@ const DataUploadForm = (props) =>{
           .then((res)=>{
               // good response
               if(res == undefined){
-                navigate('/data/download')
+                navigate('/data/download');
               }
             }
           );
@@ -186,7 +191,7 @@ const DataUploadForm = (props) =>{
   }
 
   const updateTags = (tags) =>{
-    setTags(tags)
+    setTags(tags);
   }
 
   return(
@@ -219,36 +224,31 @@ const DataUploadForm = (props) =>{
 
           <div>
 
-
-
             {/* File Name Form Control*/}
 
             <div>
-              <h3>File Name</h3>
+              <h3>Data Set Name</h3>
               <small>
-                File names should be descriptive of the file being uploaded. Don't worry about appending `.csv` to your files.
+                Data set names should be descriptive of the file being uploaded. Don't worry about appending `.csv` to your files.
               </small>
               <div className="input-group">
-                <input required type="text" className="form-control" placeholder = "Enter name of file" id= "fileName"/>
+                <input required type="text" className="form-control" 
+                placeholder = "Enter name of file" id= "DataSetName"/>
               </div>
             </div>
-
-
 
             {/* File Description Form Control*/}
 
             <div>
-              <h3>File Description</h3>
+              <h3>Data Set Description</h3>
               <small>
-                File descriptions should indicate important information about the file contents, the methods of collecting the data, and any other important information such as rights of use.
+                Data set descriptions should indicate important information about the file contents, the methods of collecting the data, and any other important information such as rights of use.
               </small>
               <div className="input-group">
-                <textarea required type="text" className="form-control" placeholder="Enter a description of the file" id = "fileDescription"/>
+                <textarea required type="text" className="form-control" 
+                placeholder="Enter a description of the data set" id = "DataSetDescription"/>
               </div>
             </div>
-
-
-
 
             {/* Visibility Radios */}
             

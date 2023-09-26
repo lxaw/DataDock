@@ -27,28 +27,33 @@ from django.contrib.auth import get_user_model
 
 # for file manip
 import os
+import shutil
 
 # for add to org
 from organizations.models import Organization
 
 User = get_user_model()
 
-# wrapper for CSV file.
-# NOTE: if ever change directory structure, will have to update every file.
-# this could get annoying!
-
-# CSVFile model
-# The CSVFile model holds the information about the CSV file.
-# This includes when it was created, description, and the file path.
-class CSVFile(models.Model):
+# File model
+# folders are also files
+class File(models.Model):
     # user who created the file
     author = models.ForeignKey(
-        User,related_name="csv_files", on_delete = models.CASCADE,
+        User,related_name="files", on_delete = models.CASCADE,
         null=True
     )
     # SEE: https://stackoverflow.com/questions/53058631/foreignkey-object-has-no-attribute
-    file_path= models.TextField(db_column='file_path',blank=True,null=True)
-    file_name = models.TextField(db_column="file_name",blank=False,null=False,unique=True)
+
+    # file path is path that server knows
+    # note that file paths MUST be unique, names not so much
+    file_path= models.TextField(db_column='file_path',blank=True,null=True,unique=True)
+
+    # file name not necessarily same as path
+    file_name = models.TextField(db_column="file_name",blank=False,null=False,unique=False)
+
+    # original file name at upload
+    original_file_name = models.TextField(blank=True,null=True,unique=False)
+
     # timestamp of creation
     timestamp= models.DateTimeField(auto_now_add=True)
 
@@ -65,10 +70,11 @@ class CSVFile(models.Model):
     registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_files")
 
     class Meta:
-        unique_together = ('author','file_name')
+        unique_together = ('author','file_path')
 
     def __str__(self):
         return self.file_name
+    
     def save(self,*args,**kwargs):
         # if no file name given, give it the file name generated from the file path
         # 
@@ -76,12 +82,20 @@ class CSVFile(models.Model):
             self.file_name = str(os.path.basename(self.file_path))
         super().save(*args,**kwargs)
     
-# when delete the CSVFile model, should also delete the file in the directory
+    def in_folder(self):
+        # check if within a folder
+        return len(os.path.splitext(self.file_path)) > 1
+
+# when delete the File model, should also delete the file in the directory
 # see: https://stackoverflow.com/questions/71278989/how-to-call-a-function-when-you-delete-a-model-object-in-django-admin-page-or
-@receiver(post_delete,sender=CSVFile)
+@receiver(post_delete,sender=File)
 def on_delete_csv(sender,instance,using,**kwargs):
     # delete the file
     if(instance.file_path and os.path.exists(instance.file_path)):
+        # TODO
+        # to prevent folders without any items, perhaps should check if 
+        # folder empty after deletion, then 
+        # delete if necessary.
         os.remove(instance.file_path)
 
 class BaseTag(models.Model):
@@ -92,11 +106,11 @@ class BaseTag(models.Model):
     class Meta:
         abstract = True
 
-# CSVFileTag model
-# The CSVFileTag model holds the information about the tags of the CSV file. 
+# FileTag model
+# The FileTag model holds the information about the tags of the CSV file. 
 # This involves the text of the tag.
-class TagCsvFile(BaseTag):
-    file = models.ForeignKey(CSVFile,on_delete = models.CASCADE,related_name="tag_set")
+class TagFile(BaseTag):
+    file = models.ForeignKey(File,on_delete = models.CASCADE,related_name="tag_set",null=True,blank=True)
 
     def __str__(self):
         return "Tag {}".format(self.text)

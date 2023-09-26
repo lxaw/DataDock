@@ -16,7 +16,7 @@
 
 # import necessary models
 from django.http import FileResponse
-from .models import CSVFile, TagCsvFile
+from .models import File, TagFile
 from rest_framework import status,renderers
 from rest_framework.decorators import action
 
@@ -40,14 +40,7 @@ from rest_framework.parsers import MultiPartParser
 from organizations.models import Organization
 
 # import necessary serializers
-from .serializers import SerializerCSVFile,SerializerTagCsvFile
-
-# helper function to get folder path
-def getUserFolderPath(strUser):
-    return 'static/users/{}/csvs'.format(strUser)
-
-def getUserFilePath(strFileName,strUser):
-    return os.path.join(getUserFolderPath(strUser),strFileName)
+from .serializers import SerializerFile,SerializerTagFile
 
 #https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
 # Passes the generated file to the browser
@@ -61,17 +54,17 @@ class PassthroughRenderer(renderers.BaseRenderer):
 # Public CSV viewset api
 # For dealing with public viewing of csv files
 #
-class ViewsetPublicCsvFile(viewsets.ModelViewSet):
-    queryset = CSVFile.objects.all()
+class ViewsetPublicFile(viewsets.ModelViewSet):
+    queryset = File.objects.all()
 
     permission_classes = [
         permissions.IsAuthenticated
     ]
 
-    serializer_class = SerializerCSVFile
+    serializer_class = SerializerFile
 
     def get_queryset(self):
-        return CSVFile.objects.filter(is_public=True)
+        return File.objects.filter(is_public=True)
 
     @action(methods=['get'],detail=True,renderer_classes=(PassthroughRenderer,))
     def download(self,*args,**kwargs):
@@ -88,8 +81,8 @@ class ViewsetPublicCsvFile(viewsets.ModelViewSet):
 # CSV viewset api
 # Has the permission classes for the csv file viewset
 # Makes viewable only if csv files are marked as public.
-class ViewsetCSVFile(viewsets.ModelViewSet):
-    queryset = CSVFile.objects.all()
+class ViewsetFile(viewsets.ModelViewSet):
+    queryset = File.objects.all()
 
     # TO DO: 
     # UPDATE THE PERMISSION CLASSES
@@ -107,24 +100,41 @@ class ViewsetCSVFile(viewsets.ModelViewSet):
         permissions.IsAuthenticated
     ]
 
-    serializer_class = SerializerCSVFile
+    serializer_class = SerializerFile
 
     def get_queryset(self):
         return self.request.user.csv_files.all()
 
     # https://stackoverflow.com/questions/30650008/django-rest-framework-override-create-in-modelserializer-passing-an-extra-par
+    ###
+    # to do: this should not be here, should only use the uploadcsvview
+    ###
     def create(self,request):
         author = self.request.user
         is_public = self.request.data.get("is_public")
         desc = self.request.data.get('description')
-        file_name = self.request.data.get('file_name')
         arr_int_registered_orgs = self.request.data.get('registered_organizations')
         arr_tags = self.request.data.get('tags')
         is_public_orgs = self.request.data.get('is_public_orgs')
+        # user determined file name
+        file_name = self.request.data.get('file_name')
         file_path = self.request.data.get("file")['path']
 
-        obj = CSVFile(author=author,file_name=file_name,is_public=is_public,
-                      is_public_orgs=is_public_orgs,description=desc)
+        # file determined file name
+        file_name_with_ext = file_path.split('/')[-1]
+
+        #
+        # remove '/' character if present
+        # this is to make concatenation work
+        if file_path[0] == '/':
+            file_path = file_path[1:]
+
+        # get file path based on user
+        # strFilePath = getUserFilePath(strFileName=file_path,strUser=request.user.username)
+        strFilePath = f'static/users/{request.user.username}/files/{file_path}'
+
+        obj = File(author=author,file_name=file_name,is_public=is_public,file_path=strFilePath,
+                      is_public_orgs=is_public_orgs,description=desc,original_file_name=file_name_with_ext)
         # here we should test
         obj.save()
 
@@ -138,23 +148,41 @@ class ViewsetCSVFile(viewsets.ModelViewSet):
             except Organization.DoesNotExist as e:
                 pass
         for tag in arr_tags:
-            tag = TagCsvFile(file=obj,text=tag)
+            tag = TagFile(file=obj,text=tag)
             tag.save()
 
-        # give it the file path
-        # note the file path is only to be based on the file name.
-        # this is only temporary and is used to link to the functionality of actually saving files
-        # the `post` method of UploadCsvFile only knows the file name and the user.
-        # thus we can only keep the file path as the file name for now.
-        strFilePath = getUserFilePath(strFileName=file_path,strUser=request.user.username)
-        obj.file_path = strFilePath
         obj.save()
+
+        #
+        # create the actual file now
+        #
+        fileBasePath = os.path.splitext(obj.file_path)[0]
+        # make dirs for the path 
+        # note: don't want extension in our path
+        if not os.path.exists(fileBasePath):
+            os.makedirs(fileBasePath)
+        
+        # if a file already present, do not overwrite
+        strCurObjFileBasePath = fileBasePath
+        if(os.path.exists(obj.file_path)):
+            strCurObjFileBasePath += "_"
+            while(os.path.exists(strCurObjFileBasePath)):
+                strRandom = ''.join(random.choices(string.ascii_lowercase+string.digits,k=100))
+                strCurObjFileBasePath+= strRandom
+            # finally add .extension of file
+            strCurObjFileBasePath+=os.path.splitext(obj.file_path)[1]
+            # then reset the obj file path
+            obj.file_path = strCurObjFileBasePath
+            obj.save()
+
+        # note that file saving to disk is a separate operation!
+        #  see UploadApiView
 
         return Response(self.get_serializer(obj).data)
     
     def partial_update(self, request, *args, **kwargs):
         super().partial_update(request,*args,**kwargs)
-        obj = CSVFile.objects.get(id=kwargs['pk'])
+        obj = File.objects.get(id=kwargs['pk'])
         if('registered_organizations' in  request.data):
             for orgId in request.data['registered_organizations']:
                 # check if org exists
@@ -170,18 +198,14 @@ class ViewsetCSVFile(viewsets.ModelViewSet):
             obj.tag_set.all().delete()
             # create new tags
             for strTag in request.data['tags']:
-                tag = TagCsvFile(file=obj,text=strTag)
+                tag = TagFile(file=obj,text=strTag)
                 tag.save()
     
-        # add the file path to the obj
-        strUserCsvFolder = 'static/users/{}/csvs'.format(request.user.username)
-
-
         return Response(self.get_serializer(obj).data)
     
     def retrieve(self,request,*args,**kwargs):
         obj_id = kwargs['pk']
-        obj = CSVFile.objects.get(id=obj_id)
+        obj = File.objects.get(id=obj_id)
         # ONLY ALLOW USER TO SEE FILE IF THE FOLLOWING CONDITIONS ARE MEET
         # 1. File is public OR
         # 2. User owns file OR
@@ -201,14 +225,16 @@ class ViewsetCSVFile(viewsets.ModelViewSet):
 ###################
 # CSV Upload api
 # Uploads a csv file
-class UploadCsvApiView(APIView):
+class UploadApiView(APIView):
+    # note date we need the file within the actual request, not as some argument
+    # ie, the headers have to change 
     parser_classes = (FileUploadParser,)
     # parser_classes = (MultiPartParser,)
 
     permission_classes = [
         permissions.IsAuthenticated
     ]
-    serializer_class = SerializerCSVFile
+    serializer_class = SerializerFile
 
     # handle post requests
     def post(self,request,*args,**kwargs):
@@ -216,62 +242,48 @@ class UploadCsvApiView(APIView):
         dataFile = request.data.get('file',None)
 
         if(dataFile):
-            fileName = Path(str(dataFile))
-
-            # create dir if doesnt exist
-            if not os.path.exists(getUserFolderPath(request.user.username)):
-                # make it
-                os.makedirs(getUserFolderPath(request.user.username))
-
-            strFilePath = getUserFilePath(fileName,request.user.username)
+            fileName = str(dataFile)
 
             # get the last one
-            csvFileObj = CSVFile.objects.filter(author=request.user,file_path=strFilePath).last()
+            # this should be the one you just created
 
-            # if a file already present, do not overwrite
-            if(os.path.exists(strFilePath)):
-                while(os.path.exists(strFilePath)):
-                    strRandom = ''.join(random.choices(string.ascii_lowercase+string.digits,k=100))
-                    strFilePath += "_"+ strRandom
-                # finally add .csv
-                strFilePath+=".csv"
+            # last one created, since order matters
+            # TODO:
+            # There could be some problems with this.
 
-            with open(strFilePath,'wb+') as file:
+            csvFileObj = File.objects.filter(author=request.user,original_file_name = fileName).last()
+
+            with open(csvFileObj.file_path,'wb+') as file:
                 for chunk in dataFile.chunks():
                     file.write(chunk)
-            # file is now saved.
-            # update the new file path
-            csvFileObj.file_path = strFilePath
-            csvFileObj.save()
-            print(csvFileObj.file_path)
             
             return Response({
-                "csvFile":SerializerCSVFile(csvFileObj).data
+                "csvFile":SerializerFile(csvFileObj).data
             })
 
         else:
             return Response(data={"message":"Error upon uploading file"})
 # tagviewset api
 # Sets the view to the tag of a csv file
-class ViewsetTagCsvFile(viewsets.ModelViewSet):
+class ViewsetTagFile(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
     ]
 
-    serializer_class = SerializerTagCsvFile
+    serializer_class = SerializerTagFile
 
     # never use this, just need for api to work
     def get_queryset(self):
-        return TagCsvFile.objects.all()
+        return TagFile.objects.all()
     
     def create(self,request):
         # file is file id
-        file = CSVFile.objects.get(pk=request.data.get('file'))
+        file = File.objects.get(pk=request.data.get('file'))
         # text is an array
         arrTags = request.data.get('tags')
         newTags = []
         for tag in arrTags:
-            tag = TagCsvFile(file=file,text=tag)
+            tag = TagFile(file=file,text=tag)
             tag.save()
             newTags.append(tag)
 

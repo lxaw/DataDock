@@ -23,7 +23,7 @@ from unicodedata import name
 from rest_framework.decorators import action
 from itertools import chain
 
-from data.serializers import SerializerCSVFile
+from data.serializers import SerializerFile
 
 from .serializers import OrganizationSerializer
 
@@ -75,7 +75,7 @@ class ViewsetOrganizations(viewsets.ModelViewSet):
         else:
             csvFiles = PublicCsvFiles
 
-        serializer = SerializerCSVFile(csvFiles,many=True)
+        serializer = SerializerFile(csvFiles,many=True)
 
         return Response(serializer.data)
     
