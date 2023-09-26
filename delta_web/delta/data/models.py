@@ -88,12 +88,11 @@ class File(models.Model):
 def on_delete_csv(sender,instance,using,**kwargs):
     # delete the file
     if(instance.file_path and os.path.exists(instance.file_path)):
-        # shutil.rmtree(instance.file_path)
-        pass
         # TODO
         # to prevent folders without any items, perhaps should check if 
         # folder empty after deletion, then 
         # delete if necessary.
+        shutil.rmtree(instance.file_path)
 
 class BaseTag(models.Model):
     # tag text
