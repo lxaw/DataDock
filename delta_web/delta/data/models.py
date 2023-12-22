@@ -69,9 +69,6 @@ class File(models.Model):
     # file name not necessarily same as path
     file_name = models.TextField(db_column="file_name",blank=False,null=False,unique=False)
 
-    # original file name at upload
-    original_file_name = models.TextField(blank=True,null=True,unique=False)
-
     def __str__(self):
         return self.file_name
     

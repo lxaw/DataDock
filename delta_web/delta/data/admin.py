@@ -14,6 +14,9 @@ from django.contrib import admin
 # Register your models here.
 from .models import File, TagDataset,DataSet
 
+class DataSetAdmin(admin.ModelAdmin):
+    fields = ['name']
+
 # create the admin class for File
 class FileAdmin(admin.ModelAdmin):
     fields = ['file_path','file_name',"original_file_name"]
@@ -24,3 +27,4 @@ class TagDatasetAdmin(admin.ModelAdmin):
 
 admin.site.register(File,FileAdmin)
 admin.site.register(TagDataset,TagDatasetAdmin)
+admin.site.register(DataSet,DataSetAdmin)

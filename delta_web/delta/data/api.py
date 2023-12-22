@@ -16,7 +16,7 @@
 
 # import necessary models
 from django.http import FileResponse
-from .models import DataSet, TagDataset
+from .models import DataSet, TagDataset,File
 from rest_framework import status,renderers
 from rest_framework.decorators import action
 
@@ -106,17 +106,49 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         arr_int_registered_orgs = self.request.data.get('registered_organizations')
         arr_tags = self.request.data.get('tags')
         is_public_orgs = self.request.data.get('is_public_orgs')
-        # user determined file name
+        name = self.request.data.get('name')
 
-        # file determined file name
-        file_name_with_ext = file_path.split('/')[-1]
+        # javascript sometimes uses "true" and "false", we need "True" and "False"
+        if is_public == "true":
+            is_public = True
+        else:
+            is_public = False
+        if is_public_orgs == "true":
+            is_public_orgs = True
+        else:
+            is_public_orgs = False
 
-        # get file path based on user
-        # strDataSetPath = getUserDataSetPath(strDataSetName=file_path,strUser=request.user.username)
-        strDataSetPath = f'static/users/{request.user.username}/files/'
+        # step 1: create the dataset
+        dataSet = DataSet(author=author,is_public=is_public,description=desc,
+                          is_public_orgs=is_public_orgs,
+                          name=name)
+        dataSet.save()
+
+        
+        # folder is the dataset
+        strDataSetPath = f'static/users/{request.user.username}/files/{name}'
+
+        # Check if the directory already exists
+        if not os.path.exists(strDataSetPath):
+            # Create the directory and any necessary intermediate directories
+            os.makedirs(strDataSetPath)
+
+        # step 2: create the files
+        for k,v in request.data.items():
+            if k.startswith('file'):
+                # create file objects
+                file_path = os.path.join(strDataSetPath,str(v))
+                file = File(dataset=dataSet,file_path=file_path,file_name=str(v))
+                file.save()
+
+                
+
+        # step 3: link the files to the dataset
+
+        # need an id for dataset prior to set
 
 
-        return Response(self.get_serializer(obj).data)
+        return Response(self.get_serializer(dataSet).data)
     
     def partial_update(self, request, *args, **kwargs):
         super().partial_update(request,*args,**kwargs)
