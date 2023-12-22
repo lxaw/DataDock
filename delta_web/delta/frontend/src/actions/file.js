@@ -12,7 +12,6 @@ export const addCsvFile = (dictData) => (dispatch,getState) =>{
 
     return axios.post('/api/csv/',dictData,fileTokenConfig(getState))
     .then((res)=>{
-        console.log(res)
         dispatch(createMessage({addCsvFileSuccess:"File Posted"}))
         dispatch({type:ADD_CSV_FILE,payload:res.data});
         return res;

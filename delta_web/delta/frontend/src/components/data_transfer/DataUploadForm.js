@@ -177,10 +177,11 @@ const DataUploadForm = (props) =>{
       props.addCsvFile(dictData)
         .then((res)=>{
             // good response
+            console.log('here we are!')
             console.log(res)
-            // if(res == undefined){
-            //   navigate('/data/download');
-            // }
+            if(res.status == 200){
+              navigate('/data/download');
+            }
           }
         );
   }

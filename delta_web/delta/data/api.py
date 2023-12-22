@@ -133,17 +133,23 @@ class ViewsetDataSet(viewsets.ModelViewSet):
             # Create the directory and any necessary intermediate directories
             os.makedirs(strDataSetPath)
 
-        # step 2: create the files
+        # step 2: create the files / tags
         for k,v in request.data.items():
+            # file
             if k.startswith('file'):
                 # create file objects
                 file_path = os.path.join(strDataSetPath,str(v))
                 file = File(dataset=dataSet,file_path=file_path,file_name=str(v))
                 file.save()
+            # tag
+            elif k.startswith('tag'):
+                t = TagDataset(text=v)
+                t.dataset = dataSet
+                t.save()
 
-                
 
         # step 3: link the files to the dataset
+
 
         # need an id for dataset prior to set
 

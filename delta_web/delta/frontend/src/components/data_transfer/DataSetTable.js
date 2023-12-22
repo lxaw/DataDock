@@ -5,12 +5,6 @@ Delta project
 
 Authors:
 Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
-File name:  PublicCsvFileTable.js
 
 Brief description: 
     When users visit the data download page, they are able to search through
@@ -29,21 +23,21 @@ import DataCard from './DataCard';
 /*
 */
 
-const PublicCsvFileTable = (props) =>{
+const DataSetTable = (props) =>{
   /*
   Takes in:
-  props.csvs: an array of csv objects
+  props.dataSets: an array of csv objects
   */
 
   // the csv files
-  const [csvFiles, setCsvFiles] = useState(props.csvs);
+  const [dataSets, setCsvFiles] = useState(props.dataSets);
   // text being searched
   const [searchText,setSearchText] = useState("");
   // tags being searched
   // note that this is an array
   const [searchTags,setSearchTags] = useState([]);
   // table data
-  const [tableCsvs,setTableCsvs] = useState(props.csvs);
+  const [tableCsvs,setTableCsvs] = useState(props.dataSets);
 
   // array of files to download
   // arr of file ids
@@ -83,7 +77,7 @@ const PublicCsvFileTable = (props) =>{
     // go thru tags
 
 
-    var filteredCsvs = props.csvs;
+    var filteredCsvs = props.dataSets;
     // search 1: tags
     // only perform operation of search on tags if there are tags
     if(arrStrTagSearch.length > 0){
@@ -131,7 +125,7 @@ const PublicCsvFileTable = (props) =>{
     })
   }
 
-  if(csvFiles == null) return;
+  if(dataSets == null) {return};
 
   return (
     <div data-testid="public_csv_file_table-1">
@@ -188,7 +182,7 @@ const PublicCsvFileTable = (props) =>{
                             data={item}
                             key = {item.id}
                             link={`/csvs/${item.id}`}
-                            linkText={"See file"}
+                            linkText={"See DataSet"}
                             parentOnCheckChange={onCheckChange}
                             isDownload={true}
                           />
@@ -199,7 +193,7 @@ const PublicCsvFileTable = (props) =>{
                             data={item}
                             key = {item.id}
                             link={`/csvs/${item.id}`}
-                            linkText={"See file"}
+                            linkText={"See DataSet"}
                             parentOnCheckChange={onCheckChange}
                             isDownload={false}
                           />
@@ -225,4 +219,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
     {downloadCsvFile}
-    )(PublicCsvFileTable);
+    )(DataSetTable);

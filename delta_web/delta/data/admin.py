@@ -15,7 +15,7 @@ from django.contrib import admin
 from .models import File, TagDataset,DataSet
 
 class DataSetAdmin(admin.ModelAdmin):
-    fields = ['name']
+    fields = ['name','description','is_public','is_public_orgs','download_count','timestamp','registered_organizations']
 
 # create the admin class for File
 class FileAdmin(admin.ModelAdmin):
@@ -23,7 +23,7 @@ class FileAdmin(admin.ModelAdmin):
 
 # create the admin class for TagFile
 class TagDatasetAdmin(admin.ModelAdmin):
-    fields = ['text','pub_date','file']
+    fields = ['text','timestamp','dataset']
 
 admin.site.register(File,FileAdmin)
 admin.site.register(TagDataset,TagDatasetAdmin)

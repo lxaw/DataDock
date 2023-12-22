@@ -28,6 +28,7 @@ import { Link } from 'react-router-dom';
 import tag_styles from "./tags.module.css";
 
 const DataCard = (props) => {
+    console.log(props)
 
     const [toDownload,setToDownload] = useState(props.isDownload);
     const [style,setStyle] = props.isDownload == true ? useState({width:'25rem',backgroundColor:"#cce6ff"}) : useState({width:"25rem"});
@@ -63,7 +64,7 @@ const DataCard = (props) => {
             <h6>Rating: {props.data.avg_rating}</h6>
             <small>Download count: {props.data.download_count}</small>
             <h6 className="card-title">
-                File Name: {props.data.file_name}
+                Name: {props.data.name}
             </h6>
             <p className="card-text">
                 {props.data.description}

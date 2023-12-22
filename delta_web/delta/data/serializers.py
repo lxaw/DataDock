@@ -29,16 +29,25 @@ from organizations.serializers import OrganizationSerializer
 # serializer for csv file
 class SerializerDataSet(serializers.ModelSerializer):
     author_username = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    formatted_date = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet
         fields = "__all__"
         read_only_fields = ['id','file_path']
+
     def get_author_username(self,obj):
         return obj.author.username
 
+    def get_tags(self,obj):
+        return SerializerTagDataset(obj.tag_set.all(),many=True).data
+
     def get_reviews(self,obj):
         return SerializerReview(obj.review_set.all().order_by('-pub_date'),many=True).data
+    
+    def get_formatted_date(self,obj):
+        return obj.timestamp.strftime("%Y/%m/%d")
     
 
 # serializer for tag csv file
