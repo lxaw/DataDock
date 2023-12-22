@@ -28,8 +28,8 @@ import Organizations from "./community/Organizations"
 import OrganizationDetail from "./community/OrganizationDetail"
 
 // csvFiles
-import CsvFileDetail from "./csvFile/CsvFileDetail";
-import CsvFileEdit from "./csvFile/CsvFileEdit";
+import CsvFileDetail from "./DataSets/CsvFileDetail";
+import CsvFileEdit from "./DataSets/CsvFileEdit";
 
 // data page
 import DataDownload from "./data_transfer/DataDownload";
@@ -53,7 +53,7 @@ import PublicProfile from './profile/PublicProfile';
 import ConversationDetail from './conversations/ConversationDetail';
 
 // Review
-import ReviewDetail from './csvFile/ReviewDetail';
+import ReviewDetail from './DataSets/ReviewDetail';
 
 // Alert options
 const alertOptions = {
