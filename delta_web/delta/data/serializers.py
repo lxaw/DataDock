@@ -14,7 +14,7 @@
 # The serializers for the data app.
 #
 from rest_framework import serializers
-from .models import (File,TagFile)
+from .models import (DataSet,TagDataset)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -27,7 +27,7 @@ from social.serializers import SerializerReview
 from organizations.serializers import OrganizationSerializer
 
 # serializer for csv file
-class SerializerFile(serializers.ModelSerializer):
+class SerializerDataSet(serializers.ModelSerializer):
     author_username = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
     # THIS MAY BE BETTER CALCULATED AS JUST AN ATTRIBUTE OF THE
@@ -42,11 +42,11 @@ class SerializerFile(serializers.ModelSerializer):
     org_objs = serializers.SerializerMethodField()
 
     class Meta:
-        model = File
+        model = DataSet
         fields = "__all__"
         validators = [
             UniqueTogetherValidator(
-                queryset=File.objects.all(),
+                queryset=DataSet.objects.all(),
                 # dont allow change of file path by user
                 # server does that on its own
                 # NOTE: 
@@ -75,14 +75,14 @@ class SerializerFile(serializers.ModelSerializer):
         return obj.review_set.count()
     
     def get_tags(self,obj):
-        return SerializerTagFile(obj.tag_set.all().order_by('-pub_date'),many=True).data
+        return SerializerTagDataset(obj.tag_set.all().order_by('-pub_date'),many=True).data
     
     def get_org_objs(self,obj):
         return OrganizationSerializer(obj.registered_organizations.all(),many=True).data
 
 # serializer for tag csv file
-class SerializerTagFile(serializers.ModelSerializer):
+class SerializerTagDataset(serializers.ModelSerializer):
 
     class Meta:
-        model = TagFile
+        model = TagDataset
         fields = "__all__"

@@ -2,12 +2,7 @@
 #
 # Delta project.
 #
-# Authors:
 # Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
 #
 # urls.py
 #
@@ -17,21 +12,21 @@
 from django.urls import path
 
 from rest_framework import routers
-from .api import (ViewsetFile,
-    UploadApiView, ViewsetPublicFile,
-    ViewsetTagFile
+from .api import (ViewsetDataSet,
+     ViewsetPublicDataSet,
+    ViewsetTagDataset
 )
 
 router = routers.DefaultRouter()
-router.register('api/csv',ViewsetFile,'Files')
-router.register('api/public_csvs',ViewsetPublicFile,'Publics')
-router.register('api/tags',ViewsetTagFile,'TagFile')
+router.register('api/csv',ViewsetDataSet,'DataSets')
+router.register('api/public_csvs',ViewsetPublicDataSet,'Publics')
+router.register('api/tags',ViewsetTagDataset,'TagDataset')
 
 
 # for all non viewsets, need to add to regular urls
 # https://stackoverflow.com/questions/56052906/django-rest-framework-type-object-x-has-no-attribute-get-extra-actions
 urlpatterns  = [
-    path('api/upload/csv/',UploadApiView.as_view(),name='UploadCSV')
+    # path('api/upload/csv/',UploadApiView.as_view(),name='UploadCSV')
 ]
 
 urlpatterns += router.urls

@@ -19,6 +19,21 @@ import {
     USER_UPDATE_FAIL,
 } from './types';
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
     // user loading
@@ -213,23 +228,28 @@ export const tokenConfig = (getState) => {
     return config;
 }
 
-export const fileTokenConfig = (getState, file) => {
+// Setup config with token - helper function
+// arrow func that takes in getState
+export const fileTokenConfig = (getState) => {
     // get token from state
     // looking at auth reducer and getting that token 
     const token = getState().auth.token;
 
+    var csrftoken = getCookie('csrftoken');
+
     // headers
     const config = {
         headers: {
-            'Content-Type': 'text/csv'
+            'Accept':'application/json',
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken':csrftoken,
         }
     }
 
     // if token, add to headers config
     if (token) {
         config.headers['Authorization'] = `Token ${token}`;
-        config.headers["Content-Disposition"] = `attachment; filename= ${file.name}`;
     }
     // return config with token
-    return config
+    return config;
 }

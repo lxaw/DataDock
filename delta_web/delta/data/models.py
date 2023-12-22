@@ -34,15 +34,33 @@ from organizations.models import Organization
 
 User = get_user_model()
 
+class DataSet(models.Model):
+    # user who created dataset
+    author = models.ForeignKey(
+        User,related_name="datasets", on_delete = models.CASCADE,
+        null=True
+    )
+
+    is_public = models.BooleanField(default=False)
+
+    is_public_orgs = models.BooleanField(default=False)
+
+    # number of times the file has been downloaded
+    download_count = models.IntegerField(default=0)
+
+    # timestamp of creation
+    timestamp= models.DateTimeField(default=timezone.now)
+
+    description = models.TextField(blank=True,default="")
+    # the organizations the file is under
+    registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_datasets")
+
+    name = models.CharField(max_length=128)
+
 # File model
 # folders are also files
 class File(models.Model):
-    # user who created the file
-    author = models.ForeignKey(
-        User,related_name="files", on_delete = models.CASCADE,
-        null=True
-    )
-    # SEE: https://stackoverflow.com/questions/53058631/foreignkey-object-has-no-attribute
+    dataset = models.ForeignKey(DataSet,related_name="files",on_delete = models.CASCADE,null=True)
 
     # file path is path that server knows
     # note that file paths MUST be unique, names not so much
@@ -53,24 +71,6 @@ class File(models.Model):
 
     # original file name at upload
     original_file_name = models.TextField(blank=True,null=True,unique=False)
-
-    # timestamp of creation
-    timestamp= models.DateTimeField(auto_now_add=True)
-
-    description = models.TextField(blank=True,default="")
-
-    is_public = models.BooleanField(default=False)
-
-    is_public_orgs = models.BooleanField(default=False)
-
-    # number of times the file has been downloaded
-    download_count = models.IntegerField(default=0)
-
-    # the organizations the file is under
-    registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_files")
-
-    class Meta:
-        unique_together = ('author','file_path')
 
     def __str__(self):
         return self.file_name
@@ -101,7 +101,7 @@ def on_delete_csv(sender,instance,using,**kwargs):
 class BaseTag(models.Model):
     # tag text
     text = models.CharField(max_length = 100,null=False)
-    pub_date = models.DateTimeField(default=timezone.now)
+    timestamp= models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
@@ -109,8 +109,8 @@ class BaseTag(models.Model):
 # FileTag model
 # The FileTag model holds the information about the tags of the CSV file. 
 # This involves the text of the tag.
-class TagFile(BaseTag):
-    file = models.ForeignKey(File,on_delete = models.CASCADE,related_name="tag_set",null=True,blank=True)
+class TagDataset(BaseTag):
+    dataset = models.ForeignKey(DataSet,on_delete = models.CASCADE,related_name="tag_set",null=True,blank=True)
 
     def __str__(self):
         return "Tag {}".format(self.text)

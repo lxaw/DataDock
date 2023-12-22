@@ -4,12 +4,8 @@
 #
 # Authors:
 # Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
 #
-# File name: api.py
+# DataSet name: api.py
 #
 # Brief description: Defines the api for gathering organizations and organization data.
 # Makes use of a Rest API framework
@@ -23,7 +19,7 @@ from unicodedata import name
 from rest_framework.decorators import action
 from itertools import chain
 
-from data.serializers import SerializerFile
+from data.serializers import SerializerDataSet
 
 from .serializers import OrganizationSerializer
 
@@ -67,15 +63,15 @@ class ViewsetOrganizations(viewsets.ModelViewSet):
         if request.user in instance.following_users.all():
             user_in_org = True       
             
-        PublicCsvFiles = instance.uploaded_files.filter(is_public=True)
-        PublicOrgCsvFiles = instance.uploaded_files.filter(is_public_orgs=True)
+        PublicCsvDataSets = instance.uploaded_files.filter(is_public=True)
+        PublicOrgCsvDataSets = instance.uploaded_files.filter(is_public_orgs=True)
 
         if user_in_org:
-            csvFiles = list(chain(PublicOrgCsvFiles, PublicCsvFiles))
+            csvDataSets = list(chain(PublicOrgCsvDataSets, PublicCsvDataSets))
         else:
-            csvFiles = PublicCsvFiles
+            csvDataSets = PublicCsvDataSets
 
-        serializer = SerializerFile(csvFiles,many=True)
+        serializer = SerializerDataSet(csvDataSets,many=True)
 
         return Response(serializer.data)
     
