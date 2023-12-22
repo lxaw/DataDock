@@ -57,6 +57,18 @@ class DataSet(models.Model):
 
     name = models.CharField(max_length=128)
 
+    # folder path
+    folder_path = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+    
+    def get_zip_path(self):
+        return os.path.join(self.folder_path,self.name)
+    
+    def get_zip_file_name(self):
+        return self.name + ".zip"
+
 # File model
 # folders are also files
 class File(models.Model):
@@ -83,18 +95,13 @@ class File(models.Model):
         # check if within a folder
         return len(os.path.splitext(self.file_path)) > 1
 
-# when delete the File model, should also delete the file in the directory
+# when delete the DataSet model, should also delete the files in the directory
 # see: https://stackoverflow.com/questions/71278989/how-to-call-a-function-when-you-delete-a-model-object-in-django-admin-page-or
-@receiver(post_delete,sender=File)
+@receiver(post_delete,sender=DataSet)
 def on_delete_csv(sender,instance,using,**kwargs):
     # delete the file
-    if(instance.file_path and os.path.exists(instance.file_path)):
-        # TODO
-        # to prevent folders without any items, perhaps should check if 
-        # folder empty after deletion, then 
-        # delete if necessary.
-        os.remove(instance.file_path)
-
+    if os.path.exists(instance.folder_path):
+        shutil.rmtree(instance.folder_path)
 class BaseTag(models.Model):
     # tag text
     text = models.CharField(max_length = 100,null=False)

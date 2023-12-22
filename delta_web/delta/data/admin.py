@@ -15,7 +15,7 @@ from django.contrib import admin
 from .models import File, TagDataset,DataSet
 
 class DataSetAdmin(admin.ModelAdmin):
-    fields = ['name','description','is_public','is_public_orgs','download_count','timestamp','registered_organizations']
+    fields = ['name','description','is_public','is_public_orgs','download_count','timestamp','registered_organizations','folder_path']
 
 # create the admin class for File
 class FileAdmin(admin.ModelAdmin):

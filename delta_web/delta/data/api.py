@@ -4,10 +4,6 @@
 #
 # Authors:
 # Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
 #
 # api.py
 #
@@ -19,6 +15,9 @@ from django.http import FileResponse
 from .models import DataSet, TagDataset,File
 from rest_framework import status,renderers
 from rest_framework.decorators import action
+
+# zip the folder (dataset)
+import shutil
 
 from pathlib import Path
 
@@ -61,7 +60,6 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
         permissions.IsAuthenticated
     ]
 
-
     serializer_class = SerializerDataSet
 
     def get_queryset(self):
@@ -70,15 +68,25 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
     @action(methods=['get'],detail=True,renderer_classes=(PassthroughRenderer,))
     def download(self,*args,**kwargs):
         instance = self.get_object()
+
+        zip_file_path = instance.get_zip_path()
+
+        # if does not exist, zip it
+        if not os.path.exists(zip_file_path):
+            shutil.make_archive(zip_file_path, 'zip',instance.folder_path)
+
+        # the shutil makes the file automatically include '.zip'
+        zip_file_path = zip_file_path +'.zip'
+
         # increase the download count
-        instance.download_count += 1
-        instance.save()
-        with open(instance.file_path,'rb') as file:
-            return Response(
-                file.read(),
-                headers = {"Content-Disposition":'attachment; filename={}'.format(instance.file_name)},
-                content_type="text/csv",
-            )
+        # instance.download_count += 1
+        # instance.save()
+
+        with open(zip_file_path, 'rb') as f:
+            response = FileResponse(f, content_type='application/zip')
+            response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
+            return response
+
 # CSV viewset api
 # Has the permission classes for the csv file viewset
 # Makes viewable only if csv files are marked as public.
@@ -97,9 +105,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         return self.request.user.csv_files.all()
 
     def create(self,request):
-        print("HERE************")
         print(self.request.data)
-        print("HERE************")
         author = self.request.user
         is_public = self.request.data.get("is_public")
         desc = self.request.data.get('description')
@@ -118,15 +124,14 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         else:
             is_public_orgs = False
 
+        # folder is the dataset
+        strDataSetPath = f'static/users/{request.user.username}/files/{name}'
+
         # step 1: create the dataset
         dataSet = DataSet(author=author,is_public=is_public,description=desc,
                           is_public_orgs=is_public_orgs,
-                          name=name)
+                          name=name,folder_path=strDataSetPath)
         dataSet.save()
-
-        
-        # folder is the dataset
-        strDataSetPath = f'static/users/{request.user.username}/files/{name}'
 
         # Check if the directory already exists
         if not os.path.exists(strDataSetPath):
@@ -137,8 +142,14 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         for k,v in request.data.items():
             # file
             if k.startswith('file'):
-                # create file objects
+                # file path
                 file_path = os.path.join(strDataSetPath,str(v))
+
+                with open(file_path,'wb+') as f:
+                    for chunk in v.chunks():
+                        f.write(chunk)
+
+                # create file objects
                 file = File(dataset=dataSet,file_path=file_path,file_name=str(v))
                 file.save()
             # tag
@@ -147,12 +158,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
                 t.dataset = dataSet
                 t.save()
 
-
-        # step 3: link the files to the dataset
-
-
         # need an id for dataset prior to set
-
 
         return Response(self.get_serializer(dataSet).data)
     
