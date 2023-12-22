@@ -19,7 +19,7 @@ import {
     USER_UPDATE_FAIL,
 } from './types';
 
-function getCookie(name) {
+export const getCookie = (name) => {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         var cookies = document.cookie.split(';');

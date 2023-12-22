@@ -19,7 +19,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator,MinValueValidator
 
-from data.models import File
+from data.models import DataSet
 
 
 User = get_user_model()
@@ -33,8 +33,8 @@ class Review(models.Model):
     title = models.CharField(max_length=100,null=False)
     author = models.ForeignKey(User,on_delete=models.CASCADE,related_name="review_set",null=True)
 
-    # foreign key to file 
-    file = models.ForeignKey(File,on_delete=models.CASCADE,related_name = "review_set")
+    # foreign key to dataset
+    dataset = models.ForeignKey(DataSet,on_delete=models.CASCADE,related_name = "review_set")
 
     text = models.CharField(max_length = 350)
     pub_date = models.DateTimeField(default = timezone.now)
@@ -46,7 +46,7 @@ class Review(models.Model):
     rating = models.PositiveSmallIntegerField(default = 0,validators=[MinValueValidator(0),MaxValueValidator(5)])
 
     class Meta:
-        unique_together = ('author','file')
+        unique_together = ('author','dataset')
     
     def __str__(self):
         return self.title

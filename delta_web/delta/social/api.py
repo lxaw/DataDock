@@ -4,12 +4,7 @@
 #
 # Authors:
 # Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
-#
-# File name: api.py
+# DataSet name: api.py
 #
 # Brief description: Constains the rules for how to interact with the server side of the 
 # Delta project.
@@ -21,7 +16,7 @@ from .serializers import (SerializerReview,SerializerNotificationReview,
 SerializerConversation,SerializerMessage,SerializerNotificationMessage,
 SerializerNotificationWhatsHot,SerializerNotificationNews
 )
-from data.models import File
+from data.models import DataSet
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -50,15 +45,15 @@ class ViewsetReview(viewsets.ModelViewSet):
     
     # create an object
     def perform_create(self,serializer):
-        modelCsvFile = File.objects.get(pk=self.request.data['file'])
-        modelReview = serializer.save(author=self.request.user,file=modelCsvFile)
+        modelCsvDataSet = DataSet.objects.get(pk=self.request.data['dataset'])
+        modelReview = serializer.save(author=self.request.user,dataset=modelCsvDataSet)
         # create Notification
         #
         reviewText = self.request.data["text"]
-        csvFileName = modelCsvFile.file_name
+        csvDataSetName = modelCsvDataSet.name
         # prepare notification text
-        notifText = f"Review of file {csvFileName} from user {self.request.user}. \n\"{reviewText}\""
-        modelNotif = NotificationReview(sender = self.request.user,recipient = modelCsvFile.author,review=modelReview,text=notifText)
+        notifText = f"Review of file {csvDataSetName} from user {self.request.user}. \n\"{reviewText}\""
+        modelNotif = NotificationReview(sender = self.request.user,recipient = modelCsvDataSet.author,review=modelReview,text=notifText)
         modelNotif.save()
 
     # get an instance of an object

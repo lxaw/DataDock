@@ -28,7 +28,6 @@ import { Link } from 'react-router-dom';
 import tag_styles from "./tags.module.css";
 
 const DataCard = (props) => {
-    console.log(props)
 
     const [toDownload,setToDownload] = useState(props.isDownload);
     const [style,setStyle] = props.isDownload == true ? useState({width:'25rem',backgroundColor:"#cce6ff"}) : useState({width:"25rem"});

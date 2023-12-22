@@ -1,9 +1,10 @@
 import {createMessage,returnErrors} from './messages';
-import {tokenConfig} from './auth';
+import {tokenConfig,fileTokenConfig} from './auth';
 import axios from 'axios';
 
 export const addReview = (dictData) => (dispatch,getState) =>{
-    axios.post('/api/review/',dictData,tokenConfig(getState))
+
+    axios.post('/api/review/',dictData,fileTokenConfig(getState))
     .then((res)=>{
         dispatch(createMessage({addReviewSuccess:"Your review has been posted."}))
     })
@@ -17,7 +18,7 @@ export const addReview = (dictData) => (dispatch,getState) =>{
 }
 
 export const deleteReview = (id) => (dispatch,getState) => {
-    axios.delete(`api/review/${id}`,tokenConfig(getState))
+    axios.delete(`api/review/${id}`,fileTokenConfig(getState))
     .then((res)=>{
         dispatch(createMessage({deleteReviewSuccess:"Your review has successfully been deleted."}));
     })

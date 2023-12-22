@@ -31,6 +31,7 @@ class SerializerDataSet(serializers.ModelSerializer):
     author_username = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
     formatted_date = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet

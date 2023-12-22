@@ -44,7 +44,7 @@ const CsvFileDetail = (props) => {
       .then((res) => {
         setCsvFile(res.data);
         // to update
-        // setArrReviews(res.data.reviews);
+        setArrReviews(res.data.reviews);
       });
   };
 

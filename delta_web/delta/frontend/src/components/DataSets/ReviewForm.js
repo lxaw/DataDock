@@ -39,7 +39,7 @@ const ReviewForm = (props) => {
     title: "",
     text: "",
     rating: 5,
-    file: `${id}`,
+    dataset: `${id}`,
     author: `${props.auth.user.id}`,
   });
 
