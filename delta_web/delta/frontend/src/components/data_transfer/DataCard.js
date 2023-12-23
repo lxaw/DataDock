@@ -63,7 +63,7 @@ const DataCard = (props) => {
             <h6>Rating: {props.data.avg_rating}</h6>
             <small>Download count: {props.data.download_count}</small>
             <h6 className="card-title">
-                File Name: {props.data.file_name}
+                Name: {props.data.name}
             </h6>
             <p className="card-text">
                 {props.data.description}

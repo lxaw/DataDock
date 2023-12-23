@@ -34,30 +34,12 @@ from organizations.models import Organization
 
 User = get_user_model()
 
-# File model
-# folders are also files
-class File(models.Model):
-    # user who created the file
+class DataSet(models.Model):
+    # user who created dataset
     author = models.ForeignKey(
-        User,related_name="files", on_delete = models.CASCADE,
+        User,related_name="datasets", on_delete = models.CASCADE,
         null=True
     )
-    # SEE: https://stackoverflow.com/questions/53058631/foreignkey-object-has-no-attribute
-
-    # file path is path that server knows
-    # note that file paths MUST be unique, names not so much
-    file_path= models.TextField(db_column='file_path',blank=True,null=True,unique=True)
-
-    # file name not necessarily same as path
-    file_name = models.TextField(db_column="file_name",blank=False,null=False,unique=False)
-
-    # original file name at upload
-    original_file_name = models.TextField(blank=True,null=True,unique=False)
-
-    # timestamp of creation
-    timestamp= models.DateTimeField(auto_now_add=True)
-
-    description = models.TextField(blank=True,default="")
 
     is_public = models.BooleanField(default=False)
 
@@ -66,11 +48,38 @@ class File(models.Model):
     # number of times the file has been downloaded
     download_count = models.IntegerField(default=0)
 
-    # the organizations the file is under
-    registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_files")
+    # timestamp of creation
+    timestamp= models.DateTimeField(default=timezone.now)
 
-    class Meta:
-        unique_together = ('author','file_path')
+    description = models.TextField(blank=True,default="")
+    # the organizations the file is under
+    registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_datasets")
+
+    name = models.CharField(max_length=128)
+
+    # folder path
+    folder_path = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+    
+    def get_zip_path(self):
+        return os.path.join(self.folder_path,self.name)
+    
+    def get_zip_file_name(self):
+        return self.name + ".zip"
+
+# File model
+# folders are also files
+class File(models.Model):
+    dataset = models.ForeignKey(DataSet,related_name="files",on_delete = models.CASCADE,null=True)
+
+    # file path is path that server knows
+    # note that file paths MUST be unique, names not so much
+    file_path= models.TextField(db_column='file_path',blank=True,null=True,unique=True)
+
+    # file name not necessarily same as path
+    file_name = models.TextField(db_column="file_name",blank=False,null=False,unique=False)
 
     def __str__(self):
         return self.file_name
@@ -86,22 +95,17 @@ class File(models.Model):
         # check if within a folder
         return len(os.path.splitext(self.file_path)) > 1
 
-# when delete the File model, should also delete the file in the directory
+# when delete the DataSet model, should also delete the files in the directory
 # see: https://stackoverflow.com/questions/71278989/how-to-call-a-function-when-you-delete-a-model-object-in-django-admin-page-or
-@receiver(post_delete,sender=File)
+@receiver(post_delete,sender=DataSet)
 def on_delete_csv(sender,instance,using,**kwargs):
     # delete the file
-    if(instance.file_path and os.path.exists(instance.file_path)):
-        # TODO
-        # to prevent folders without any items, perhaps should check if 
-        # folder empty after deletion, then 
-        # delete if necessary.
-        os.remove(instance.file_path)
-
+    if os.path.exists(instance.folder_path):
+        shutil.rmtree(instance.folder_path)
 class BaseTag(models.Model):
     # tag text
     text = models.CharField(max_length = 100,null=False)
-    pub_date = models.DateTimeField(default=timezone.now)
+    timestamp= models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
@@ -109,8 +113,8 @@ class BaseTag(models.Model):
 # FileTag model
 # The FileTag model holds the information about the tags of the CSV file. 
 # This involves the text of the tag.
-class TagFile(BaseTag):
-    file = models.ForeignKey(File,on_delete = models.CASCADE,related_name="tag_set",null=True,blank=True)
+class TagDataset(BaseTag):
+    dataset = models.ForeignKey(DataSet,on_delete = models.CASCADE,related_name="tag_set",null=True,blank=True)
 
     def __str__(self):
         return "Tag {}".format(self.text)

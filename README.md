@@ -3,14 +3,6 @@ README as described by [here](https://capstone.cse.sc.edu/milestone/source-contr
 # Delta
 Delta is a web file system designed for use by researchers and data scientists. It is essentially a file transfer system with a social media and market aspect. Researchers or data scientists can perform CRUD operations on data, and can also assess the validity of data by creating posts on data sets or ML models or by rating data sets or ML models. 
 
-Some useful links:
-- Delta URL: https://guarded-journey-12008.herokuapp.com/#/ 
-- See our [Architecture](https://github.com/SCCapstone/Delta/wiki/Architecture)
-- See the general [Design](https://github.com/SCCapstone/Delta/wiki/Architecture)
-- See a more in depth [Description](https://github.com/SCCapstone/Delta/wiki/Project-Description)
-- See some general [Requirements](https://github.com/SCCapstone/Delta/wiki/Requirements)
-
-
 # Style Guide:
 Please adhere to the guidelines for JavaScript and Python found [here](https://google.github.io/styleguide/)
 
@@ -53,34 +45,6 @@ In order to build this project, you will first have to install:
 - The latest version of Python: https://www.python.org/downloads/
 - You can run `sudo apt update` then `sudo apt install python3`
 - See [here](https://www.makeuseof.com/install-python-ubuntu/)
-
-If for some reason the environment fails to work, the following are the dependencies needed for Django:
-
-`pipenv install django djangorestframework django-rest-knox`
-
-or
-
-`py pipenv install django djangorestframework django-rest-knox`
-
-If `npm i` fails to work, the following are the dependencies for npm.
-
-`npm install -D @babel/core @babel/preset-env @babel/preset-react babel-loader babel-plugin babel-plugin-transform-class-properties`
-
-`npm install -D webpack webpack-cli`
-
-To install the frontend frameworks and redux devtool extension, simply type:
-
-`npm i react react-dom react-alert react-alert-template-basic react-router-dom react-transition-group redux react-redux redux-devtools-extension redux-thunk`
-
-`npm i axios` 
-
-`npm i react-dropzone`
-
-## Setup:
-There is no setup required as of now. In the future, we may include commands for setting up the database / other things.
-
-## Deployment
-This is where we will put deployment steps.
 
 # Testing
 Testing the Delta application includes more than a dozens unit and behavioral tests. To accomplish this, we
@@ -136,18 +100,5 @@ From there the terminal will show what tests are found, what pass, and what warn
 
 Note that when making a behavioral test with Jest the JS file must have a `.test.js` extension. 
 
-## Authors:
-Vince Kolb-Lugo: kolblugo@email.sc.edu
-- LinkedIn: https://www.linkedin.com/in/vincent-kolb-lugo-944222175/
-
-Blake Seekings: seekingj@email.sc.edu
-- LinkedIn: https://www.linkedin.com/in/blake-seekings-8051631b4/
-
-Naveen Chithan: nchithan@email.sc.edu
-- LinkedIn: LINK HERE
-
-Carter Marlowe: marlowc@email.sc.edu
-- LinkedIn: https://www.linkedin.com/in/cartermarlowe/
-
-Lexington Whalen: lawhalen@email.sc.edu
-- LinkedIn: https://www.linkedin.com/in/lxaw/
+### Support
+- Delta is an ambitious project. As such, there are many things that can be added. Please feel free to open an issue for something you think may be useful. This is intended to be a community project.

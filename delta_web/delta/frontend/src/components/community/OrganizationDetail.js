@@ -13,7 +13,7 @@
  * This is a detailed view of an organization registered under the 
  * Delta project. Here app users can see reviews of the organization 
  * posted by other users. Users can search for a file name or by tag.
- * Contains a PublicCsvFileTable component to display reviews and 
+ * Contains a DataSetTable component to display reviews and 
  * reviewer information.
  *************************************************/
 import axios from "axios";
@@ -21,7 +21,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import PublicCsvFileTable from "../data_transfer/PublicCsvFileTable";
+import DataSetTable from "../data_transfer/DataSetTable";
 
 const OrganizationDetail = (props) => {
     // in reality you would use a function to grab organization data 
@@ -87,7 +87,7 @@ const OrganizationDetail = (props) => {
                 <hr />
 
                 <div>
-                    <PublicCsvFileTable csvs={dataPosts} textMinLength={3} />
+                    <DataSetTable csvs={dataPosts} textMinLength={3} />
                 </div>
 
                 <span>

@@ -7,51 +7,17 @@ import {ADD_CSV_FILE, DELETE_CSV_FILE, GET_CSV_FILES,GET_CSV_FILE,
     CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC} from "./types";
 
 // POST FILE 
-/*
-The strat is that you first create the csv object in the database.
-This will let you know if the file name overlaps with any other files.
-Then you actually write the file to the system, only if no errors with the file 
-*/
-export const addCsvFile= (dictData) => (dispatch,getState) =>{
-    /*
-    Dict data has keys
-    file: file object
-    isPublic: bool
-    description: str
-    orgs: array of orgs
-    */
-    // pass in token
+export const addCsvFile = (dictData) => (dispatch,getState) =>{
+    console.log(dictData)
 
-    // first create the csv data object in Django, then make the file
-    // TO DO:
-    // file token config could probably do this
-    return axios.post('/api/csv/',dictData,fileTokenConfig(getState,dictData['file']))
+    return axios.post('/api/csv/',dictData,fileTokenConfig(getState))
     .then((res)=>{
-        // this means that the creation of the csv file model in django sucessful
-        // thus we move onto actually creating the file
-        axios.post('/api/upload/csv/',dictData['file'],fileTokenConfig(getState,dictData['file']))
-            .then(res=>{
-                dispatch(createMessage({addCsvFileSuccess:"File posted"}));
-                dispatch({
-                    type:ADD_CSV_FILE,
-                    payload: res.data
-                });
-                return res;
-            })
-            .catch(err=>{
-                if(err.response){
-                    dispatch(createMessage({addCsvFileError:err.response.data.message}))
-                }
-                else{
-                    dispatch(createMessage({addCsvFileError:"Error uploading file. Check that the file name is unique compared to your previously uploaded files."}))
-                }
-                return err;
-            })
+        dispatch(createMessage({addCsvFileSuccess:"File Posted"}))
+        dispatch({type:ADD_CSV_FILE,payload:res.data});
+        return res;
     })
     .catch((err)=>{
-        dispatch(createMessage({addCsvFileError:"Error uploading file. Check that the file name is unique compared to your previously uploaded files."}))
-
-        return err;
+        console.log(err)
     })
 }
 // GET FILES
@@ -135,19 +101,19 @@ export const getCsvFilesPublic = () => (dispatch,getState) =>{
 // to do: 
 // these should all be zips
 export const downloadCsvFile = (id) => (dispatch, getState) =>{
-    axios.get(`/api/public_csvs/${id}/download`,tokenConfig(getState))
+    axios.get(`/api/public_csvs/${id}/download`,tokenConfig(getState),{responseType:'blob'})
     .then(res=>{
         var fileContent = res.data;
         // temporary solution to get file name, naive
         var fileName = res.headers['content-disposition'].split('filename=')[1].split(';')[0];
-        var downloadLink = document.createElement('a');
-        var blob = new Blob(["\ufeff",String(fileContent)]);
-        var url = URL.createObjectURL(blob);
-        downloadLink.href=url;
-        downloadLink.download = fileName + ".csv";
-        document.body.appendChild(downloadLink);
-        downloadLink.click()
-        document.body.appendChild(downloadLink);
+        var blob = new Blob([fileContent],{type:"application/zip"});
+        // Create a link element and trigger the download
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     })
     .catch(err=>{
     })

@@ -4,10 +4,6 @@
 #
 # Authors:
 # Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
 #
 # admin.py
 #
@@ -16,16 +12,19 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import File, TagFile
+from .models import File, TagDataset,DataSet
+
+class DataSetAdmin(admin.ModelAdmin):
+    fields = ['name','description','is_public','is_public_orgs','download_count','timestamp','registered_organizations','folder_path']
 
 # create the admin class for File
 class FileAdmin(admin.ModelAdmin):
-    fields = ['file_path','file_name',"description","is_public",
-    "is_public_orgs","registered_organizations","author","original_file_name"]
+    fields = ['file_path','file_name',"original_file_name"]
 
 # create the admin class for TagFile
-class TagFileAdmin(admin.ModelAdmin):
-    fields = ['text','pub_date','file']
+class TagDatasetAdmin(admin.ModelAdmin):
+    fields = ['text','timestamp','dataset']
 
 admin.site.register(File,FileAdmin)
-admin.site.register(TagFile,TagFileAdmin)
+admin.site.register(TagDataset,TagDatasetAdmin)
+admin.site.register(DataSet,DataSetAdmin)

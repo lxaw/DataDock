@@ -23,7 +23,7 @@ import PropTypes from "prop-types";
 import axios from 'axios';
 import "./profile.css";
 import OrganizationCard from '../community/OrganizationCard';
-import PublicCsvFileTable from '../data_transfer/PublicCsvFileTable';
+import DataSetTable from '../data_transfer/DataSetTable';
 
 <script src="https://kit.fontawesome.com/f45b95bc62.js" crossorigin="anonymous"></script>
 
@@ -95,7 +95,7 @@ const ProfileGlance = (props) => {
                                 </div>
                                 <h1>Your Files</h1>
                                 <div>
-                                    <PublicCsvFileTable
+                                    <DataSetTable
                                         csvs = {csvFiles}
                                         textMinLength={3}
                                     />

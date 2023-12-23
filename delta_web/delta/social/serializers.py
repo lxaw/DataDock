@@ -57,7 +57,7 @@ class SerializerReview(serializers.ModelSerializer):
     # INPUT: Current review object instance
     # OUTPUT: String of the id of the user who RECEIVED the review
     def get_recipient_id(self,obj):
-        return obj.file.author.id
+        return obj.dataset.author.id
 
 # serializer for review notification class
 class SerializerNotificationReview(serializers.ModelSerializer):

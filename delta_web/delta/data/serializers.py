@@ -14,7 +14,7 @@
 # The serializers for the data app.
 #
 from rest_framework import serializers
-from .models import (File,TagFile)
+from .models import (DataSet,TagDataset)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -27,62 +27,33 @@ from social.serializers import SerializerReview
 from organizations.serializers import OrganizationSerializer
 
 # serializer for csv file
-class SerializerFile(serializers.ModelSerializer):
+class SerializerDataSet(serializers.ModelSerializer):
     author_username = serializers.SerializerMethodField()
-    reviews = serializers.SerializerMethodField()
-    # THIS MAY BE BETTER CALCULATED AS JUST AN ATTRIBUTE OF THE
-    # CSV FILE MODEL ITSELF
-    avg_rating = serializers.SerializerMethodField()
-    # formated date
-    formatted_date = serializers.SerializerMethodField()
-    # number of reviews
-    review_count = serializers.SerializerMethodField()
-    # tags
     tags = serializers.SerializerMethodField()
-    org_objs = serializers.SerializerMethodField()
+    formatted_date = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
 
     class Meta:
-        model = File
+        model = DataSet
         fields = "__all__"
-        validators = [
-            UniqueTogetherValidator(
-                queryset=File.objects.all(),
-                # dont allow change of file path by user
-                # server does that on its own
-                # NOTE: 
-                # CHANGING OF FILE NAMES EACH TIME COULD BE A VERY SLOW OPERATION!
-                fields = ['author','file_name']
-            )
-        ]
         read_only_fields = ['id','file_path']
+
     def get_author_username(self,obj):
         return obj.author.username
+
+    def get_tags(self,obj):
+        return SerializerTagDataset(obj.tag_set.all(),many=True).data
 
     def get_reviews(self,obj):
         return SerializerReview(obj.review_set.all().order_by('-pub_date'),many=True).data
     
-    def get_avg_rating(self,obj):
-        # note: probably better to store this int as a sum in the csv file
-        # rounds to 1 decimal
-        if obj.review_set.count() == 0:
-            return 0
-        return round(obj.review_set.aggregate(Avg('rating'))['rating__avg'],1)
-    
     def get_formatted_date(self,obj):
-        return obj.timestamp.strftime('%Y-%m-%d')
+        return obj.timestamp.strftime("%Y/%m/%d")
     
-    def get_review_count(self,obj):
-        return obj.review_set.count()
-    
-    def get_tags(self,obj):
-        return SerializerTagFile(obj.tag_set.all().order_by('-pub_date'),many=True).data
-    
-    def get_org_objs(self,obj):
-        return OrganizationSerializer(obj.registered_organizations.all(),many=True).data
 
 # serializer for tag csv file
-class SerializerTagFile(serializers.ModelSerializer):
+class SerializerTagDataset(serializers.ModelSerializer):
 
     class Meta:
-        model = TagFile
+        model = TagDataset
         fields = "__all__"

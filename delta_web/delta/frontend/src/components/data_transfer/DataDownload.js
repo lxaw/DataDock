@@ -5,10 +5,6 @@ Delta project
 
 Authors:
 Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
 
 File name:  DataDownload.js
 
@@ -24,18 +20,18 @@ Brief description:
 import React, {useState,useEffect} from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
-import PublicCsvFileTable from './PublicCsvFileTable';
+import DataSetTable from './DataSetTable';
 import axios from "axios";
 
 const DataDownload = (props) =>{
     // the csv files
-    const [csvFiles, setCsvFiles] = useState(undefined);
+    const [dataSets, setDataSets] = useState(undefined);
 
     // UTILITY: Grabs all public csv files
     const getCsvs = () =>{
         axios.get('/api/public_csvs/',{headers:{'Content-Type':'application/json','Authorization':`Token ${props.auth.token}`}})
         .then(res=>{
-        setCsvFiles(res.data);
+        setDataSets(res.data);
         })
     }
     
@@ -44,8 +40,8 @@ const DataDownload = (props) =>{
         getCsvs()
     },[])
 
-
-    if (csvFiles == undefined) return <div data-testid="data_download-1"></div>;
+    if (dataSets == undefined) return <div data-testid="data_download-1"></div>;
+    console.log(dataSets)
 
     return(
         <div className="container" data-testid="data_download-1">
@@ -59,8 +55,8 @@ const DataDownload = (props) =>{
                     You must click at least one file to be able to download. To download, click the cloud icon when having one or more files in the download queue.
                 </p>
             </div>
-            <PublicCsvFileTable 
-            csvs = {csvFiles}
+            <DataSetTable 
+            dataSets= {dataSets}
             textMinLength = {3}
             refreshCsvs = {getCsvs}
             />

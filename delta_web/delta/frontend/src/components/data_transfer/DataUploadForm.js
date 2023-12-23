@@ -146,48 +146,44 @@ const DataUploadForm = (props) =>{
   //          data upload form.
   const onSubmit = (e) =>{
     e.preventDefault(); // Prevent empty uploads
-      
-      // For every file that is accepted by the dropzone, do the following.
-      acceptedFiles.forEach(file=> {
+      // note: the backend will check if there was a folder.
+      // we just need to send the right path.
 
-        // note: the backend will check if there was a folder.
-        // we just need to send the right path.
-        const filePath = file.webkitRelativePath;
+      var isPublic= $("#flexCheckPublic").is(":checked");
+      var isPublicOrgs = $("#flexCheckPublicToOrg").is(":checked");
+      var description = $("#DataSetDescription").val();
+      var DataSetName = $("#DataSetName").val();
 
-        var isPublic= $("#flexCheckPublic").is(":checked");
-        var isPublicOrgs = $("#flexCheckPublicToOrg").is(":checked");
-        var description = $("#DataSetDescription").val();
-        var DataSetName = $("#DataSetName").val();
+      if(isPublicOrgs && arrOrgs.length == 0){
+        // show error
+        alert("For a file to be public under organizations, you must select an organization. Please either select an organization, or if there are none switch to a different visibility.");
+        return;
+      }
 
-        if(isPublicOrgs && arrOrgs.length == 0){
-          // show error
-          alert("For a file to be public under organizations, you must select an organization. Please either select an organization, or if there are none switch to a different visibility.");
-          return;
-        }
+      // Take all of the data from the upload form and create a dictionary
+      // files are uploaded one by one
+      const dictData= {
+        'is_public':isPublic,
+        'is_public_orgs':isPublicOrgs,
+        'description':description,
+        'name':DataSetName,
+        'registered_organizations':arrOrgs,
+        'tags':tags,
+        'file':acceptedFiles,
+        'author':props.auth.user.id,
+      }
 
-        // Take all of the data from the upload form and create a dictionary
-        const dictData= {
-          'is_public':isPublic,
-          'is_public_orgs':isPublicOrgs,
-          'description':description,
-          'path':filePath,
-          'file_name':DataSetName,
-          'registered_organizations':arrOrgs,
-          'tags':tags,
-          'file':file,
-          'author':props.auth.user.id,
-        }
-
-        // Use the dictionary to create a csvFile object and upload it. 
-        props.addCsvFile(dictData)
-          .then((res)=>{
-              // good response
-              if(res == undefined){
-                navigate('/data/download');
-              }
+      // Use the dictionary to create a csvFile object and upload it. 
+      props.addCsvFile(dictData)
+        .then((res)=>{
+            // good response
+            console.log('here we are!')
+            console.log(res)
+            if(res.status == 200){
+              navigate('/data/download');
             }
-          );
-      });
+          }
+        );
   }
 
   const updateTags = (tags) =>{
@@ -204,8 +200,8 @@ const DataUploadForm = (props) =>{
           <div className="container"> 
           <Container {...getRootProps(isDragActive, isDragReject)}>
               <input {...getInputProps()}/>
-              {!isDragActive && 'Click here or drop a file to upload.'}
-              {isDragActive && !isDragReject && "Drop File"}
+              {!isDragActive && 'Click here or drop a folder/file to upload.'}
+              {isDragActive && !isDragReject && "Drop Folder / File"}
               {isDragReject && "File type not accepted."}
           </Container>
           <p className="text-bg-danger">

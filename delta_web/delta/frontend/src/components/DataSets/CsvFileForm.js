@@ -3,10 +3,6 @@
  *
  * Authors:
  * Lexington Whalen (@lxaw)
- * Carter Marlowe (@Cmarlowe123)
- * Vince Kolb-Lugo (@vancevince)
- * Blake Seekings (@j-blake-s)
- * Naveen Chithan (@nchithan)
  *
  * CsvFileForm.js
  *

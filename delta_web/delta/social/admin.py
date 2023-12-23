@@ -24,7 +24,7 @@ NotificationWhatsHot
 
 # Register your models here.
 class ReviewAdmin(admin.ModelAdmin):
-    fields = ['author','text','title','pub_date','active','rating']
+    fields = ['author','text','title','pub_date','active','rating','dataset']
 
 class NotificationReviewAdmin(admin.ModelAdmin):
     fields = ['text','read','pub_date','sender','recipient','review','title']

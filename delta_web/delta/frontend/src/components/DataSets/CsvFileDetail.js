@@ -3,13 +3,7 @@
  *
  * Authors:
  * Lexington Whalen (@lxaw)
- * Carter Marlowe (@Cmarlowe123)
- * Vince Kolb-Lugo (@vancevince)
- * Blake Seekings (@j-blake-s)
- * Naveen Chithan (@nchithan)
- *
- * CsvFileDetail.js
- *
+
  * Gives a more detailed view of the data held inside of a csv file, and the reviews of a file.
  * Displays reviews under a file and allows users to create a review
  */
@@ -49,6 +43,7 @@ const CsvFileDetail = (props) => {
       })
       .then((res) => {
         setCsvFile(res.data);
+        // to update
         setArrReviews(res.data.reviews);
       });
   };
@@ -76,6 +71,7 @@ const CsvFileDetail = (props) => {
           </div>
         </div>
         <div className="col-8">
+          
           <div className="overflow-scroll" style={{ height: "20rem" }}>
             {arrReviews.map((data) => (
               <Review
