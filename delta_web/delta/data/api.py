@@ -11,7 +11,7 @@
 # This includes the logic for uploading, downloading, deleting csv files, and who can see them.
 
 # import necessary models
-from django.http import FileResponse
+from django.http import FileResponse,HttpResponse
 from .models import DataSet, TagDataset,File
 from rest_framework import status,renderers
 from rest_framework.decorators import action
@@ -71,21 +71,17 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
 
         zip_file_path = instance.get_zip_path()
 
-        # if does not exist, zip it
-        if not os.path.exists(zip_file_path):
-            shutil.make_archive(zip_file_path, 'zip',instance.folder_path)
-
-        # the shutil makes the file automatically include '.zip'
-        zip_file_path = zip_file_path +'.zip'
 
         # increase the download count
         # instance.download_count += 1
         # instance.save()
 
-        with open(zip_file_path, 'rb') as f:
-            response = FileResponse(f, content_type='application/zip')
-            response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
-            return response
+        f = open(zip_file_path,'rb')
+        size = os.path.getsize(zip_file_path)
+        response = HttpResponse(f, content_type='application/zip')
+        response['Content-Length'] = size
+        response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
+        return response
 
 # CSV viewset api
 # Has the permission classes for the csv file viewset
@@ -157,6 +153,9 @@ class ViewsetDataSet(viewsets.ModelViewSet):
                 t = TagDataset(text=v)
                 t.dataset = dataSet
                 t.save()
+
+        # zip the files
+        shutil.make_archive(dataSet.get_zip_path()[:-4], 'zip',dataSet.folder_path)
 
         # need an id for dataset prior to set
 
