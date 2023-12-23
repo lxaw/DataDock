@@ -58,8 +58,9 @@ tags
 id (id of file)
 */
 export const updateCsvFile = (dictData) => (dispatch,getState)=>{
-    axios.patch(`api/csv/${dictData['id']}/`,dictData,tokenConfig(getState))
+    axios.patch(`api/csv/${dictData['id']}/`,dictData,fileTokenConfig(getState))
         .then(res=>{
+            console.log(res)
             dispatch(createMessage({updateCsvFileSuccess:"File successfully updated."}))
             dispatch({
                 type:CSV_FILE_UPDATE_SUCCESS,
@@ -72,7 +73,7 @@ export const updateCsvFile = (dictData) => (dispatch,getState)=>{
 
 // DELETE FILE
 export const deleteCsvFile = (id) => (dispatch,getState) =>{
-    axios.delete(`api/csv/${id}/`,tokenConfig(getState))
+    axios.delete(`api/csv/${id}/`,fileTokenConfig(getState))
     .then(res=>{
         dispatch(createMessage({deleteCsvFile:"Csv File Deleted"}));
         dispatch({

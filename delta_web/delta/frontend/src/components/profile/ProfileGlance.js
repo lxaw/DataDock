@@ -60,7 +60,7 @@ const ProfileGlance = (props) => {
                         <div>
                             <br/>
                             <Link to={`/profile/${user.username}`}>
-                                <button class="btn btn-outline-primary">
+                                <button className="btn btn-outline-primary">
                                         See your Public Profile
                                 </button>
                             </Link>
@@ -91,7 +91,7 @@ const ProfileGlance = (props) => {
                                 <h1>Your Files</h1>
                                 <div>
                                     <DataSetTable
-                                        csvs = {csvFiles}
+                                        dataSets= {csvFiles}
                                         textMinLength={3}
                                     />
                                 </div>

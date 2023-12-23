@@ -106,7 +106,7 @@ const DataSetTable = (props) =>{
     // search 2: names
     if(strFileNameSearch.length >= textMinLength){
       filteredCsvs.forEach((csvFile)=>{
-        if(!csvFile.file_name.toLowerCase().includes(strFileNameSearch)){
+        if(!csvFile.name.toLowerCase().includes(strFileNameSearch)){
           filteredCsvs = filteredCsvs.filter((e)=>{return e != csvFile});
           return
         }
@@ -165,7 +165,7 @@ const DataSetTable = (props) =>{
               <div>
                 {arrFilesToDownload.map((item,index)=>(
                   <div key={index}>
-                    <h6>{item.file_name}</h6>
+                    <h6>{item.name}</h6>
                   </div>
                 ))}
               </div>

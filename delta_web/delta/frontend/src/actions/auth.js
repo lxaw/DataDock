@@ -34,6 +34,7 @@ export const getCookie = (name) => {
     return cookieValue;
 }
 
+
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
     // user loading
@@ -252,4 +253,16 @@ export const fileTokenConfig = (getState) => {
     }
     // return config with token
     return config;
+}
+
+export const getPublicUserData = (username) => async (dispatch,getState) =>{
+    try {
+        const res = await axios.post('/api/user/get_user/', { username: username }, fileTokenConfig(getState));
+        console.log('here');
+        console.log(res.data);
+        return res.data;
+      } catch (err) {
+        console.error(err);
+        throw err; // Propagate the error
+      }
 }

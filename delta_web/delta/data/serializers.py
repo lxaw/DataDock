@@ -33,6 +33,7 @@ class SerializerDataSet(serializers.ModelSerializer):
     formatted_date = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
     avg_rating = serializers.SerializerMethodField()
+    org_objs = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet
@@ -57,6 +58,9 @@ class SerializerDataSet(serializers.ModelSerializer):
     
     def get_formatted_date(self,obj):
         return obj.timestamp.strftime("%Y/%m/%d")
+
+    def get_org_objs(self,obj):
+        return OrganizationSerializer(obj.registered_organizations.all(),many=True).data
     
 
 # serializer for tag csv file
