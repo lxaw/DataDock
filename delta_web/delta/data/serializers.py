@@ -32,6 +32,7 @@ class SerializerDataSet(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
     formatted_date = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
+    avg_rating = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet
@@ -43,6 +44,13 @@ class SerializerDataSet(serializers.ModelSerializer):
 
     def get_tags(self,obj):
         return SerializerTagDataset(obj.tag_set.all(),many=True).data
+
+    def get_avg_rating(self,obj):
+        # note: probably better to store this int as a sum in the csv file
+        # rounds to 1 decimal
+        if obj.review_set.count() == 0:
+            return 0
+        return round(obj.review_set.aggregate(Avg('rating'))['rating__avg'],1)
 
     def get_reviews(self,obj):
         return SerializerReview(obj.review_set.all().order_by('-pub_date'),many=True).data
