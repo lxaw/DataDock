@@ -101,19 +101,20 @@ export const getCsvFilesPublic = () => (dispatch,getState) =>{
 // to do: 
 // these should all be zips
 export const downloadCsvFile = (id) => (dispatch, getState) =>{
-    axios.get(`/api/public_csvs/${id}/download`,tokenConfig(getState),{responseType:'blob'})
+    var config = tokenConfig(getState)
+    config['responseType'] = "arraybuffer"
+    axios.get(`/api/public_csvs/${id}/download`,config)
     .then(res=>{
+        console.log(res)
         var fileContent = res.data;
         // temporary solution to get file name, naive
         var fileName = res.headers['content-disposition'].split('filename=')[1].split(';')[0];
         var blob = new Blob([fileContent],{type:"application/zip"});
         // Create a link element and trigger the download
         const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
+        link.href = URL.createObjectURL(blob)
         link.download = fileName;
-        document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
     })
     .catch(err=>{
     })

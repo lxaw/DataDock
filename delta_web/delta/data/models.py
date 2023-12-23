@@ -64,7 +64,7 @@ class DataSet(models.Model):
         return self.name
     
     def get_zip_path(self):
-        return os.path.join(self.folder_path,self.name)
+        return os.path.join(self.folder_path,self.name+'.zip')
     
     def get_zip_file_name(self):
         return self.name + ".zip"
