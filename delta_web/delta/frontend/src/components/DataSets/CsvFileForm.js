@@ -24,7 +24,7 @@ import Select from "react-select";
 const CsvFileForm = (props) => {
   // csvFile properties
   const [csvFileState, setCsvFileState] = useState({
-    file_name: props.csvFile.file_name,
+    name: props.csvFile.name,
     id: props.csvFile.id,
     description: props.csvFile.description,
     is_public: props.csvFile.is_public,
@@ -35,8 +35,6 @@ const CsvFileForm = (props) => {
 
   // available orgs
   const [selectOptions, setSelectOptions] = useState([]);
-  // select values
-  const [selectedValues, setSelectedValues] = useState([]);
 
   var defaultSelectValues = [];
   props.csvFile.org_objs.map((org) => {
@@ -141,19 +139,19 @@ const CsvFileForm = (props) => {
             className="input-group-text bg-secondary text-white"
             id="basic-addon1"
           >
-            Filename
+            Dataset Name
           </span>
         </div>
 
         {/* Input Box */}
         <input
           className="form-control"
-          value={csvFileState.file_name}
-          placeholder={csvFileState.file_name}
-          name="file_name"
+          value={csvFileState.name}
+          placeholder={csvFileState.name}
+          name="name"
           type="text"
           onChange={onChange}
-          aria-label={csvFileState.file_name}
+          aria-label={csvFileState.name}
           aria-describedby="basic-addon1"
         ></input>
       </div>

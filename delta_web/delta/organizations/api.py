@@ -63,8 +63,8 @@ class ViewsetOrganizations(viewsets.ModelViewSet):
         if request.user in instance.following_users.all():
             user_in_org = True       
             
-        PublicCsvDataSets = instance.uploaded_files.filter(is_public=True)
-        PublicOrgCsvDataSets = instance.uploaded_files.filter(is_public_orgs=True)
+        PublicCsvDataSets = instance.uploaded_datasets.filter(is_public=True)
+        PublicOrgCsvDataSets = instance.uploaded_datasets.filter(is_public_orgs=True)
 
         if user_in_org:
             csvDataSets = list(chain(PublicOrgCsvDataSets, PublicCsvDataSets))

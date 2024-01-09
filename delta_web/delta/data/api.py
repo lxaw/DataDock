@@ -98,15 +98,12 @@ class ViewsetDataSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser,)
 
     def get_queryset(self):
-        return self.request.user.csv_files.all()
+        return self.request.user.datasets.all()
 
     def create(self,request):
-        print(self.request.data)
         author = self.request.user
         is_public = self.request.data.get("is_public")
         desc = self.request.data.get('description')
-        arr_int_registered_orgs = self.request.data.get('registered_organizations')
-        arr_tags = self.request.data.get('tags')
         is_public_orgs = self.request.data.get('is_public_orgs')
         name = self.request.data.get('name')
 
@@ -120,13 +117,15 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         else:
             is_public_orgs = False
 
+        # user file path
+        strUserFilePath = f'static/users/{request.user.username}/files'
         # folder is the dataset
-        strDataSetPath = f'static/users/{request.user.username}/files/{name}'
+        strDataSetPath = os.path.join(strUserFilePath,name)
 
         # step 1: create the dataset
         dataSet = DataSet(author=author,is_public=is_public,description=desc,
                           is_public_orgs=is_public_orgs,
-                          name=name,folder_path=strDataSetPath)
+                          name=name,original_name=name)
         dataSet.save()
 
         # Check if the directory already exists
@@ -134,10 +133,13 @@ class ViewsetDataSet(viewsets.ModelViewSet):
             # Create the directory and any necessary intermediate directories
             os.makedirs(strDataSetPath)
 
+
+        intNumFiles = 0
         # step 2: create the files / tags
         for k,v in request.data.items():
             # file
             if k.startswith('file'):
+                intNumFiles += 1
                 # file path
                 file_path = os.path.join(strDataSetPath,str(v))
 
@@ -153,9 +155,17 @@ class ViewsetDataSet(viewsets.ModelViewSet):
                 t = TagDataset(text=v)
                 t.dataset = dataSet
                 t.save()
+        # update number of files
+        dataSet.num_files = intNumFiles
+        dataSet.save()
 
         # zip the files
-        shutil.make_archive(dataSet.get_zip_path()[:-4], 'zip',dataSet.folder_path)
+        shutil.make_archive(dataSet.get_zip_path()[:-4], 'zip',strUserFilePath)
+
+        # now delete the files you just zipped
+        shutil.rmtree(strDataSetPath)
+
+
 
         # need an id for dataset prior to set
 
@@ -163,23 +173,26 @@ class ViewsetDataSet(viewsets.ModelViewSet):
     
     def partial_update(self, request, *args, **kwargs):
         super().partial_update(request,*args,**kwargs)
+        print(request.data)
         obj = DataSet.objects.get(id=kwargs['pk'])
-        if('registered_organizations' in  request.data):
-            for orgId in request.data['registered_organizations']:
-                # check if org exists
-                try:
-                    orgObj = Organization.objects.get(pk=orgId)
-                    obj.registered_organizations.add(orgObj)
-                    obj.save()
-                except Organization.DoesNotExist as e:
-                    print(e)
-                    pass
-        if('tags' in request.data):
-            # remove old tags
-            obj.tag_set.all().delete()
-            # create new tags
-            for strTag in request.data['tags']:
-                tag = TagDataset(file=obj,text=strTag)
+
+        # NOTE: likely a better way to do this
+        # remove old tags
+        obj.tag_set.all().delete()
+        for k,v in request.data.items(): 
+            if k.startswith('registered_organizations'):
+                for orgId in v:
+                    # check if org exists
+                    try:
+                        orgObj = Organization.objects.get(pk=orgId)
+                        obj.registered_organizations.add(orgObj)
+                        obj.save()
+                    except Organization.DoesNotExist as e:
+                        print(e)
+                        pass
+            elif k.startswith('tags'):
+                # create new tags
+                tag = TagDataset(dataset=obj,text=v)
                 tag.save()
     
         return Response(self.get_serializer(obj).data)

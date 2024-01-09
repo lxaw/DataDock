@@ -185,3 +185,5 @@ REST_FRAMEWORK = {
         # other parsers...
     ],
 }
+
+CSRF_COOKIE_NAME = "XSRF-TOKEN"

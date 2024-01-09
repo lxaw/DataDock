@@ -84,7 +84,7 @@ class SerializerNotificationReview(serializers.ModelSerializer):
     # INPUT: Current notification-of-review object instance
     # OUTPUT: String of the notification-of-reviewer's file id
     def get_file_id(self,obj):
-        return obj.review.file.id
+        return obj.review.dataset.id
 
 # serializer for news notification class
 class SerializerNotificationNews(serializers.ModelSerializer):

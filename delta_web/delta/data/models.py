@@ -27,7 +27,6 @@ from django.contrib.auth import get_user_model
 
 # for file manip
 import os
-import shutil
 
 # for add to org
 from organizations.models import Organization
@@ -56,15 +55,18 @@ class DataSet(models.Model):
     registered_organizations = models.ManyToManyField(Organization,blank=True,related_name="uploaded_datasets")
 
     name = models.CharField(max_length=128)
+    original_name = models.CharField(max_length=128)
 
-    # folder path
-    folder_path = models.CharField(max_length=255)
+    num_files = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
     
     def get_zip_path(self):
-        return os.path.join(self.folder_path,self.name+'.zip')
+        return f'static/users/{self.author}/files/{self.original_name}.zip'
+    
+    def get_folder_path(self):
+        return f'static/users/{self.author}/files/{self.original_name}/'
     
     def get_zip_file_name(self):
         return self.name + ".zip"
@@ -100,8 +102,8 @@ class File(models.Model):
 @receiver(post_delete,sender=DataSet)
 def on_delete_csv(sender,instance,using,**kwargs):
     # delete the file
-    if os.path.exists(instance.folder_path):
-        shutil.rmtree(instance.folder_path)
+    if os.path.exists(instance.get_zip_path()):
+        os.remove(instance.get_zip_path())
 class BaseTag(models.Model):
     # tag text
     text = models.CharField(max_length = 100,null=False)

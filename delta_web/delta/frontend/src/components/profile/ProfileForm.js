@@ -4,10 +4,6 @@
 *
 * Authors:
 * Lexington Whalen (@lxaw)
-* Carter Marlowe (@Cmarlowe132)
-* Vince Kolb-LugoVince (@vancevince) 
-* Blake Seekings (@j-blake-s)
-* Naveen Chithan (@nchithan)
 *
 * ProfileForm.js
 *
@@ -131,7 +127,7 @@ const ProfileForm = (props) => {
                 value={userInfo.bio}
                 onChange={onChange}
                 />
-                <div id="textareaBioHelp" class="form-text">
+                <div id="textareaBioHelp" className="form-text">
                     Here you can write a little bit about yourself, your work, or your interests.
                 </div>
             </div>
