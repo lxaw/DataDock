@@ -87,7 +87,7 @@ const OrganizationDetail = (props) => {
                 <hr />
 
                 <div>
-                    <DataSetTable csvs={dataPosts} textMinLength={3} />
+                    <DataSetTable dataSets={dataPosts} textMinLength={3} />
                 </div>
 
                 <span>
