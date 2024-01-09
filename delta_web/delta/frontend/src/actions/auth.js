@@ -4,6 +4,7 @@
 import axios from 'axios';
 
 import { createMessage, returnErrors } from "./messages";
+import Cookies from 'js-cookie';
 
 import {
     USER_LOADED,
@@ -19,20 +20,20 @@ import {
     USER_UPDATE_FAIL,
 } from './types';
 
-export const getCookie = (name) => {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+// export const getCookie = (name) => {
+//     var cookieValue = null;
+//     if (document.cookie && document.cookie !== '') {
+//         var cookies = document.cookie.split(';');
+//         for (var i = 0; i < cookies.length; i++) {
+//             var cookie = jQuery.trim(cookies[i]);
+//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                 break;
+//             }
+//         }
+//     }
+//     return cookieValue;
+// }
 
 
 // CHECK TOKEN & LOAD USER
@@ -196,6 +197,7 @@ export const updateUser = (data) => (dispatch, getState) => {
             // dispatch error
             // TO DO: 
             // MODIFY ERROR RETURN IN API
+            console.log(err)
             if(err.response){
                 dispatch(returnErrors(err.response.data, err.response.status));
                 // type of error
@@ -214,10 +216,13 @@ export const tokenConfig = (getState) => {
     // looking at auth reducer and getting that token 
     const token = getState().auth.token;
 
+    var csrftoken = Cookies.get('XSRF-TOKEN'); // Use the correct cookie name
+
     // headers
     const config = {
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRFToken':csrftoken,
         }
     }
 
@@ -236,7 +241,7 @@ export const fileTokenConfig = (getState) => {
     // looking at auth reducer and getting that token 
     const token = getState().auth.token;
 
-    var csrftoken = getCookie('csrftoken');
+    var csrftoken = Cookies.get('XSRF-TOKEN'); // Use the correct cookie name
 
     // headers
     const config = {

@@ -127,7 +127,7 @@ const ProfileForm = (props) => {
                 value={userInfo.bio}
                 onChange={onChange}
                 />
-                <div id="textareaBioHelp" class="form-text">
+                <div id="textareaBioHelp" className="form-text">
                     Here you can write a little bit about yourself, your work, or your interests.
                 </div>
             </div>
