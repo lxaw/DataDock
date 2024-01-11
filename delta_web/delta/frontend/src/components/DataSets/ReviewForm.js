@@ -115,18 +115,10 @@ const ReviewForm = (props) => {
               />
             ))}
           </div>
-          <div>
-            <p>
-              Rating:{" "}
-              {RATINGS[ratingIndex]
-                ? RATINGS[ratingIndex]
-                : "No rating present yet."}
-            </p>
-          </div>
         </div>
       </div>
       <div className="form-group">
-        <label htmlFor="title">Title</label>
+        <label htmlFor="title">Review Title</label>
         <input
           className="form-control"
           id="title"

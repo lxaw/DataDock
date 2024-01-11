@@ -46,20 +46,21 @@ const Review = (props) => {
 
   return (
     <div className="container border p-3 m-3" data-testid="review-1">
-      <div>
-        <div className="d-flex flex-row">
-          {arrStars.map((starSvg) => starSvg)}
+      <div className="d-flex justify-content-between">
+        <div>
+          <p>
+            <Link to={`/profile/${props.reviewData.author_username}`}>
+              {props.reviewData.author_username}
+            </Link>
+            -{props.reviewData.formatted_date}
+          </p>
+          <h4>{props.reviewData.title}</h4>
         </div>
-        <h4>{props.reviewData.title}</h4>
-      </div>
-      <div>
-        <h5>
-          Reviewed by{" "}
-          <Link to={`/profile/${props.reviewData.author_username}`}>
-            {props.reviewData.author_username}
-          </Link>{" "}
-          on {props.reviewData.formatted_date}
-        </h5>
+        <div>
+          <div className="d-flex flex-row">
+            {arrStars.map((starSvg) => starSvg)}
+          </div>
+        </div>
       </div>
       <hr />
       <div style={{inlineSize:"100%",overflowWrap:"break-word"}}>

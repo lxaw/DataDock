@@ -34,6 +34,7 @@ class SerializerDataSet(serializers.ModelSerializer):
     reviews = serializers.SerializerMethodField()
     avg_rating = serializers.SerializerMethodField()
     org_objs = serializers.SerializerMethodField()
+    num_reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet
@@ -55,6 +56,9 @@ class SerializerDataSet(serializers.ModelSerializer):
 
     def get_reviews(self,obj):
         return SerializerReview(obj.review_set.all().order_by('-pub_date'),many=True).data
+    
+    def get_num_reviews(self,obj):
+        return obj.review_set.count()
     
     def get_formatted_date(self,obj):
         return obj.timestamp.strftime("%Y/%m/%d")

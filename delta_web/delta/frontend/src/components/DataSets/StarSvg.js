@@ -18,8 +18,8 @@ const StarSvg = (props) => {
   return (
     <svg
       data-testid="star"
-      width="58"
-      height="58"
+      width="2rem"
+      height="2rem"
       viewBox="0 0 24 24"
       stroke="#393939"
       strokeWidth="1"

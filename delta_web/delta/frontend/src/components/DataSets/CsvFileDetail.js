@@ -57,33 +57,35 @@ const CsvFileDetail = (props) => {
 
   return (
     <div className="container" data-testid="csv_file_detail-1">
-      <CsvFile csvFileData={csvFile} />
-      <div className="">
-        <h3>Add a review?</h3>
-        <ReviewForm csvFileId={id} handleSubmit={retrieveData} />
+    <div className="row">
+      <div className="col-8">
+        <CsvFile data={csvFile} />
       </div>
-      <div className="row">
-        <div className="col-4">
+      <div className="col-4">
+        <div>
           <h1>Review Stats</h1>
           <div>
             <h5>{csvFile.avg_rating} out of 5</h5>
-            <h5>{csvFile.review_count} review(s)</h5>
+            <h5>{csvFile.num_reviews} total reviews</h5>
           </div>
         </div>
-        <div className="col-8">
-          
-          <div className="overflow-scroll" style={{ height: "20rem" }}>
-            {arrReviews.map((data) => (
-              <Review
-                reviewData={data}
-                refreshReviews={retrieveData}
-                key={data.id}
-              />
-            ))}
-          </div>
+        <div>
+          <h3>Add a review</h3>
+          <ReviewForm csvFileId={id} handleSubmit={retrieveData} />
         </div>
       </div>
     </div>
+    <div className="row">
+      <div className="col-12">
+        <div className="overflow-scroll" style={{ height: "20rem" }}>
+          {arrReviews.map((data) => (
+            <Review reviewData={data} refreshReviews={retrieveData} key={data.id} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
   );
 };
 
