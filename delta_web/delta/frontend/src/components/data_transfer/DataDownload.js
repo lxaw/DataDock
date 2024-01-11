@@ -41,13 +41,12 @@ const DataDownload = (props) =>{
     },[])
 
     if (dataSets == undefined) return <div data-testid="data_download-1"></div>;
-    console.log(dataSets)
 
     return(
         <div className="container" data-testid="data_download-1">
             <div>
                 <h1>
-                    Download Page  
+                    Download a Dataset
                 </h1>
                 <p>
                     <em>Click </em> a file to add it to your download queue. Files in the queue will have a light blue background. 

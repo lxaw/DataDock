@@ -15,7 +15,7 @@ how that searching is done and allows users to download files.
 */
 
 
-import React, {useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {downloadCsvFile} from '../../actions/file'; 
 import DataCard from './DataCard';
@@ -76,46 +76,49 @@ const DataSetTable = (props) =>{
     // if not enough length, just reset the search
     // go thru tags
 
+    // must immediately update the tag and text so we can use for search
+    setSearchText(strFileNameSearch);
+    console.log(arrStrTagSearch)
+    setSearchTags(arrStrTagSearch);
+
 
     var filteredCsvs = props.dataSets;
     // search 1: tags
     // only perform operation of search on tags if there are tags
-    if(arrStrTagSearch.length > 0){
-      filteredCsvs.forEach((csvFile)=>{
-        const arrStrFileTags= csvFile.tags.map((strObj)=>strObj.text);
-        var isSubset = false;
-        for(let strSearchTag of arrStrTagSearch){
-          for(let strFileTag of arrStrFileTags){
-            if(strFileTag.toLowerCase().includes(strSearchTag.toLowerCase())){
-              isSubset = true;
-            }
-          }
-        }
-        arrStrTagSearch.every((searchTag)=> 
-        {
-          arrStrFileTags.includes(searchTag)
-        }
+    // need to make it such that multiple tags means (ie search tag1 and tag2)
+    // tag1 & tag2
+    filteredCsvs.forEach((csvFile) => {
+      if (arrStrTagSearch.length > 0) {
+        // get all of the tags of the file
+        const arrStrFileTags = csvFile.tags.map((strObj) => strObj.text);
+
+        // we must check if the search tags are a subset of the file tags
+        // if yes, return the file
+        // else don't
+        // check if every tag in arrStrTagSearch has a partial string match in arrStrFileTags
+        const allTagsMatch = arrStrTagSearch.every((searchTag) =>
+          arrStrFileTags.some((fileTag) => fileTag.includes(searchTag))
         );
-        if(!isSubset){
-          // can safely remove file
-          filteredCsvs = filteredCsvs.filter((e)=>{return e != csvFile})
-          return;      
+
+        // if all tags have a partial match, keep the file; otherwise, take out
+        if (!allTagsMatch) {
+          filteredCsvs = filteredCsvs.filter((e) => e !== csvFile);
         }
-      })
-    }
-    // search 2: names
-    if(strFileNameSearch.length >= textMinLength){
-      filteredCsvs.forEach((csvFile)=>{
-        if(!csvFile.name.toLowerCase().includes(strFileNameSearch)){
-          filteredCsvs = filteredCsvs.filter((e)=>{return e != csvFile});
-          return
+
+      }
+
+      // search 2: names
+      if (strFileNameSearch.length >= textMinLength) {
+        if (!csvFile.name.toLowerCase().includes(strFileNameSearch)) {
+          filteredCsvs = filteredCsvs.filter((e) => e !== csvFile);
+          return;
         }
-      })
-    }
-    // set the table data
-    setSearchText(strFileNameSearch);
-    setSearchTags(arrStrTagSearch);
+      }
+    });
+
     setTableCsvs(filteredCsvs);
+
+
   }
 
   const onSubmit = e =>{
