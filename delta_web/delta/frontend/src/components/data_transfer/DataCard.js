@@ -57,40 +57,44 @@ const DataCard = (props) => {
     }
 
   return (
-    <div className="card" style={style} onMouseDown={checkDownload} data-testid="data_card-1">
+    <div className="card" style={style}  data-testid="data_card-1">
       <div className="card-body">
         <div className="d-flex justify-content-between">
-          <p>
-            Author: <Link to={`/profile/${props.data.author_username}`}>{props.data.author_username}</Link>
-          </p>
-          <p>
-            Published: {props.data.formatted_date}
-          </p>
+          <div>
+            <h6 className="card-title">
+              {props.data.name}
+            </h6>
+            <p className="m-0">Rating: {props.data.avg_rating}</p>
+            <p>Download count: {props.data.download_count}</p>
+          </div>
+          <div>
+            <p>
+              <Link to={`/profile/${props.data.author_username}`}>{props.data.author_username}</Link>@{props.data.formatted_date}
+            </p>
+          </div>
         </div>
-        <h6>Rating: {props.data.avg_rating}</h6>
-        <small>Download count: {props.data.download_count}</small>
-        <h6 className="card-title">
-          Name: {props.data.name}
-        </h6>
         <p className="card-text">
           {props.data.description}
         </p>
-        <div>
-          <h6>Tags:</h6>
-          {props.data.tags.map((tag, index) => (
-            <div className={tag_styles.tag_item} key={index}>
-              <span className={tag_styles.text}>
-                {tag.text}
-              </span>
-            </div>
-          ))}
-        </div>
       </div>
-      <div className="d-flex justify-content-end">
+      <div>
+        <h6>Tags:</h6>
+        {props.data.tags.map((tag, index) => (
+          <div className={tag_styles.tag_item} key={index}>
+            <span className={tag_styles.text}>
+              {tag.text}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div>
         <Link to={props.link} className="btn btn-sm btn-primary">
           {props.linkText}
         </Link>
       </div>
+      <p onMouseDown={checkDownload} className = "btn btn-sm btn-primary">
+          Add to queue
+      </p>
     </div>
   );
 }

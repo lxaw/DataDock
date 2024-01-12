@@ -181,43 +181,23 @@ const DataSetTable = (props) =>{
                   Click the Cloud to download your files.
                 </p>
               </div>
-              <div>
-                {arrFilesToDownload.map((item,index)=>(
-                  <div key={index}>
-                    <h6>{item.name}</h6>
-                  </div>
-                ))}
-              </div>
             </div>
             <div className="col-10">
-              <div style={{"height":"50rem","overflow":"auto"}} className="d-flex justify-content-center">
+              <div style={{"height":"40rem","overflow-y":"scroll"}}>
                 <div className = "row" >
                   {tableCsvs.map((item,index)=>
                     {
-
-                      if(arrFilesToDownload.indexOf(item) >= 0){
-                        return(
+                      let isDownload = arrFilesToDownload.indexOf(item) >= 0;
+                      let datacard = 
                             <DataCard 
                               data={item}
                               key = {item.id}
                               link={`/csvs/${item.id}`}
                               linkText={"See DataSet"}
                               parentOnCheckChange={onCheckChange}
-                              isDownload={true}
+                              isDownload={isDownload}
                             />
-                        )
-                      }else{
-                        return(
-                          <DataCard 
-                            data={item}
-                            key = {item.id}
-                            link={`/csvs/${item.id}`}
-                            linkText={"See DataSet"}
-                            parentOnCheckChange={onCheckChange}
-                            isDownload={false}
-                          />
-                        )
-                      }
+                      return datacard;
                     }
                       )
                   }
