@@ -73,8 +73,8 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
 
 
         # increase the download count
-        # instance.download_count += 1
-        # instance.save()
+        instance.download_count += 1
+        instance.save()
 
         f = open(zip_file_path,'rb')
         size = os.path.getsize(zip_file_path)

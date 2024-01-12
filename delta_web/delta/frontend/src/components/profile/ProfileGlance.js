@@ -16,7 +16,6 @@ import React, { Component, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import "./profile.css";
 import OrganizationCard from '../community/OrganizationCard';
 import DataSetTable from '../data_transfer/DataSetTable';
 
@@ -45,62 +44,69 @@ const ProfileGlance = (props) => {
         //fields. They can view their organizations and click on the link to go to their organizations page.
 
         //<div>
-        <div className='container bootstrap snippets bootdey' data-testid="profile_glance-1">
-            <div>
-                <div className="profile-info">
-                    <div className="panel">
-                        <div className="bio-graph-heading bg-primary">
-                            <p style={{color:"white"}}>
-                                Your bio:
-                            </p>
-                            <p className="fs-3" style={{color:"white"}}>
-                                {user.bio}
-                            </p>
-                        </div>
-                        <div>
-                            <br/>
-                            <Link to={`/profile/${user.username}`}>
-                                <button className="btn btn-outline-primary">
-                                        See your Public Profile
-                                </button>
-                            </Link>
-                        </div>
-                        <div className="panel-body bio-graph-info">
-                            <h2>Basic Information</h2>
-                            <div className="row">
-                                <div className="bio-row">
-                                    <p><span>First Name: </span> {user.first_name}</p>
-                                </div>
-                                <div className="bio-row">
-                                    <p><span>Last Name: </span> {user.last_name}</p>
-                                </div>
-                                <div className="bio-row">
-                                    <p><span>Username: </span> {user.username}</p>
-                                </div>
-                                <div className="bio-row">
-                                    <p><span>Email:</span> {user.email}</p>
-                                </div>
-                                <h1>Your Organizations</h1>
-                                <div className="row">
-                                    {(user.followed_organizations).map((item, index) => (
-                                        <OrganizationCard
-                                            orgObj={item}
-                                        />
-                                    ))}
-                                </div>
-                                <h1>Your Files</h1>
-                                <div>
-                                    <DataSetTable
-                                        dataSets= {csvFiles}
-                                        textMinLength={3}
-                                    />
-                                </div>
-                            </div>
-                        </div>
+    <div className="container mt-4">
+        <div className="card">
+            <div className="card-header bg-white">
+                <h2 className="card-title m-0">User Information</h2>
+            </div>
+            <div className="card-body">
+                <div className="row">
+                    <div className="col-md-6 mb-3">
+                        <p className="m-0"><strong>First Name:</strong> {user.first_name}</p>
+                    </div>
+                    <div className="col-md-6 mb-3">
+                        <p className="m-0"><strong>Last Name:</strong> {user.last_name}</p>
+                    </div>
+                    <div className="col-md-6 mb-3">
+                        <p className="m-0"><strong>Username:</strong> {user.username}</p>
+                    </div>
+                    <div className="col-md-6 mb-3">
+                        <p className="m-0"><strong>Email:</strong> {user.email}</p>
+                    </div>
+                    <div className="col-md-12 mb-3">
+                        <p className="m-0"><strong>Bio:</strong> {user.bio}</p>
                     </div>
                 </div>
             </div>
         </div>
+
+    <div className="panel panel-default mt-4">
+        <div className="panel-heading">
+            <h1 className="panel-title">Your Organizations</h1>
+        </div>
+        {user.followed_organizations.length > 0 ? (
+        <div className="panel-body">
+            <div className="row">
+                {user.followed_organizations.map((item, index) => (
+                    <div key={index} className="col-md-4 mb-3">
+                        <OrganizationCard orgObj={item} />
+                    </div>
+                ))}
+            </div>
+        </div>
+        ):(
+            <div>
+                Nothing yet. Contact your organization's administrator to recieve an organization key to join.
+            </div>
+        )
+        }
+    </div>
+
+    <div className="panel panel-default mt-4">
+        <div className="panel-heading">
+            <h1 className="panel-title">Your Files</h1>
+        </div>
+        {csvFiles.length > 0 ? (
+            <div className="panel-body">
+                <DataSetTable dataSets={csvFiles} textMinLength={3} />
+            </div>
+        ) : (
+            <div>Nothing yet.</div>
+        )}
+    </div>
+
+</div>
+
     )
 }
 
