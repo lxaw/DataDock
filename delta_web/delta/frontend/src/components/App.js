@@ -55,6 +55,9 @@ import ConversationDetail from './conversations/ConversationDetail';
 // Review
 import ReviewDetail from './DataSets/ReviewDetail';
 
+// Cart
+import Cart from './data_transfer/Cart';
+
 // Alert options
 const alertOptions = {
     timeout: 3000,
@@ -143,6 +146,11 @@ class App extends Component{
                                     <Route exact path ="/data/download" element={
                                         <PrivateRoute>
                                             <DataDownload></DataDownload>
+                                        </PrivateRoute>
+                                    }/>
+                                    <Route exact path ="/cart" element={
+                                        <PrivateRoute>
+                                            <Cart/>
                                         </PrivateRoute>
                                     }/>
                                     <Route exact path ="/data/upload" element={
