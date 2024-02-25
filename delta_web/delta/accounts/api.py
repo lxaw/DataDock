@@ -35,7 +35,7 @@ from email_validator import validate_email, EmailNotValidError
 from django.contrib.auth import get_user_model
 
 # Profiles
-from .models import Profile
+#from .models import Profile
 
 # Notifications
 from social.models import (NotificationNews,NotificationWhatsHot)
@@ -61,8 +61,8 @@ class RegisterAPI(generics.GenericAPIView):
         user = serializer.save()
         # users have a profile that is a 1-1 match, so need to create that as well.
         # the profile stores the bio of the user.
-        user.profile = Profile(user=user)
-        user.profile.save()
+        #user.profile = Profile(user=user)
+        #user.profile.save()
 
         # grab the organization key 
         organization_key = request.data.get("organization_key")
