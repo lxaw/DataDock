@@ -2,13 +2,6 @@
 #
 # Delta project.
 #
-# Authors:
-# Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
-#
 # File name:
 #
 # api.py
@@ -188,8 +181,6 @@ class UpdateAPI(generics.UpdateAPIView):
     # password: str representing the new password of the user
     # bio: str representing the new bio of the user
     def patch(self,request,*args,**kwargs):
-        print("\n\n**HERE**\n\n")
-
         strNewUserName = request.data.get("username",None)
         strNewEmail = request.data.get("email",None)
         strNewFirstName = request.data.get("first_name",None)
