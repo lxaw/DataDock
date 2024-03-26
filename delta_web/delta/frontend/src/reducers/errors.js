@@ -3,15 +3,6 @@
 
 Delta project
 
-Authors:
-Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
-File name:  errors.js
-
 Brief description: 
     This file defines how to handle the GET_ERRORS action. In such case,
 returns the error msg and status code as a dictionary.

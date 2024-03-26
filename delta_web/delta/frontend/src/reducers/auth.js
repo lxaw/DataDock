@@ -3,13 +3,6 @@
 
 Delta project
 
-Authors:
-Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
 File name:  auth.js
 
 Brief description: 
@@ -36,10 +29,10 @@ const initialState = {
     // token stored in local storage
     token: localStorage.getItem('token'),
     // this was originally null
-    isAuthenticated: localStorage.getItem('isAuthenticated') != undefined ? true : false,
+    isAuthenticated: false, //localStorage.getItem('isAuthenticated') != undefined ? true : false,
     isLoading: false,
     // this was originally null
-    user: localStorage.getItem('user')
+    user: null
 }
 
 export default function(state=initialState, action){
@@ -47,10 +40,6 @@ export default function(state=initialState, action){
         case USER_LOADING:
             return {...state, isLoading:true};
         case USER_LOADED:
-            // these were changed compared to original, 
-            // in order to help refresh maintain place
-            localStorage.setItem('isAuthenticated',true)
-            localStorage.setItem('user',action.payload)
             return {
                 ...state,
                 isAuthenticated: true,
@@ -68,6 +57,7 @@ export default function(state=initialState, action){
         case REGISTER_SUCCESS:
             // when login successfully gives user a token
             localStorage.setItem('token',action.payload.token);
+            localStorage.setItem('user',action.payload.user)
             return {
                 ...state,
                 ...action.payload,

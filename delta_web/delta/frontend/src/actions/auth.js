@@ -40,10 +40,22 @@ import {
 export const loadUser = () => (dispatch, getState) => {
     // user loading
     dispatch({ type: USER_LOADING });
+    const token = getState().auth.token;
+    const config = {
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }
+    // if token, add to headers config
+    if(token){
+        config.headers['Authorization'] = `Token ${token}`
+    }
 
     // create request to load the user
-    axios.get('/api/auth/user', tokenConfig(getState))
+    axios.get('/api/auth/user', config)
         .then(res => {
+            console.log('load user success')
+            console.log(res)
             dispatch({
                 type: USER_LOADED,
                 payload: res.data
@@ -51,6 +63,7 @@ export const loadUser = () => (dispatch, getState) => {
         })
         // if we are not authenticated, no token that matches, need to catch
         .catch(err => {
+            console.log("load users error: ",err)
             // dispatch the error
             dispatch(returnErrors(err.response.data, err.response.status));
             // dispatch the type of error
@@ -82,6 +95,8 @@ export const login = (username, password) => dispatch => {
         })
         // if we are not authenticated, no token that matches, need to catch
         .catch((err) => {
+            console.log("loging api error:")
+            console.log(err)
             // dispatch the error
             dispatch(returnErrors(err.response.data, err.response.status));
             // dispatch the type of error
@@ -216,13 +231,13 @@ export const tokenConfig = (getState) => {
     // looking at auth reducer and getting that token 
     const token = getState().auth.token;
 
-    var csrftoken = Cookies.get('XSRF-TOKEN'); // Use the correct cookie name
+    // var csrftoken = Cookies.get('XSRF-TOKEN'); // Use the correct cookie name
 
     // headers
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken':csrftoken,
+            // 'X-CSRFToken':csrftoken,
         }
     }
 
