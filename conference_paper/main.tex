@@ -55,233 +55,179 @@ data transfer, data storage, data reviewing, data sharing
 \section{Introduction}
 There is a noticeable dearth of quality open source research services with regards to data.
 Most data services are merely file sharing ones, that only allow file upload, download, and organization.
-While this does allow researchers to transmit their collected data among another, 
-it lacks many critical features that most researchers would like to have, such as 
+While this does allow researchers to transmit their collected data among another,
+it lacks many critical features that most researchers would like to have, such as
 quality control, commenting, tagging, organization under groups, annotation, and more.
 Furthermore, these services are oftentimes prohibitively expensive to smaller research labs, and their
-free versions have limitations on both number of users and amount of storage. 
+free versions have limitations on both number of users and amount of storage.
 The current state of research is to use services such as Microsoft's OneDrive \cite{onedrive}, Dropbox \cite{dropbox},
-or Google Drive \cite{googledrive}. Each of these services 
-[something about service limitations]
-\\\\
+or Google Drive \cite{googledrive}. Each of these services have limitations in terms of storage capacity, user management,
+and feature set that make them suboptimal for research data management \cite{kowalczyk2018data}.
+\\
 Furthermore, the modern times have seen unprecedented growth in the amount of data collected.
-[something about deep learning data, internet of things, personal data growth]
+The era of big data has brought about massive datasets, particularly in fields like genomics, astronomy, and social media analytics \cite{stephens2015big}.
+Machine learning and deep learning have further amplified the need for large, high-quality datasets for training models \cite{sun2017revisiting}.
+The Internet of Things (IoT) is another significant contributor to the data deluge, with billions of connected devices generating continuous streams of data \cite{khan2018iot}.
+Even at a personal level, the proliferation of smartphones and digital services has led to an explosion of user-generated data \cite{reinsel2018digitization}.
+\\
+This rapid growth in data volume and variety has outpaced the capabilities of traditional data management tools and practices.
+Researchers often struggle with the challenges of storing, organizing, sharing, and collaborating on large datasets \cite{wallis2013if}.
+The lack of specialized tools for research data management leads to ad-hoc solutions, data silos, and inefficiencies in the research process \cite{wilkinson2016fair}.
+\\
+To address these challenges, we present Delta, an open source data service designed specifically for the needs of researchers.
+Delta provides a platform for efficient data storage, sharing, and collaboration, with features tailored to the research workflow.
+By leveraging open source technologies and a modular architecture, Delta enables customization and extensibility to meet the diverse requirements of different research domains.
+The open source nature of Delta also promotes transparency, reproducibility, and community-driven development \cite{gezelter2015open}.
 
+\section{The Problem}
+In the era of data-driven research, scientists across various disciplines are grappling with an unprecedented influx of data. From high-throughput sequencing in genomics \cite{stephens2015big} to large-scale simulations in physics \cite{vogelsberger2014introducing}, researchers are generating and collecting massive datasets at an astounding rate. However, managing this data effectively poses significant challenges that can hinder research productivity and collaboration.
 
+One of the primary issues researchers face is the need for efficient data labeling and annotation. Raw data often requires contextualization and metadata to be meaningful and usable for analysis \cite{wilkinson2016fair}. Manually annotating large datasets is time-consuming and prone to inconsistencies, especially when multiple researchers are involved. The lack of standardized annotation frameworks and tools further compounds this problem, leading to a fragmented and inefficient data labeling process.
 
-\section{Ease of Use}
+Quality control is another critical concern in research data management. Ensuring the accuracy, completeness, and reliability of data is essential for drawing valid conclusions and reproducing results \cite{eisner2018data}. However, reviewing and validating large datasets manually is a daunting task, particularly in collaborative projects where data is collected by multiple individuals or teams. The absence of systematic quality control mechanisms can lead to errors, inconsistencies, and a lack of trust in the data.
 
-\subsection{Maintaining the Integrity of the Specifications}
+Effective organization and management of research data is also a significant challenge, both at the individual researcher level and within research groups. Principal Investigators (PIs) need to keep track of various datasets, their versions, and associated metadata, often relying on ad-hoc solutions like spreadsheets or file naming conventions \cite{kowalczyk2018data}. At the group level, data silos can emerge when different teams use incompatible data formats or storage systems, hindering collaboration and data integration.
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+Sharing data between research groups is another pain point in the current research landscape. Collaborative projects often involve multiple institutions and disciplines, each with their own data management practices and infrastructure \cite{tenopir2011data}. Incompatible data formats, lack of standardization, and concerns about data ownership and attribution can impede smooth data sharing and reuse. Moreover, transferring large datasets across institutional boundaries can be time-consuming and subject to security and privacy constraints.
 
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
-separate text file. Complete all content and organizational editing before 
-formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
-proofreading, spelling and grammar.
+Addressing these challenges requires a comprehensive and integrated approach to research data management. Researchers need tools and platforms that streamline data annotation, enable robust quality control, facilitate organization and discovery, and promote seamless data sharing and collaboration. Existing solutions, such as generic cloud storage services or ad-hoc scripts, often fall short in terms of functionality, scalability, and ease of use. There is a clear need for a purpose-built, open-source data management platform that caters to the unique requirements of scientific research.
 
-Keep your text and graphic files separate until after the text has been 
-formatted and styled. Do not number text heads---{\LaTeX} will do that 
-for you.
+\section{Current Alternatives}
+Several cloud storage providers offer APIs and developer tools that enable programmatic access to their services. For example:
 
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text, 
-even after they have been defined in the abstract. Abbreviations such as 
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
-abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
 \begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+\item Google Drive provides a REST API \cite{googledrive} for uploading, downloading, searching, and manipulating files stored on Google Drive. Client libraries are available in multiple programming languages.
+
+\item Dropbox offers a similar REST API \cite{dropbox} with SDKs for major platforms to integrate Dropbox capabilities into applications. Key features include file upload/download, sharing, search, and user management.
+
+\item Microsoft OneDrive also has a comprehensive REST API \cite{onedrive} for accessing OneDrive files, folders, and other data. Client libraries support integration with web, mobile, and desktop apps.
+
+\item Box provides a content management platform with a REST API \cite{box} for building custom applications. It offers features like file preview, version control, and granular access permissions, catering to enterprise needs.
+
+\item Amazon S3 (Simple Storage Service) is a scalable object storage service with an API \cite{amazonweb} for storing and retrieving data. While not primarily designed for end-user file management, it's often used as a foundation for building cloud storage applications.
 \end{itemize}
 
-\subsection{Equations}
-Number equations consecutively. To make your 
-equations more compact, you may use the solidus (~/~), the exp function, or 
-appropriate exponents. Italicize Roman symbols for quantities and variables, 
-but not Greek symbols. Use a long dash rather than a hyphen for a minus 
-sign. Punctuate equations with commas or periods when they are part of a 
-sentence, as in:
-\begin{equation}
-a+b=\gamma\label{eq}
-\end{equation}
+While these APIs enable building custom applications with cloud storage, the underlying limitations of the services still apply - costs scale with storage and user needs, and specialized features for research data management are lacking. Leveraging the APIs still requires significant development effort to create a tailored solution. Furthermore, some services like Amazon S3 are more suited to developers and lack user-friendly interfaces out-of-the-box.
+Furthermore, these services are not open sourced, so any modifications (i.e. addition of service, design change, bug fix) cannot be done directly by the users.
+We make such issues more clear in $\textit{Issues with Current Approaches}$.
 
-Be sure that the 
-symbols in your equation have been defined before or immediately following 
-the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
-the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+\section{Issues with Current Approaches}
+While current cloud storage services offer APIs and enable building custom applications, they have several notable shortcomings, especially in the context of research data management:
 
-\subsection{\LaTeX-Specific Advice}
+\begin{enumerate}
+\item \textbf{Cost:} Services like Google Drive, Dropbox, and OneDrive can become expensive as data storage needs grow, often requiring paid subscriptions for additional storage or users. This diverts funds from core research activities.
 
-Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
-of ``hard'' references (e.g., \verb|(1)|). That will make it possible
-to combine sections, add equations, or change the order of figures or
-citations without having to go through the file line by line.
+\item \textbf{Lack of Specialization:} General-purpose storage services lack features tailored for research, such as data quality control, peer review workflows, metadata management, and data provenance tracking.
 
-Please don't use the \verb|{eqnarray}| equation environment. Use
-\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
-environment leaves unsightly spaces around relation symbols.
+\item \textbf{Limited Customization:} Although APIs enable custom app development, the underlying platforms cannot be easily modified or extended. Researchers cannot add new features or modify existing behavior to suit their specific needs.
 
-Please note that the \verb|{subequations}| environment in {\LaTeX}
-will increment the main equation counter even when there are no
-equation numbers displayed. If you forget that, you might write an
-article in which the equation numbers skip from (17) to (20), causing
-the copy editors to wonder if you've discovered a new method of
-counting.
+\item \textbf{Vendor Lock-In:} By relying on proprietary services, researchers risk being locked into a particular vendor's ecosystem. Migration to alternative platforms can be difficult and costly.
 
-{\BibTeX} does not work by magic. It doesn't get the bibliographic
-data from thin air but from .bib files. If you use {\BibTeX} to produce a
-bibliography you must send the .bib files. 
+\item \textbf{Data Ownership and Control:} With commercial services, there may be ambiguity around data ownership and control. Researchers may have concerns about intellectual property rights and the ability to access their data if a service is discontinued.
 
-{\LaTeX} can't read your mind. If you assign the same label to a
-subsubsection and a table, you might find that Table I has been cross
-referenced as Table IV-B3. 
+\item \textbf{Data Privacy and Security:} Storing sensitive research data on third-party servers raises privacy and security concerns. Researchers may be hesitant to entrust confidential data to external providers.
 
-{\LaTeX} does not have precognitive abilities. If you put a
-\verb|\label| command before the command that updates the counter it's
-supposed to be using, the label will pick up the last counter to be
-cross referenced instead. In particular, a \verb|\label| command
-should not go before the caption of a figure or a table.
+\item \textbf{Collaboration Barriers:} While cloud services facilitate file sharing, they often lack advanced collaboration features like real-time co-authoring, version control, and granular access controls that are vital for research teams.
 
-Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
-will not stop equation numbers inside \verb|{array}| (there won't be
-any anyway) and it might stop a wanted equation number in the
-surrounding equation.
+\item \textbf{Integration Challenges:} Integrating cloud storage with existing research tools and workflows can be challenging. Researchers may need to develop custom glue code or rely on limited third-party integrations.
 
-\subsection{Some Common Mistakes}\label{SCM}
-\begin{itemize}
-\item The word ``data'' is plural, not singular.
-\item The subscript for the permeability of vacuum $\mu_{0}$, and other common scientific constants, is zero with subscript formatting, not a lowercase letter ``o''.
-\item In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an ``inset'', not an ``insert''. The word alternatively is preferred to the word ``alternately'' (unless you really mean something that alternates).
-\item Do not use the word ``essentially'' to mean ``approximately'' or ``effectively''.
-\item In your paper title, if the words ``that uses'' can accurately replace the word ``using'', capitalize the ``u''; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones ``affect'' and ``effect'', ``complement'' and ``compliment'', ``discreet'' and ``discrete'', ``principal'' and ``principle''.
-\item Do not confuse ``imply'' and ``infer''.
-\item The prefix ``non'' is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the ``et'' in the Latin abbreviation ``et al.''.
-\item The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
-\end{itemize}
-An excellent style manual for science writers is \cite{b7}.
+\item \textbf{Dependency on Internet Connectivity:} Cloud services require reliable internet access, which can be a constraint in field research settings or areas with limited connectivity.
 
-\subsection{Authors and Affiliations}
-\textbf{The class file is designed for, but not limited to, six authors.} A 
-minimum of one author is required for all conference articles. Author names 
-should be listed starting from left to right and then moving down to the 
-next line. This is the author sequence that will be used in future citations 
-and by indexing services. Names should not be listed in columns nor group by 
-affiliation. Please keep your affiliations as succinct as possible (for 
-example, do not differentiate among departments of the same organization).
+\item \textbf{Long-Term Preservation:} Commercial services may not prioritize long-term data preservation, which is crucial for research reproducibility and data archiving. There may be uncertainties about data durability and accessibility over extended periods.
+\end{enumerate}
 
-\subsection{Identify the Headings}
-Headings, or heads, are organizational devices that guide the reader through 
-your paper. There are two types: component heads and text heads.
+An open source solution like Delta addresses these issues by providing a specialized, customizable, and cost-effective platform for research data management. By hosting Delta on their own infrastructure, research teams have full control over their data, can tailor the platform to their specific needs, and avoid vendor lock-in. The open source nature ensures transparency, enables community-driven development, and allows for integration with a wide range of tools. Moreover, an open source solution can be deployed in local or offline environments, mitigating concerns about internet connectivity and data privacy. Delta empowers researchers to manage their data on their own terms, prioritizing the unique requirements of scientific research.
 
-Component heads identify the different components of your paper and are not 
-topically subordinate to each other. Examples include Acknowledgments and 
-References and, for these, the correct style to use is ``Heading 5''. Use 
-``figure caption'' for your Figure captions, and ``table head'' for your 
-table title. Run-in heads, such as ``Abstract'', will require you to apply a 
-style (in this case, italic) in addition to the style provided by the drop 
-down menu to differentiate the head from the text.
+\section{Delta Architecture}
+Delta is built using a modern web stack consisting of Django \cite{django}, Django REST Framework \cite{djangorest}, React \cite{react}, and Redux \cite{redux}. This architecture was chosen to enable fast, scalable development, cross-platform compatibility, and a smooth user experience.
 
-Text heads organize the topics on a relational, hierarchical basis. For 
-example, the paper title is the primary text head because all subsequent 
-material relates and elaborates on this one topic. If there are two or more 
-sub-topics, the next level head (uppercase Roman numerals) should be used 
-and, conversely, if there are not at least two sub-topics, then no subheads 
-should be introduced.
+\subsection{Backend}
 
-\subsection{Figures and Tables}
-\paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
-bottom of columns. Avoid placing them in the middle of columns. Large 
-figures and tables may span across both columns. Figure captions should be 
-below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text. Use the abbreviation 
-``Fig.~\ref{fig}'', even at the beginning of a sentence.
+On the backend, Delta utilizes the Django web framework. Django is a high-level Python framework that encourages rapid development and clean, pragmatic design \cite{django}. It is known for its robustness, scalability, and extensive community support, making it an ideal choice for building the backend of Delta.
 
-\begin{table}[htbp]
-\caption{Table Type Styles}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
-\cline{2-4} 
-\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
-\hline
-copy& More table copy$^{\mathrm{a}}$& &  \\
-\hline
-\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
-\end{tabular}
-\label{tab1}
-\end{center}
-\end{table}
+To facilitate communication between the frontend and backend, Delta employs the Django REST Framework (DRF). DRF is a powerful and flexible toolkit for building Web APIs \cite{djangorest}. A REST (Representational State Transfer) API is an architectural style for designing networked applications. It defines a set of constraints and properties based on HTTP, such as statelessness, client-server separation, and a uniform interface. RESTful APIs use HTTP methods (GET, POST, PUT, DELETE) to perform CRUD (Create, Read, Update, Delete) operations on resources, which are identified by URLs.
 
-\begin{figure}[htbp]
-% \centerline{\includegraphics{fig1.png}}
-\caption{Example of a figure caption.}
-\label{fig}
-\end{figure}
+DRF allows for easy creation of API endpoints that can be accessed from various platforms and devices. It provides a set of tools and abstractions for building RESTful APIs quickly and efficiently. DRF's serialization system enables seamless conversion of Django models to various content types, such as JSON or XML, making it ideal for building APIs that can be consumed by different clients.
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-rather than symbols or abbreviations when writing Figure axis labels to 
-avoid confusing the reader. As an example, write the quantity 
-``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-units in the label, present them within parentheses. Do not label axes only 
-with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-quantities and units. For example, write ``Temperature (K)'', not 
-``Temperature/K''.
+One of the key benefits of using a RESTful API is that it provides a clear and consistent interface for interacting with the backend. It allows for a separation of concerns between the client and the server, enabling independent development and scaling of the frontend and backend. RESTful APIs also promote statelessness, meaning that each request contains all the necessary information to be processed, making the application more scalable and easier to cache.
 
-\section*{Acknowledgment}
+For authentication, Delta uses Knox tokens, which provide enhanced security compared to the default TokenAuthentication in DRF. Knox tokens are hashed using SHA-512 and encrypted in the database, making them more secure in case of a database compromise. Additionally, Knox tokens have a configurable expiry time, adding an extra layer of security. Token-based authentication is stateless, meaning that the server does not need to keep a record of which users are logged in. This makes the authentication process more scalable and reduces the load on the server.
 
-The preferred spelling of the word ``acknowledgment'' in America is without 
-an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
-G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
-acknowledgments in the unnumbered footnote on the first page.
+Delta utilizes a SQLite database by default, but this can be easily modified to use other popular databases such as MongoDB \cite{mongodb}, PostgreSQL \cite{postgresql}, or MySQL \cite{mysql}. Django's ORM (Object-Relational Mapping) allows for easy interaction with the database through the use of models. A model is a Python class that subclasses django.db.models.Model and represents a single database table. Each attribute of the model represents a database field. This abstraction provides a convenient and intuitive way to define the structure and behavior of the data being stored, while Django handles the underlying database operations.
 
-\section*{References}
+\subsection{Frontend}
+For the frontend, Delta uses React, a popular JavaScript library for building user interfaces \cite{react}. React's component-based architecture allows for the creation of reusable UI components, which can be easily composed to build complex user interfaces. This modular approach makes the codebase more maintainable and easier to understand. React's virtual DOM (Document Object Model) implementation is another key feature that contributes to its efficiency. Instead of directly manipulating the browser's DOM, React maintains a lightweight copy of the DOM in memory called the virtual DOM. When data changes, React updates the virtual DOM first, calculates the differences (diff) between the virtual and real DOM, and then efficiently updates the browser's DOM with minimal changes. This approach significantly improves performance, especially in large-scale applications with frequent data updates.
 
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
+React's declarative syntax, JSX (JavaScript XML), allows developers to write HTML-like code within JavaScript. This makes the code more readable and intuitive, as the structure of the UI closely resembles the final rendered output. React's one-way data flow, also known as unidirectional data flow, ensures that data flows in a single direction from parent components to child components. This makes the application's state more predictable and easier to debug.
 
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
+To manage the application state, Delta incorporates Redux, a predictable state container for JavaScript apps \cite{redux}. Redux follows the principles of a single source of truth, state immutability, and pure functions for state modifications. It maintains a single, immutable state tree (store) that represents the entire application state. Components can access the required parts of the state by subscribing to the store. To modify the state, components dispatch actions, which are plain JavaScript objects describing the desired changes. Reducers, pure functions that take the current state and an action as input and return a new state, handle these actions and update the state accordingly. This centralized state management makes it easier to reason about the application's behavior, enables features like undo/redo, and facilitates state persistence.
 
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
+The combination of React and Redux allows for a highly responsive and interactive user interface. When a user interacts with the application, such as creating a new post or rating a dataset, React components dispatch the corresponding actions. Redux processes these actions, updates the state, and notifies the subscribed components. React then efficiently re-renders the affected components, updating the UI in real-time without requiring a full page refresh. This provides a smooth and engaging user experience, similar to that of modern social media platforms.
 
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
+To communicate with the backend API, Delta utilizes the Axios library \cite{axios}. Axios is a popular, promise-based HTTP client for JavaScript that simplifies making API requests. It provides an easy-to-use API for sending GET, POST, PUT, and DELETE requests to the server and handles the response data efficiently. Axios also supports request and response interceptors, which allow for easy modification or examination of requests and responses before they are sent or received. This is particularly useful for adding authentication headers, handling errors, or transforming data.
+
+When a user interacts with the application, React components dispatch actions that trigger API requests using Axios. Axios sends the requests to the appropriate backend endpoints, along with any necessary data or parameters. The backend processes these requests, interacts with the database, and returns the response data in JSON format. Axios then resolves the promise, and the received data is dispatched to the Redux store. The store updates the state, and the subscribed React components re-render with the new data, updating the UI accordingly. This seamless integration between React, Redux, and Axios enables a smooth and efficient data flow between the frontend and backend, resulting in a responsive and dynamic user experience.
+
+\subsection{Integration}
+The Django backend and React frontend are integrated through REST API calls, enabling seamless communication and data exchange between the two components. When a user interacts with the frontend, such as submitting a form or clicking a button, React components dispatch actions that trigger API requests to the Django backend. These actions are typically handled by Redux middleware, such as Redux Thunk \cite{reduxthunk} or Redux Saga \cite{reduxsaga}, which allows for asynchronous operations and side effects.
+
+The API requests are sent using the Axios library, which is configured with the appropriate backend API endpoints. Axios sends HTTP requests (GET, POST, PUT, DELETE) to the corresponding Django views, along with any necessary data or parameters. The Django views, defined in the views.py files, handle these requests and perform the required processing. They interact with the database using Django's ORM (Object-Relational Mapping) and execute any necessary business logic.
+
+After processing the request, the Django views return the appropriate JSON responses using Django REST Framework's serializers. Serializers convert Django model instances or querysets into JSON format, which can be easily consumed by the frontend. The JSON responses typically include the requested data, such as a list of objects, a single object, or a success/error status.
+
+Axios receives the JSON response from the backend and resolves the promise. The received data is then dispatched to the Redux store using the appropriate action creators. The Redux reducers handle these actions and update the application state accordingly. React components that are subscribed to the relevant parts of the state are automatically re-rendered with the new data, updating the UI in real-time.
+
+This architecture allows for a clear separation of concerns between the frontend and backend. The backend focuses on data processing, business logic, and database management, while the frontend handles user interactions and UI rendering. This decoupling makes the application more maintainable and allows for independent development and scaling of the frontend and backend.
+
+The use of REST APIs provides a standardized and platform-agnostic interface for communication between the frontend and backend. This allows for flexibility in terms of the technologies used on either end. For example, the frontend could be implemented using a different framework or library, such as Angular \cite{angular} or Vue.js \cite{vue}, while still being able to communicate with the Django backend through the same API endpoints. Similarly, the backend could be swapped with a different framework or language, such as Flask \cite{flask} or Node.js \cite{nodejs}, as long as it adheres to the same API contract.
+
+By leveraging the power of Django, Django REST Framework, React, Redux, and Axios, Delta provides a robust, scalable, and user-friendly platform for researchers and data scientists to manage, share, and collaborate on their data. The integration of these technologies enables a seamless and efficient data flow between the frontend and backend, resulting in a responsive and interactive user experience. The modular architecture and clear separation of concerns facilitate maintainability, extensibility, and independent scaling of the application components.
+\section{Current Product}
+[write]
+\section{Future Goals}
+[write]
 
 \begin{thebibliography}{00}
 \bibitem{googledrive} Google, “Google Drive: Free Cloud Storage for Personal Use,” Google.com, 2019. https://www.google.com/drive/
 \bibitem{dropbox} Dropbox, “Dropbox,” Dropbox, 2018. https://www.dropbox.com/
 \bibitem{onedrive} “Personal Cloud Storage – Microsoft OneDrive,” Microsoft.com, 2024. https://www.microsoft.com/en-us/microsoft-365/onedrive/
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
+\bibitem{box} Box, "Box Developer Documentation," Box, 2023. https://developer.box.com/
+\bibitem{amazonweb} Amazon Web Services, "Amazon S3 API Reference," Amazon.com, 2023. https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
+\bibitem{kowalczyk2018data} D. R. Kowalczyk and S. Y. Shankar, "Data sharing in the sciences," \textit{Annual Review of Information Science and Technology}, vol. 45, no. 1, pp. 247-294, 2011, doi: 10.1002/aris.2011.1440450113.
+\bibitem{stephens2015big} Z. D. Stephens et al., "Big Data: Astronomical or Genomical?" \textit{PLOS Biology}, vol. 13, no. 7, p. e1002195, Jul. 2015, doi: 10.1371/journal.pbio.1002195.
+\bibitem{sun2017revisiting} C. Sun, A. Shrivastava, S. Singh, and A. Gupta, "Revisiting Unreasonable Effectiveness of Data in Deep Learning Era," in \textit{2017 IEEE International Conference on Computer Vision (ICCV)}, Oct. 2017, pp. 843-852, doi: 10.1109/ICCV.2017.97.
+\bibitem{khan2018iot} M. A. Khan, K. Salah, "IoT security: Review, blockchain solutions, and open challenges," \textit{Future Generation Computer Systems}, vol. 82, pp. 395-411, 2018, doi: 10.1016/j.future.2017.11.022.
+\bibitem{reinsel2018digitization} D. Reinsel, J. Gantz, and J. Rydning, "The Digitization of the World - From Edge to Core," \textit{IDC White Paper}, Nov. 2018. [Online]. Available: https://www.seagate.com/files/www-content/our-story/trends/files/idc-seagate-dataage-whitepaper.pdf
+\bibitem{wallis2013if} J. C. Wallis, E. Rolando, and C. L. Borgman, "If We Share Data, Will Anyone Use Them? Data Sharing and Reuse in the Long Tail of Science and Technology," \textit{PLOS ONE}, vol. 8, no. 7, p. e67332, Jul. 2013, doi: 10.1371/journal.pone.0067332.
+\bibitem{wilkinson2016fair} M. D. Wilkinson et al., "The FAIR Guiding Principles for scientific data management and stewardship," \textit{Scientific Data}, vol. 3, no. 1, Art. no. 1, Mar. 2016, doi: 10.1038/sdata.2016.18.
+\bibitem{gezelter2015open} J. D. Gezelter, "Open Source and Open Data Should Be Standard Practices," \textit{The Journal of Physical Chemistry Letters}, vol. 6, no. 7, pp. 1168-1169, Apr. 2015, doi: 10.1021/acs.jpclett.5b00285.
+\bibitem{stephens2015big} Z. D. Stephens et al., "Big Data: Astronomical or Genomical?" \textit{PLOS Biology}, vol. 13, no. 7, p. e1002195, Jul. 2015, doi: 10.1371/journal.pbio.1002195.
+\bibitem{vogelsberger2014introducing} M. Vogelsberger et al., "Introducing the Illustris Project: Simulating the coevolution of dark and visible matter in the Universe," \textit{Monthly Notices of the Royal Astronomical Society}, vol. 444, no. 2, pp. 1518-1547, Oct. 2014, doi: 10.1093/mnras/stu1536.
+\bibitem{eisner2018data} D. A. Eisner, "Reproducibility of science: Fraud, impact factors and carelessness," \textit{Journal of Molecular and Cellular Cardiology}, vol. 114, pp. 364-368, Jan. 2018, doi: 10.1016/j.yjmcc.2017.10.009.
+\bibitem{kowalczyk2018data} D. R. Kowalczyk and S. Y. Shankar, "Data sharing in the sciences," \textit{Annual Review of Information Science and Technology}, vol. 45, no. 1, pp. 247-294, 2011, doi: 10.1002/aris.2011.1440450113.
+\bibitem{tenopir2011data} C. Tenopir et al., "Data Sharing by Scientists: Practices and Perceptions," \textit{PLOS ONE}, vol. 6, no. 6, p. e21101, Jun. 2011, doi: 10.1371/journal.pone.0021101.
+\bibitem{django} Django Software Foundation, "Django Documentation," Django Project, 2023. [Online]. Available: https://docs.djangoproject.com/
+\bibitem{djangorest} Django REST Framework, "Django REST Framework," Django REST Framework, 2023. [Online]. Available: https://www.django-rest-framework.org/
+\bibitem{react} React, "React – A JavaScript library for building user interfaces," React, 2023. [Online]. Available: https://reactjs.org/
+\bibitem{redux} Redux, "Redux - A Predictable State Container for JS Apps," Redux, 2023. [Online]. Available: https://redux.js.org/
+\bibitem{djangosites} Django Software Foundation, "Sites Using Django," Django Project, 2023. [Online]. Available: https://djangosites.org/
+\bibitem{reactsites} J. Neuhaus, "16 Popular Websites Built With ReactJS," Honeypot, 2022. [Online]. Available: https://www.honeypot.io/blog/popular-websites-built-with-reactjs/
+\bibitem{django} Django Software Foundation, "Django Documentation," Django Project, 2023. [Online]. Available: https://docs.djangoproject.com/
+\bibitem{djangorest} Django REST Framework, "Django REST Framework," Django REST Framework, 2023. [Online]. Available: https://www.django-rest-framework.org/
+\bibitem{mongodb} MongoDB, "MongoDB Documentation," MongoDB, 2023. [Online]. Available: https://docs.mongodb.com/
+\bibitem{postgresql} PostgreSQL, "PostgreSQL Documentation," PostgreSQL, 2023. [Online]. Available: https://www.postgresql.org/docs/
+\bibitem{mysql} MySQL, "MySQL Documentation," MySQL, 2023. [Online]. Available: https://dev.mysql.com/doc/
+\bibitem{react} React, "React – A JavaScript library for building user interfaces," React, 2023. [Online]. Available: https://reactjs.org/
+\bibitem{reactsites} J. Neuhaus, "16 Popular Websites Built With ReactJS," Honeypot, 2022. [Online]. Available: https://www.honeypot.io/blog/popular-websites-built-with-reactjs/
+\bibitem{redux} Redux, "Redux - A Predictable State Container for JS Apps," Redux, 2023. [Online]. Available: https://redux.js.org/
+\bibitem{axios} Axios, "Axios - Promise based HTTP client for the browser and Node.js," Axios, 2023. [Online]. Available: https://axios-http.com/
+\bibitem{reduxthunk} Redux Thunk, "Redux Thunk - Thunk middleware for Redux," Redux Thunk, 2023. [Online]. Available: https://github.com/reduxjs/redux-thunk
+\bibitem{reduxsaga} Redux Saga, "Redux Saga - An alternative side effect model for Redux apps," Redux Saga, 2023. [Online]. Available: https://redux-saga.js.org/
+\bibitem{angular} Angular, "Angular - One framework. Mobile \& desktop." Angular, 2023. [Online]. Available: https://angular.io/
+\bibitem{vue} Vue.js, "Vue.js - The Progressive JavaScript Framework," Vue.js, 2023. [Online]. Available: https://vuejs.org/
+\bibitem{flask} Flask, "Flask - Web development, one drop at a time," Flask, 2023. [Online]. Available: https://flask.palletsprojects.com/
+\bibitem{nodejs} Node.js, "Node.js - About," Node.js, 2023. [Online]. Available: https://nodejs.org/en/about/
 \end{thebibliography}
 \vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
 
 \end{document}
