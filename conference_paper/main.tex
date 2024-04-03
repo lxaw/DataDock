@@ -139,37 +139,53 @@ While current cloud storage services offer APIs and enable building custom appli
 An open source solution like Delta addresses these issues by providing a specialized, customizable, and cost-effective platform for research data management. By hosting Delta on their own infrastructure, research teams have full control over their data, can tailor the platform to their specific needs, and avoid vendor lock-in. The open source nature ensures transparency, enables community-driven development, and allows for integration with a wide range of tools. Moreover, an open source solution can be deployed in local or offline environments, mitigating concerns about internet connectivity and data privacy. Delta empowers researchers to manage their data on their own terms, prioritizing the unique requirements of scientific research.
 
 \section{Delta Architecture}
-[write about delta architecture]
+Delta is built using a modern web stack consisting of Django \cite{django}, Django REST Framework \cite{djangorest}, React \cite{react}, and Redux \cite{redux}. This architecture was chosen to enable fast, scalable development, cross-platform compatibility, and a smooth user experience.
 
 \subsection{Backend}
 
+On the backend, Delta utilizes the Django web framework. Django is a high-level Python framework that encourages rapid development and clean, pragmatic design \cite{django}. It is known for its robustness, scalability, and extensive community support, making it an ideal choice for building the backend of Delta.
+
+To facilitate communication between the frontend and backend, Delta employs the Django REST Framework (DRF). DRF is a powerful and flexible toolkit for building Web APIs \cite{djangorest}. A REST (Representational State Transfer) API is an architectural style for designing networked applications. It defines a set of constraints and properties based on HTTP, such as statelessness, client-server separation, and a uniform interface. RESTful APIs use HTTP methods (GET, POST, PUT, DELETE) to perform CRUD (Create, Read, Update, Delete) operations on resources, which are identified by URLs.
+
+DRF allows for easy creation of API endpoints that can be accessed from various platforms and devices. It provides a set of tools and abstractions for building RESTful APIs quickly and efficiently. DRF's serialization system enables seamless conversion of Django models to various content types, such as JSON or XML, making it ideal for building APIs that can be consumed by different clients.
+
+One of the key benefits of using a RESTful API is that it provides a clear and consistent interface for interacting with the backend. It allows for a separation of concerns between the client and the server, enabling independent development and scaling of the frontend and backend. RESTful APIs also promote statelessness, meaning that each request contains all the necessary information to be processed, making the application more scalable and easier to cache.
+
+For authentication, Delta uses Knox tokens, which provide enhanced security compared to the default TokenAuthentication in DRF. Knox tokens are hashed using SHA-512 and encrypted in the database, making them more secure in case of a database compromise. Additionally, Knox tokens have a configurable expiry time, adding an extra layer of security. Token-based authentication is stateless, meaning that the server does not need to keep a record of which users are logged in. This makes the authentication process more scalable and reduces the load on the server.
+
+Delta utilizes a SQLite database by default, but this can be easily modified to use other popular databases such as MongoDB \cite{mongodb}, PostgreSQL \cite{postgresql}, or MySQL \cite{mysql}. Django's ORM (Object-Relational Mapping) allows for easy interaction with the database through the use of models. A model is a Python class that subclasses django.db.models.Model and represents a single database table. Each attribute of the model represents a database field. This abstraction provides a convenient and intuitive way to define the structure and behavior of the data being stored, while Django handles the underlying database operations.
+
 \subsection{Frontend}
+For the frontend, Delta uses React, a popular JavaScript library for building user interfaces \cite{react}. React's component-based architecture allows for the creation of reusable UI components, which can be easily composed to build complex user interfaces. This modular approach makes the codebase more maintainable and easier to understand. React's virtual DOM (Document Object Model) implementation is another key feature that contributes to its efficiency. Instead of directly manipulating the browser's DOM, React maintains a lightweight copy of the DOM in memory called the virtual DOM. When data changes, React updates the virtual DOM first, calculates the differences (diff) between the virtual and real DOM, and then efficiently updates the browser's DOM with minimal changes. This approach significantly improves performance, especially in large-scale applications with frequent data updates.
 
+React's declarative syntax, JSX (JavaScript XML), allows developers to write HTML-like code within JavaScript. This makes the code more readable and intuitive, as the structure of the UI closely resembles the final rendered output. React's one-way data flow, also known as unidirectional data flow, ensures that data flows in a single direction from parent components to child components. This makes the application's state more predictable and easier to debug.
+
+To manage the application state, Delta incorporates Redux, a predictable state container for JavaScript apps \cite{redux}. Redux follows the principles of a single source of truth, state immutability, and pure functions for state modifications. It maintains a single, immutable state tree (store) that represents the entire application state. Components can access the required parts of the state by subscribing to the store. To modify the state, components dispatch actions, which are plain JavaScript objects describing the desired changes. Reducers, pure functions that take the current state and an action as input and return a new state, handle these actions and update the state accordingly. This centralized state management makes it easier to reason about the application's behavior, enables features like undo/redo, and facilitates state persistence.
+
+The combination of React and Redux allows for a highly responsive and interactive user interface. When a user interacts with the application, such as creating a new post or rating a dataset, React components dispatch the corresponding actions. Redux processes these actions, updates the state, and notifies the subscribed components. React then efficiently re-renders the affected components, updating the UI in real-time without requiring a full page refresh. This provides a smooth and engaging user experience, similar to that of modern social media platforms.
+
+To communicate with the backend API, Delta utilizes the Axios library \cite{axios}. Axios is a popular, promise-based HTTP client for JavaScript that simplifies making API requests. It provides an easy-to-use API for sending GET, POST, PUT, and DELETE requests to the server and handles the response data efficiently. Axios also supports request and response interceptors, which allow for easy modification or examination of requests and responses before they are sent or received. This is particularly useful for adding authentication headers, handling errors, or transforming data.
+
+When a user interacts with the application, React components dispatch actions that trigger API requests using Axios. Axios sends the requests to the appropriate backend endpoints, along with any necessary data or parameters. The backend processes these requests, interacts with the database, and returns the response data in JSON format. Axios then resolves the promise, and the received data is dispatched to the Redux store. The store updates the state, and the subscribed React components re-render with the new data, updating the UI accordingly. This seamless integration between React, Redux, and Axios enables a smooth and efficient data flow between the frontend and backend, resulting in a responsive and dynamic user experience.
+
+\subsection{Integration}
+The Django backend and React frontend are integrated through REST API calls, enabling seamless communication and data exchange between the two components. When a user interacts with the frontend, such as submitting a form or clicking a button, React components dispatch actions that trigger API requests to the Django backend. These actions are typically handled by Redux middleware, such as Redux Thunk \cite{reduxthunk} or Redux Saga \cite{reduxsaga}, which allows for asynchronous operations and side effects.
+
+The API requests are sent using the Axios library, which is configured with the appropriate backend API endpoints. Axios sends HTTP requests (GET, POST, PUT, DELETE) to the corresponding Django views, along with any necessary data or parameters. The Django views, defined in the views.py files, handle these requests and perform the required processing. They interact with the database using Django's ORM (Object-Relational Mapping) and execute any necessary business logic.
+
+After processing the request, the Django views return the appropriate JSON responses using Django REST Framework's serializers. Serializers convert Django model instances or querysets into JSON format, which can be easily consumed by the frontend. The JSON responses typically include the requested data, such as a list of objects, a single object, or a success/error status.
+
+Axios receives the JSON response from the backend and resolves the promise. The received data is then dispatched to the Redux store using the appropriate action creators. The Redux reducers handle these actions and update the application state accordingly. React components that are subscribed to the relevant parts of the state are automatically re-rendered with the new data, updating the UI in real-time.
+
+This architecture allows for a clear separation of concerns between the frontend and backend. The backend focuses on data processing, business logic, and database management, while the frontend handles user interactions and UI rendering. This decoupling makes the application more maintainable and allows for independent development and scaling of the frontend and backend.
+
+The use of REST APIs provides a standardized and platform-agnostic interface for communication between the frontend and backend. This allows for flexibility in terms of the technologies used on either end. For example, the frontend could be implemented using a different framework or library, such as Angular \cite{angular} or Vue.js \cite{vue}, while still being able to communicate with the Django backend through the same API endpoints. Similarly, the backend could be swapped with a different framework or language, such as Flask \cite{flask} or Node.js \cite{nodejs}, as long as it adheres to the same API contract.
+
+By leveraging the power of Django, Django REST Framework, React, Redux, and Axios, Delta provides a robust, scalable, and user-friendly platform for researchers and data scientists to manage, share, and collaborate on their data. The integration of these technologies enables a seamless and efficient data flow between the frontend and backend, resulting in a responsive and interactive user experience. The modular architecture and clear separation of concerns facilitate maintainability, extensibility, and independent scaling of the application components.
 \section{Current Product}
-
+[write]
 \section{Future Goals}
-
-
-\section*{References}
-
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
-
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
-
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
-
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
+[write]
 
 \begin{thebibliography}{00}
 \bibitem{googledrive} Google, “Google Drive: Free Cloud Storage for Personal Use,” Google.com, 2019. https://www.google.com/drive/
@@ -187,10 +203,30 @@ citation first, followed by the original foreign-language citation \cite{b6}.
 \bibitem{gezelter2015open} J. D. Gezelter, "Open Source and Open Data Should Be Standard Practices," \textit{The Journal of Physical Chemistry Letters}, vol. 6, no. 7, pp. 1168-1169, Apr. 2015, doi: 10.1021/acs.jpclett.5b00285.
 \bibitem{stephens2015big} Z. D. Stephens et al., "Big Data: Astronomical or Genomical?" \textit{PLOS Biology}, vol. 13, no. 7, p. e1002195, Jul. 2015, doi: 10.1371/journal.pbio.1002195.
 \bibitem{vogelsberger2014introducing} M. Vogelsberger et al., "Introducing the Illustris Project: Simulating the coevolution of dark and visible matter in the Universe," \textit{Monthly Notices of the Royal Astronomical Society}, vol. 444, no. 2, pp. 1518-1547, Oct. 2014, doi: 10.1093/mnras/stu1536.
-\bibitem{wilkinson2016fair} M. D. Wilkinson et al., "The FAIR Guiding Principles for scientific data management and stewardship," \textit{Scientific Data}, vol. 3, no. 1, Art. no. 1, Mar. 2016, doi: 10.1038/sdata.2016.18.
 \bibitem{eisner2018data} D. A. Eisner, "Reproducibility of science: Fraud, impact factors and carelessness," \textit{Journal of Molecular and Cellular Cardiology}, vol. 114, pp. 364-368, Jan. 2018, doi: 10.1016/j.yjmcc.2017.10.009.
 \bibitem{kowalczyk2018data} D. R. Kowalczyk and S. Y. Shankar, "Data sharing in the sciences," \textit{Annual Review of Information Science and Technology}, vol. 45, no. 1, pp. 247-294, 2011, doi: 10.1002/aris.2011.1440450113.
 \bibitem{tenopir2011data} C. Tenopir et al., "Data Sharing by Scientists: Practices and Perceptions," \textit{PLOS ONE}, vol. 6, no. 6, p. e21101, Jun. 2011, doi: 10.1371/journal.pone.0021101.
+\bibitem{django} Django Software Foundation, "Django Documentation," Django Project, 2023. [Online]. Available: https://docs.djangoproject.com/
+\bibitem{djangorest} Django REST Framework, "Django REST Framework," Django REST Framework, 2023. [Online]. Available: https://www.django-rest-framework.org/
+\bibitem{react} React, "React – A JavaScript library for building user interfaces," React, 2023. [Online]. Available: https://reactjs.org/
+\bibitem{redux} Redux, "Redux - A Predictable State Container for JS Apps," Redux, 2023. [Online]. Available: https://redux.js.org/
+\bibitem{djangosites} Django Software Foundation, "Sites Using Django," Django Project, 2023. [Online]. Available: https://djangosites.org/
+\bibitem{reactsites} J. Neuhaus, "16 Popular Websites Built With ReactJS," Honeypot, 2022. [Online]. Available: https://www.honeypot.io/blog/popular-websites-built-with-reactjs/
+\bibitem{django} Django Software Foundation, "Django Documentation," Django Project, 2023. [Online]. Available: https://docs.djangoproject.com/
+\bibitem{djangorest} Django REST Framework, "Django REST Framework," Django REST Framework, 2023. [Online]. Available: https://www.django-rest-framework.org/
+\bibitem{mongodb} MongoDB, "MongoDB Documentation," MongoDB, 2023. [Online]. Available: https://docs.mongodb.com/
+\bibitem{postgresql} PostgreSQL, "PostgreSQL Documentation," PostgreSQL, 2023. [Online]. Available: https://www.postgresql.org/docs/
+\bibitem{mysql} MySQL, "MySQL Documentation," MySQL, 2023. [Online]. Available: https://dev.mysql.com/doc/
+\bibitem{react} React, "React – A JavaScript library for building user interfaces," React, 2023. [Online]. Available: https://reactjs.org/
+\bibitem{reactsites} J. Neuhaus, "16 Popular Websites Built With ReactJS," Honeypot, 2022. [Online]. Available: https://www.honeypot.io/blog/popular-websites-built-with-reactjs/
+\bibitem{redux} Redux, "Redux - A Predictable State Container for JS Apps," Redux, 2023. [Online]. Available: https://redux.js.org/
+\bibitem{axios} Axios, "Axios - Promise based HTTP client for the browser and Node.js," Axios, 2023. [Online]. Available: https://axios-http.com/
+\bibitem{reduxthunk} Redux Thunk, "Redux Thunk - Thunk middleware for Redux," Redux Thunk, 2023. [Online]. Available: https://github.com/reduxjs/redux-thunk
+\bibitem{reduxsaga} Redux Saga, "Redux Saga - An alternative side effect model for Redux apps," Redux Saga, 2023. [Online]. Available: https://redux-saga.js.org/
+\bibitem{angular} Angular, "Angular - One framework. Mobile \& desktop." Angular, 2023. [Online]. Available: https://angular.io/
+\bibitem{vue} Vue.js, "Vue.js - The Progressive JavaScript Framework," Vue.js, 2023. [Online]. Available: https://vuejs.org/
+\bibitem{flask} Flask, "Flask - Web development, one drop at a time," Flask, 2023. [Online]. Available: https://flask.palletsprojects.com/
+\bibitem{nodejs} Node.js, "Node.js - About," Node.js, 2023. [Online]. Available: https://nodejs.org/en/about/
 \end{thebibliography}
 \vspace{12pt}
 
