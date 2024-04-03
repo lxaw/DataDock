@@ -55,20 +55,42 @@ data transfer, data storage, data reviewing, data sharing
 \section{Introduction}
 There is a noticeable dearth of quality open source research services with regards to data.
 Most data services are merely file sharing ones, that only allow file upload, download, and organization.
-While this does allow researchers to transmit their collected data among another, 
-it lacks many critical features that most researchers would like to have, such as 
+While this does allow researchers to transmit their collected data among another,
+it lacks many critical features that most researchers would like to have, such as
 quality control, commenting, tagging, organization under groups, annotation, and more.
 Furthermore, these services are oftentimes prohibitively expensive to smaller research labs, and their
-free versions have limitations on both number of users and amount of storage. 
+free versions have limitations on both number of users and amount of storage.
 The current state of research is to use services such as Microsoft's OneDrive \cite{onedrive}, Dropbox \cite{dropbox},
-or Google Drive \cite{googledrive}. Each of these services 
-[something about service limitations]
-\\\\
+or Google Drive \cite{googledrive}. Each of these services have limitations in terms of storage capacity, user management,
+and feature set that make them suboptimal for research data management \cite{kowalczyk2018data}.
+\\
 Furthermore, the modern times have seen unprecedented growth in the amount of data collected.
-[something about deep learning data, internet of things, personal data growth]
+The era of big data has brought about massive datasets, particularly in fields like genomics, astronomy, and social media analytics \cite{stephens2015big}.
+Machine learning and deep learning have further amplified the need for large, high-quality datasets for training models \cite{sun2017revisiting}.
+The Internet of Things (IoT) is another significant contributor to the data deluge, with billions of connected devices generating continuous streams of data \cite{khan2018iot}.
+Even at a personal level, the proliferation of smartphones and digital services has led to an explosion of user-generated data \cite{reinsel2018digitization}.
+\\
+This rapid growth in data volume and variety has outpaced the capabilities of traditional data management tools and practices.
+Researchers often struggle with the challenges of storing, organizing, sharing, and collaborating on large datasets \cite{wallis2013if}.
+The lack of specialized tools for research data management leads to ad-hoc solutions, data silos, and inefficiencies in the research process \cite{wilkinson2016fair}.
+\\
+To address these challenges, we present Delta, an open source data service designed specifically for the needs of researchers.
+Delta provides a platform for efficient data storage, sharing, and collaboration, with features tailored to the research workflow.
+By leveraging open source technologies and a modular architecture, Delta enables customization and extensibility to meet the diverse requirements of different research domains.
+The open source nature of Delta also promotes transparency, reproducibility, and community-driven development \cite{gezelter2015open}.
 
 \section{The Problem}
-[write about the architecture]
+In the era of data-driven research, scientists across various disciplines are grappling with an unprecedented influx of data. From high-throughput sequencing in genomics \cite{stephens2015big} to large-scale simulations in physics \cite{vogelsberger2014introducing}, researchers are generating and collecting massive datasets at an astounding rate. However, managing this data effectively poses significant challenges that can hinder research productivity and collaboration.
+
+One of the primary issues researchers face is the need for efficient data labeling and annotation. Raw data often requires contextualization and metadata to be meaningful and usable for analysis \cite{wilkinson2016fair}. Manually annotating large datasets is time-consuming and prone to inconsistencies, especially when multiple researchers are involved. The lack of standardized annotation frameworks and tools further compounds this problem, leading to a fragmented and inefficient data labeling process.
+
+Quality control is another critical concern in research data management. Ensuring the accuracy, completeness, and reliability of data is essential for drawing valid conclusions and reproducing results \cite{eisner2018data}. However, reviewing and validating large datasets manually is a daunting task, particularly in collaborative projects where data is collected by multiple individuals or teams. The absence of systematic quality control mechanisms can lead to errors, inconsistencies, and a lack of trust in the data.
+
+Effective organization and management of research data is also a significant challenge, both at the individual researcher level and within research groups. Principal Investigators (PIs) need to keep track of various datasets, their versions, and associated metadata, often relying on ad-hoc solutions like spreadsheets or file naming conventions \cite{kowalczyk2018data}. At the group level, data silos can emerge when different teams use incompatible data formats or storage systems, hindering collaboration and data integration.
+
+Sharing data between research groups is another pain point in the current research landscape. Collaborative projects often involve multiple institutions and disciplines, each with their own data management practices and infrastructure \cite{tenopir2011data}. Incompatible data formats, lack of standardization, and concerns about data ownership and attribution can impede smooth data sharing and reuse. Moreover, transferring large datasets across institutional boundaries can be time-consuming and subject to security and privacy constraints.
+
+Addressing these challenges requires a comprehensive and integrated approach to research data management. Researchers need tools and platforms that streamline data annotation, enable robust quality control, facilitate organization and discovery, and promote seamless data sharing and collaboration. Existing solutions, such as generic cloud storage services or ad-hoc scripts, often fall short in terms of functionality, scalability, and ease of use. There is a clear need for a purpose-built, open-source data management platform that caters to the unique requirements of scientific research.
 
 \section{Current Alternatives}
 Several cloud storage providers offer APIs and developer tools that enable programmatic access to their services. For example:
@@ -155,6 +177,20 @@ citation first, followed by the original foreign-language citation \cite{b6}.
 \bibitem{onedrive} “Personal Cloud Storage – Microsoft OneDrive,” Microsoft.com, 2024. https://www.microsoft.com/en-us/microsoft-365/onedrive/
 \bibitem{box} Box, "Box Developer Documentation," Box, 2023. https://developer.box.com/
 \bibitem{amazonweb} Amazon Web Services, "Amazon S3 API Reference," Amazon.com, 2023. https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
+\bibitem{kowalczyk2018data} D. R. Kowalczyk and S. Y. Shankar, "Data sharing in the sciences," \textit{Annual Review of Information Science and Technology}, vol. 45, no. 1, pp. 247-294, 2011, doi: 10.1002/aris.2011.1440450113.
+\bibitem{stephens2015big} Z. D. Stephens et al., "Big Data: Astronomical or Genomical?" \textit{PLOS Biology}, vol. 13, no. 7, p. e1002195, Jul. 2015, doi: 10.1371/journal.pbio.1002195.
+\bibitem{sun2017revisiting} C. Sun, A. Shrivastava, S. Singh, and A. Gupta, "Revisiting Unreasonable Effectiveness of Data in Deep Learning Era," in \textit{2017 IEEE International Conference on Computer Vision (ICCV)}, Oct. 2017, pp. 843-852, doi: 10.1109/ICCV.2017.97.
+\bibitem{khan2018iot} M. A. Khan, K. Salah, "IoT security: Review, blockchain solutions, and open challenges," \textit{Future Generation Computer Systems}, vol. 82, pp. 395-411, 2018, doi: 10.1016/j.future.2017.11.022.
+\bibitem{reinsel2018digitization} D. Reinsel, J. Gantz, and J. Rydning, "The Digitization of the World - From Edge to Core," \textit{IDC White Paper}, Nov. 2018. [Online]. Available: https://www.seagate.com/files/www-content/our-story/trends/files/idc-seagate-dataage-whitepaper.pdf
+\bibitem{wallis2013if} J. C. Wallis, E. Rolando, and C. L. Borgman, "If We Share Data, Will Anyone Use Them? Data Sharing and Reuse in the Long Tail of Science and Technology," \textit{PLOS ONE}, vol. 8, no. 7, p. e67332, Jul. 2013, doi: 10.1371/journal.pone.0067332.
+\bibitem{wilkinson2016fair} M. D. Wilkinson et al., "The FAIR Guiding Principles for scientific data management and stewardship," \textit{Scientific Data}, vol. 3, no. 1, Art. no. 1, Mar. 2016, doi: 10.1038/sdata.2016.18.
+\bibitem{gezelter2015open} J. D. Gezelter, "Open Source and Open Data Should Be Standard Practices," \textit{The Journal of Physical Chemistry Letters}, vol. 6, no. 7, pp. 1168-1169, Apr. 2015, doi: 10.1021/acs.jpclett.5b00285.
+\bibitem{stephens2015big} Z. D. Stephens et al., "Big Data: Astronomical or Genomical?" \textit{PLOS Biology}, vol. 13, no. 7, p. e1002195, Jul. 2015, doi: 10.1371/journal.pbio.1002195.
+\bibitem{vogelsberger2014introducing} M. Vogelsberger et al., "Introducing the Illustris Project: Simulating the coevolution of dark and visible matter in the Universe," \textit{Monthly Notices of the Royal Astronomical Society}, vol. 444, no. 2, pp. 1518-1547, Oct. 2014, doi: 10.1093/mnras/stu1536.
+\bibitem{wilkinson2016fair} M. D. Wilkinson et al., "The FAIR Guiding Principles for scientific data management and stewardship," \textit{Scientific Data}, vol. 3, no. 1, Art. no. 1, Mar. 2016, doi: 10.1038/sdata.2016.18.
+\bibitem{eisner2018data} D. A. Eisner, "Reproducibility of science: Fraud, impact factors and carelessness," \textit{Journal of Molecular and Cellular Cardiology}, vol. 114, pp. 364-368, Jan. 2018, doi: 10.1016/j.yjmcc.2017.10.009.
+\bibitem{kowalczyk2018data} D. R. Kowalczyk and S. Y. Shankar, "Data sharing in the sciences," \textit{Annual Review of Information Science and Technology}, vol. 45, no. 1, pp. 247-294, 2011, doi: 10.1002/aris.2011.1440450113.
+\bibitem{tenopir2011data} C. Tenopir et al., "Data Sharing by Scientists: Practices and Perceptions," \textit{PLOS ONE}, vol. 6, no. 6, p. e21101, Jun. 2011, doi: 10.1371/journal.pone.0021101.
 \end{thebibliography}
 \vspace{12pt}
 

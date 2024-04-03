@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1712162915 "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" "main.pdf" "main" 1712162916 0
-  "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" 1712162914 10860 1ed657df79304e81c92a6c9e8e0bc0d8 ""
+["pdflatex"] 1712167038 "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" "main.pdf" "main" 1712167039 0
+  "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" 1712167037 18955 25075ae41e284a515ec9e16c6fde221a ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -91,9 +91,9 @@
   "/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1686461107 4623355 b8cad38412faebe1ce5b780a45db67bd ""
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1686461055 7883456 2671d7d74b408aece8db38e110a3c44d ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
-  "main.aux" 1712162916 2154 a7dc170c3c104ca1ffcbe279146b8882 "pdflatex"
-  "main.out" 1712162916 1199 52480cf732fba3d850d91f2e6d3d9183 "pdflatex"
-  "main.tex" 1712162914 10860 1ed657df79304e81c92a6c9e8e0bc0d8 ""
+  "main.aux" 1712167039 2994 ba089f93d42f33fce8c9cb94c98489a3 "pdflatex"
+  "main.out" 1712167039 1199 52480cf732fba3d850d91f2e6d3d9183 "pdflatex"
+  "main.tex" 1712167037 18955 25075ae41e284a515ec9e16c6fde221a ""
   (generated)
   "main.aux"
   "main.log"
