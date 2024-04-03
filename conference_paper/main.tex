@@ -70,11 +70,51 @@ Furthermore, the modern times have seen unprecedented growth in the amount of da
 \section{The Problem}
 [write about the architecture]
 
-\subsection{Current Alternatives}
-[write about the rest apis]
+\section{Current Alternatives}
+Several cloud storage providers offer APIs and developer tools that enable programmatic access to their services. For example:
+
+\begin{itemize}
+\item Google Drive provides a REST API \cite{googledrive} for uploading, downloading, searching, and manipulating files stored on Google Drive. Client libraries are available in multiple programming languages.
+
+\item Dropbox offers a similar REST API \cite{dropbox} with SDKs for major platforms to integrate Dropbox capabilities into applications. Key features include file upload/download, sharing, search, and user management.
+
+\item Microsoft OneDrive also has a comprehensive REST API \cite{onedrive} for accessing OneDrive files, folders, and other data. Client libraries support integration with web, mobile, and desktop apps.
+
+\item Box provides a content management platform with a REST API \cite{box} for building custom applications. It offers features like file preview, version control, and granular access permissions, catering to enterprise needs.
+
+\item Amazon S3 (Simple Storage Service) is a scalable object storage service with an API \cite{amazonweb} for storing and retrieving data. While not primarily designed for end-user file management, it's often used as a foundation for building cloud storage applications.
+\end{itemize}
+
+While these APIs enable building custom applications with cloud storage, the underlying limitations of the services still apply - costs scale with storage and user needs, and specialized features for research data management are lacking. Leveraging the APIs still requires significant development effort to create a tailored solution. Furthermore, some services like Amazon S3 are more suited to developers and lack user-friendly interfaces out-of-the-box.
+Furthermore, these services are not open sourced, so any modifications (i.e. addition of service, design change, bug fix) cannot be done directly by the users.
+We make such issues more clear in $\textit{Issues with Current Approaches}$.
 
 \section{Issues with Current Approaches}
-[write about the issues with the current approaches]
+While current cloud storage services offer APIs and enable building custom applications, they have several notable shortcomings, especially in the context of research data management:
+
+\begin{enumerate}
+\item \textbf{Cost:} Services like Google Drive, Dropbox, and OneDrive can become expensive as data storage needs grow, often requiring paid subscriptions for additional storage or users. This diverts funds from core research activities.
+
+\item \textbf{Lack of Specialization:} General-purpose storage services lack features tailored for research, such as data quality control, peer review workflows, metadata management, and data provenance tracking.
+
+\item \textbf{Limited Customization:} Although APIs enable custom app development, the underlying platforms cannot be easily modified or extended. Researchers cannot add new features or modify existing behavior to suit their specific needs.
+
+\item \textbf{Vendor Lock-In:} By relying on proprietary services, researchers risk being locked into a particular vendor's ecosystem. Migration to alternative platforms can be difficult and costly.
+
+\item \textbf{Data Ownership and Control:} With commercial services, there may be ambiguity around data ownership and control. Researchers may have concerns about intellectual property rights and the ability to access their data if a service is discontinued.
+
+\item \textbf{Data Privacy and Security:} Storing sensitive research data on third-party servers raises privacy and security concerns. Researchers may be hesitant to entrust confidential data to external providers.
+
+\item \textbf{Collaboration Barriers:} While cloud services facilitate file sharing, they often lack advanced collaboration features like real-time co-authoring, version control, and granular access controls that are vital for research teams.
+
+\item \textbf{Integration Challenges:} Integrating cloud storage with existing research tools and workflows can be challenging. Researchers may need to develop custom glue code or rely on limited third-party integrations.
+
+\item \textbf{Dependency on Internet Connectivity:} Cloud services require reliable internet access, which can be a constraint in field research settings or areas with limited connectivity.
+
+\item \textbf{Long-Term Preservation:} Commercial services may not prioritize long-term data preservation, which is crucial for research reproducibility and data archiving. There may be uncertainties about data durability and accessibility over extended periods.
+\end{enumerate}
+
+An open source solution like Delta addresses these issues by providing a specialized, customizable, and cost-effective platform for research data management. By hosting Delta on their own infrastructure, research teams have full control over their data, can tailor the platform to their specific needs, and avoid vendor lock-in. The open source nature ensures transparency, enables community-driven development, and allows for integration with a wide range of tools. Moreover, an open source solution can be deployed in local or offline environments, mitigating concerns about internet connectivity and data privacy. Delta empowers researchers to manage their data on their own terms, prioritizing the unique requirements of scientific research.
 
 \section{Delta Architecture}
 [write about delta architecture]
@@ -113,10 +153,8 @@ citation first, followed by the original foreign-language citation \cite{b6}.
 \bibitem{googledrive} Google, “Google Drive: Free Cloud Storage for Personal Use,” Google.com, 2019. https://www.google.com/drive/
 \bibitem{dropbox} Dropbox, “Dropbox,” Dropbox, 2018. https://www.dropbox.com/
 \bibitem{onedrive} “Personal Cloud Storage – Microsoft OneDrive,” Microsoft.com, 2024. https://www.microsoft.com/en-us/microsoft-365/onedrive/
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
+\bibitem{box} Box, "Box Developer Documentation," Box, 2023. https://developer.box.com/
+\bibitem{amazonweb} Amazon Web Services, "Amazon S3 API Reference," Amazon.com, 2023. https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
 \end{thebibliography}
 \vspace{12pt}
 

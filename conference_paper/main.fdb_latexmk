@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1712162139 "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" "main.pdf" "main" 1712162140 0
-  "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" 1712162139 6009 058f289a69e42908ab8c7e2f73f71d75 ""
+["pdflatex"] 1712162915 "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" "main.pdf" "main" 1712162916 0
+  "/Users/lexingtonwhalen/Desktop/d/personal/code/Delta/conference_paper/main.tex" 1712162914 10860 1ed657df79304e81c92a6c9e8e0bc0d8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -20,6 +20,7 @@
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1246382020 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1136849748 44729 811d6c62865936705a31c797a1d5dada ""
   "/usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb" 1136849748 44656 0cbca70e0534538582128f6b54593cca ""
   "/usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb" 1136849748 46026 6dab18b61c907687b520c72847215a68 ""
@@ -90,9 +91,9 @@
   "/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1686461107 4623355 b8cad38412faebe1ce5b780a45db67bd ""
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1686461055 7883456 2671d7d74b408aece8db38e110a3c44d ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
-  "main.aux" 1712162140 2100 a10a92029c53ae1f60513655683c73b3 "pdflatex"
-  "main.out" 1712162140 1213 86b95bb7013b5a8998dd807900201be1 "pdflatex"
-  "main.tex" 1712162139 6009 058f289a69e42908ab8c7e2f73f71d75 ""
+  "main.aux" 1712162916 2154 a7dc170c3c104ca1ffcbe279146b8882 "pdflatex"
+  "main.out" 1712162916 1199 52480cf732fba3d850d91f2e6d3d9183 "pdflatex"
+  "main.tex" 1712162914 10860 1ed657df79304e81c92a6c9e8e0bc0d8 ""
   (generated)
   "main.aux"
   "main.log"
