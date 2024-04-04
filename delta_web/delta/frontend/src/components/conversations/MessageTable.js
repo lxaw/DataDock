@@ -3,15 +3,6 @@
 
 Delta project
 
-Authors:
-Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
-File name:  MessageTable.js
-
 Brief description: 
     This file defines how message cards are displayed in conversation
 detail. The current user is displayed on the right while the other user

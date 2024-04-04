@@ -20,6 +20,7 @@ import { getPublicUserData } from '../../actions/auth'
 import ConversationTable from '../conversations/ConversationTable'
 import axios from 'axios'
 import "./profile.css"
+import { getUserConversations } from '../../actions/conversation'
 
 
 // UTILITY: This is used to render and display the Public Profile Page. 
@@ -36,28 +37,22 @@ const PublicProfile = (props) => {
   // public profile that you are viewing's username
   const { username } = useParams()
 
-// UTILITY: get Conversations 
-// OUTPUTS: Is the return of the conversations the user had with the other user. 
-  // const getConvos = () => {
-  //   axios.post('/api/conversation/get_convos_with_user/', { other_user_username: username }, { headers: { 'content-type': 'application/json', 'authorization': `token ${props.auth.token}` } })
-  //     .then((res) => {
-  //       setConvos(res.data)
-  //     }
-  //     )
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userData = await props.getPublicUserData(username);
+        const userConvos = await props.getUserConversations(username)
+        console.log(userConvos)
         
         if (userData) {
           setUserData(userData);
         } else {
           console.error("User data is undefined.");
+        }
+        if(userConvos){
+          setConvos(userConvos)
+        }else{
+          console.log("no user convos")
         }
       } catch (error) {
         console.error(error);
@@ -114,4 +109,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, {getPublicUserData})(PublicProfile)
+export default connect(mapStateToProps, {getPublicUserData,getUserConversations})(PublicProfile)

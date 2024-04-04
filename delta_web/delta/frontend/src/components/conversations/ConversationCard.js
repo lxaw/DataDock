@@ -3,15 +3,6 @@
 
 Delta project
 
-Authors:
-Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
-File name:  ConversationCard.js
-
 Brief description: 
     Users can communicate with each other through conversations. Each
 conversation is displayed through a conversation card similar to the data
