@@ -63,6 +63,9 @@ const NotificationMessageIndex = (props) =>{
               </div>
               }
             </div>
+            <div>
+              <h1>Past Conversations</h1>
+            </div>
         </div>
     )
 }

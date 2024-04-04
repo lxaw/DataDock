@@ -25,6 +25,7 @@ from django.contrib.auth import get_user_model
 
 from .models import (Conversation,Message,Review,
 NotificationMessage,NotificationReview)
+from rest_framework.parsers import FileUploadParser, MultiPartParser
 
 # https://stackoverflow.com/questions/739776/how-do-i-do-an-or-filter-in-a-django-query
 from django.db.models import Q
@@ -145,10 +146,15 @@ class ViewsetNotificationNews(viewsets.ModelViewSet):
         return Response(self.get_serializer(instance).data)
 
 class ViewsetConversation(viewsets.ModelViewSet):
+    queryset = Conversation.objects.all()
+
     permission_classes = [
         permissions.IsAuthenticated
     ]
+
     serializer_class = SerializerConversation
+
+    parser_classes = (MultiPartParser,)
     
     def get_queryset(self):
         # simply get all conversations that user created

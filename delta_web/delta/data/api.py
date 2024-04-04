@@ -32,8 +32,7 @@ import os
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import FileUploadParser
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import FileUploadParser, MultiPartParser
 
 # import orgs
 from organizations.models import Organization
@@ -172,7 +171,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         return Response(self.get_serializer(dataSet).data)
     
     def partial_update(self, request, *args, **kwargs):
-        # super().partial_update(request,*args,**kwargs)
+        # super().partial_update(request,*args,**kwargs) # this causes an X-CSRF error
         print(request.data)
         obj = DataSet.objects.get(id=kwargs['pk'])
 

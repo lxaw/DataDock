@@ -1,5 +1,5 @@
 import axios from "axios"
-import { tokenConfig } from "./auth"
+import { tokenConfig,fileTokenConfig} from "./auth"
 import { createMessage } from "./messages"
 
 export const addConversation = (dictData) => (dispatch,getState) =>{
@@ -15,4 +15,15 @@ export const addConversation = (dictData) => (dispatch,getState) =>{
     })
     .catch((err)=>{
     })
+}
+
+export const getUserConversations = (username) => async (dispatch,getState) =>{
+    console.log(username)
+    try {
+        const res = await axios.post('/api/conversation/get_convos_with_user/', {'other_user_username': username },fileTokenConfig(getState));
+        return res.data;
+      } catch (err) {
+        console.error(err);
+        throw err; // Propagate the error
+      }
 }
