@@ -8,12 +8,13 @@ import {ADD_CSV_FILE, DELETE_CSV_FILE, GET_CSV_FILES,GET_CSV_FILE,
 
 // POST FILE 
 export const addCsvFile = (dictData) => (dispatch,getState) =>{
-    console.log(dictData)
 
+    console.log(dictData)
     return axios.post('/api/csv/',dictData,fileTokenConfig(getState))
     .then((res)=>{
         dispatch(createMessage({addCsvFileSuccess:"File Posted"}))
         dispatch({type:ADD_CSV_FILE,payload:res.data});
+        console.log(res)
         return res;
     })
     .catch((err)=>{
@@ -31,6 +32,7 @@ export const getCsvFiles = () => (dispatch,getState) =>{
             returnErrors(err.response.data,err.response.status)
         ))
 }
+
 // GET FILE by ID
 export const getCsvFile = (id) => (dispatch,getState) =>{
     axios.get(`/api/csv/${id}/`,tokenConfig(getState))

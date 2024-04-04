@@ -40,22 +40,10 @@ import {
 export const loadUser = () => (dispatch, getState) => {
     // user loading
     dispatch({ type: USER_LOADING });
-    const token = getState().auth.token;
-    const config = {
-        headers:{
-            'Content-Type':'application/json'
-        }
-    }
-    // if token, add to headers config
-    if(token){
-        config.headers['Authorization'] = `Token ${token}`
-    }
 
     // create request to load the user
-    axios.get('/api/auth/user', config)
+    axios.get('/api/auth/user', tokenConfig(getState))
         .then(res => {
-            console.log('load user success')
-            console.log(res)
             dispatch({
                 type: USER_LOADED,
                 payload: res.data
@@ -63,7 +51,6 @@ export const loadUser = () => (dispatch, getState) => {
         })
         // if we are not authenticated, no token that matches, need to catch
         .catch(err => {
-            console.log("load users error: ",err)
             // dispatch the error
             dispatch(returnErrors(err.response.data, err.response.status));
             // dispatch the type of error
@@ -72,6 +59,7 @@ export const loadUser = () => (dispatch, getState) => {
             })
         });
 }
+
 
 // LOGIN USER
 export const login = (username, password) => dispatch => {
@@ -95,8 +83,6 @@ export const login = (username, password) => dispatch => {
         })
         // if we are not authenticated, no token that matches, need to catch
         .catch((err) => {
-            console.log("loging api error:")
-            console.log(err)
             // dispatch the error
             dispatch(returnErrors(err.response.data, err.response.status));
             // dispatch the type of error
@@ -104,8 +90,6 @@ export const login = (username, password) => dispatch => {
                 type: LOGIN_FAIL,
             })
         });
-
-
 }
 // LOGOUT USER
 export const logout = () => (dispatch, getState) => {
@@ -124,6 +108,7 @@ export const logout = () => (dispatch, getState) => {
             dispatch(returnErrors(err.response.data, err.response.status));
         });
 }
+
 
 // REGISTER USER // CAHNGED
 export const register = ({ username, first_name, last_name, password, email, organization_key }) => dispatch => {
@@ -231,13 +216,10 @@ export const tokenConfig = (getState) => {
     // looking at auth reducer and getting that token 
     const token = getState().auth.token;
 
-    // var csrftoken = Cookies.get('XSRF-TOKEN'); // Use the correct cookie name
-
     // headers
     const config = {
         headers: {
-            'Content-Type': 'application/json',
-            // 'X-CSRFToken':csrftoken,
+            'Content-Type': 'application/json'
         }
     }
 
@@ -248,6 +230,7 @@ export const tokenConfig = (getState) => {
     // return config with token
     return config;
 }
+
 
 // Setup config with token - helper function
 // arrow func that takes in getState
@@ -256,14 +239,12 @@ export const fileTokenConfig = (getState) => {
     // looking at auth reducer and getting that token 
     const token = getState().auth.token;
 
-    var csrftoken = Cookies.get('XSRF-TOKEN'); // Use the correct cookie name
-
     // headers
     const config = {
         headers: {
             'Accept':'application/json',
             'Content-Type': 'multipart/form-data',
-            'X-CSRFToken':csrftoken,
+            // 'X-CSRFToken':csrftoken,
         }
     }
 
@@ -271,9 +252,11 @@ export const fileTokenConfig = (getState) => {
     if (token) {
         config.headers['Authorization'] = `Token ${token}`;
     }
+
     // return config with token
-    return config;
+    return config
 }
+
 
 export const getPublicUserData = (username) => async (dispatch,getState) =>{
     try {

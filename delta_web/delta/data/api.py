@@ -57,7 +57,7 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
     queryset = DataSet.objects.all()
 
     permission_classes = [
-        permissions.IsAuthenticated
+        # permissions.IsAuthenticated
     ]
 
     serializer_class = SerializerDataSet
