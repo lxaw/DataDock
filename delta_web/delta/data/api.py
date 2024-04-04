@@ -172,7 +172,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         return Response(self.get_serializer(dataSet).data)
     
     def partial_update(self, request, *args, **kwargs):
-        super().partial_update(request,*args,**kwargs)
+        # super().partial_update(request,*args,**kwargs)
         print(request.data)
         obj = DataSet.objects.get(id=kwargs['pk'])
 
