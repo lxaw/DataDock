@@ -28,3 +28,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return '{} Profile'.format(self.user.username)
+    
+# Cart
+# The cart is a 1-1 with the user.
+# It holds in the datasets the user would like to download.
+class Cart(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return '{} Cart'.format(self.user.username)

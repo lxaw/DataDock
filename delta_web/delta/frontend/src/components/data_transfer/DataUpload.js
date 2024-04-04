@@ -30,9 +30,6 @@ const DataUpload = (props) => {
             Data Upload        
         </h1>
         <DataUploadForm availableOrgs= {props.auth.user.followed_organizations}/>
-        <a role="button" href="/#/data/download" className="btn btn-danger">
-            Cancel
-        </a> 
     </div>
   )
 }

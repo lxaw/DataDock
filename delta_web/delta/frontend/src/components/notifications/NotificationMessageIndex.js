@@ -34,6 +34,9 @@ const NotificationMessageIndex = (props) =>{
       setArrNotifications(res.data)
     })
   }
+  const getConverations = () =>{
+    
+  }
     useEffect(()=>{
         getNotifications()
     },[]);

@@ -3,15 +3,6 @@
 
 Delta project
 
-Authors:
-Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
-File name:  DataUploadForm.js
-
 Brief description: 
     This file defines the layout for the upload form. The upload form is
   how users can upload data. It allows them to change the file name, add tags,
@@ -63,7 +54,7 @@ const Container = styled.div`
     border-color: ${props => getColor(props)};
     border-style: dashed;
     background-color: #d2d2d2;
-    height:10em;
+    height:80%;
     color: #000000;
     outline: none;
     transition: border .24s ease-in-out;
@@ -190,134 +181,135 @@ const DataUploadForm = (props) =>{
     setTags(tags);
   }
 
-  return(
-      <form onSubmit = {onSubmit}
-      onKeyDown={(e)=> {e.key === 'Enter' && e.preventDefault()}}
-      >
-
-          {/* Dropzone */}
-          
-          <div className="container"> 
-          <Container {...getRootProps(isDragActive, isDragReject)}>
-              <input {...getInputProps()}/>
-              {!isDragActive && 'Click here or drop a folder/file to upload.'}
-              {isDragActive && !isDragReject && "Drop Folder / File"}
-              {isDragReject && "File type not accepted."}
-          </Container>
-          <p className="text-bg-danger">
-            {errors}
-          </p>
-          <ul className = "list-group mt-2">
-              {acceptedFiles.length > 0 && acceptedFiles.map((acceptedFile,index)=>(
-              <li className="list-group-item list-group-item-success" key={index}>
-                  {acceptedFile.name}
-              </li>
-              ))}
-          </ul>
+    return (
+    <form onSubmit={onSubmit} onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-5">
+            <Container {...getRootProps(isDragActive, isDragReject)}>
+              <input {...getInputProps()} />
+              {!isDragActive && 'Click here or drop files to upload.'}
+              {isDragActive && !isDragReject && 'Drop Files'}
+              {isDragReject && 'File type not accepted.'}
+            </Container>
+            <p className="text-danger">{errors}</p>
+            <ul className="list-group mt-2">
+              {acceptedFiles.length > 0 &&
+                acceptedFiles.map((acceptedFile, index) => (
+                  <li className="list-group-item list-group-item-info" key={index}>
+                    {acceptedFile.name}
+                  </li>
+                ))}
+            </ul>
+            <div>
+              <button className="btn btn-primary btn-lg">Upload</button>
+            </div>
           </div>
-          <br />
-
-
-          <div>
-
-            {/* File Name Form Control*/}
-
-            <div>
-              <h3>Data Set Name</h3>
-              <small>
-                Data set names should be descriptive of the file being uploaded. Don't worry about appending `.csv` to your files.
-              </small>
-              <div className="input-group">
-                <input required type="text" className="form-control" 
-                placeholder = "Enter name of file" id= "DataSetName"/>
-              </div>
-            </div>
-
-            {/* File Description Form Control*/}
-
-            <div>
-              <h3>Data Set Description</h3>
-              <small>
-                Data set descriptions should indicate important information about the file contents, the methods of collecting the data, and any other important information such as rights of use.
-              </small>
-              <div className="input-group">
-                <textarea required type="text" className="form-control" 
-                placeholder="Enter a description of the data set" id = "DataSetDescription"/>
-              </div>
-            </div>
-
-            {/* Visibility Radios */}
-            
-            <div>
-
-              
-              <h3>Visibility</h3>
-              <p>
-                File "visibility" is what allows you to control who sees your files. "Private" means that only you can see the file; go to &nbsp;  
-                <Link to="/profile/glance">
-                  this link
-                </Link> to see your private files. "Public" means anyone logged in can see the file. "Public to Orgs" means that all users registered under organizations that you select can see the file.
-              </p>
-              <div className= "form-check">
-                <input className ="form-check-input" name="flexCheck" type="radio" value="isPublic" id="flexCheckPublic"/>
-                <label className="form-check-label" htmlFor = "flexCheckPublic">
-                    Publically Visible
-                </label>
-              </div>
-
-              <div className= "form-check">
-                <input className ="form-check-input" name="flexCheck" type="radio" value="isPublic" id="flexCheckPublicToOrg"/>
-                <label className="form-check-label" htmlFor = "flexCheckPublicToOrg">
-                    Public to Orgs
-                </label>
-              </div>
-
-
-              <div className= "form-check">
-                <input className ="form-check-input" name="flexCheck" type="radio" value="isPublic" id="flexCheckPrivate"/>
-                <label className="form-check-label" htmlFor = "flexCheckPrivate">
-                    Private
-                </label>
-              </div>
-
-
-            </div>
-
-
-
-
-            {/* Available Organizations Selection */}
-
-            <div>
-              <h3>Available Organizations</h3>
-              <small>
-                When you select an organization, the file will be visible to all members of the organization when you make it publically visible.
-              </small>
-              <Select 
-                options = {selectOptions}
-                onChange={onSelectChange}
-                isMulti
+          <div className="col-md-7">
+            <div className="form-group">
+              <label htmlFor="DataSetName" className="text-secondary">
+                Data Set Name
+              </label>
+              <input
+                required
+                type="text"
+                className="form-control"
+                placeholder="Enter name of file"
+                id="DataSetName"
               />
+              <small className="text-muted">
+                Data set names should be descriptive of the file being uploaded. Don't worry about
+                appending `.csv` to your files.
+              </small>
             </div>
-            <br />
 
+            <div className="form-group">
+              <label htmlFor="DataSetDescription" className="text-secondary">
+                Data Set Description
+              </label>
+              <textarea
+                required
+                className="form-control"
+                placeholder="Enter a description of the data set"
+                id="DataSetDescription"
+              />
+              <small className="text-muted">
+                Data set descriptions should indicate important information about the file contents,
+                the methods of collecting the data, and any other important information such as
+                rights of use.
+              </small>
+            </div>
 
-            {/* Tag Form Control */}
+            <div className="form-group">
+              <label className="text-secondary">Visibility</label>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  name="flexCheck"
+                  type="radio"
+                  value="isPublic"
+                  id="flexCheckPublic"
+                />
+                <label className="form-check-label" htmlFor="flexCheckPublic">
+                  Publically Visible
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  name="flexCheck"
+                  type="radio"
+                  value="isPublic"
+                  id="flexCheckPublicToOrg"
+                />
+                <label className="form-check-label" htmlFor="flexCheckPublicToOrg">
+                  Public to Orgs
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  name="flexCheck"
+                  type="radio"
+                  value="isPublic"
+                  id="flexCheckPrivate"
+                />
+                <label className="form-check-label" htmlFor="flexCheckPrivate">
+                  Private
+                </label>
+              </div>
+              <small className="text-muted">
+                File "visibility" is what allows you to control who sees your files. "Private" means
+                that only you can see the file; go to <Link to="/profile/glance">this link</Link> to
+                see your private files. "Public" means anyone logged in can see the file. "Public to
+                Orgs" means that all users registered under organizations that you select can see
+                the file.
+              </small>
+            </div>
 
-            <div>
-              <h5>Tags</h5>
-              <small>To add tags, please type the tag text and then hit enter to save the tag.</small>
+            <div className="form-group">
+              <label className="text-secondary">Available Organizations</label>
+              <Select options={selectOptions} onChange={onSelectChange} isMulti />
+              <small className="text-muted">
+                When you select an organization, the file will be visible to all members of the
+                organization when you make it publically visible.
+              </small>
+            </div>
+
+            <div className="form-group">
+              <label className="text-secondary">Tags</label>
               <TagsInput updateParentTags={updateTags} />
+              <small className="text-muted">
+                To add tags, please type the tag text and then hit enter to save the tag.
+              </small>
             </div>
-            <br/>
 
-            {/* Submit Button */}
-
-            <button className="btn btn-success mb-2">Submit</button>
           </div>
-      </form>
-  )
-}
+        </div>
+      </div>
+    </form>
+  );
+};
 
 const mapStateToProps = state =>({
   auth:state.auth

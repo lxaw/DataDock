@@ -34,27 +34,11 @@ const DataCard = (props) => {
         'width' :'30rem'
     }
 
-    const [toDownload,setToDownload] = useState(props.isDownload);
     const [style,setStyle] = props.isDownload == true ? 
 
 
     useState({width:predefinedStyles['width'],height:predefinedStyles['height'],backgroundColor:"#cce6ff"}) : 
     useState({width:predefinedStyles['width'],height:predefinedStyles['height']});
-    // UTILITY: Changes the ToDownload attribute of the DataCard when clicked.
-    // UTILITY: Initial state is false, every click changes it to true and vice-versa.
-    const checkDownload = (e) =>{
-        e.preventDefault()
-        if(toDownload){
-            // uncheck
-            setToDownload(false);
-            setStyle({...style,backgroundColor:""})
-            props.parentOnCheckChange(props.data)
-        }else{
-            setToDownload(true)
-            setStyle({...style,backgroundColor:"#cce6ff"})
-            props.parentOnCheckChange(props.data)
-        }
-    }
 
   return (
     <div className="card" style={style}  data-testid="data_card-1">
@@ -92,9 +76,6 @@ const DataCard = (props) => {
           {props.linkText}
         </Link>
       </div>
-      <p onMouseDown={checkDownload} className = "btn btn-sm btn-primary">
-          Add to queue
-      </p>
     </div>
   );
 }
