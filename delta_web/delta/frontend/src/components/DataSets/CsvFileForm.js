@@ -1,28 +1,11 @@
-/**
- * Delta Project
- *
- * Authors:
- * Lexington Whalen (@lxaw)
- *
- * CsvFileForm.js
- *
- * File form that will take in all of the data that will be displayed with a file.
- * Used for both the initial creation and editing the details of a file
- * User inputs the information into each field which has a matching descriptor.
- * At the end the user presses submit and the form will be submitted
- */
-
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { updateCsvFile } from "../../actions/file";
-
 import TagsInput from "../data_transfer/TagsInput";
-
-// select
 import Select from "react-select";
+import { Link } from "react-router-dom";
 
 const CsvFileForm = (props) => {
-  // csvFile properties
   const [csvFileState, setCsvFileState] = useState({
     name: props.csvFile.name,
     id: props.csvFile.id,
@@ -33,211 +16,152 @@ const CsvFileForm = (props) => {
     tags: undefined,
   });
 
-  // available orgs
   const [selectOptions, setSelectOptions] = useState([]);
 
-  var defaultSelectValues = [];
-  props.csvFile.org_objs.map((org) => {
-    defaultSelectValues.push({
-      label: org.name,
-      value: org.id,
-    });
-  });
+  const defaultSelectValues = props.csvFile.org_objs.map((org) => ({
+    label: org.name,
+    value: org.id,
+  }));
 
   useEffect(() => {
-    // set up the select
-    var select = [];
-    props.auth.user.followed_organizations.map((org) => {
-      select.push({
-        value: org.id,
-        label: org.name,
-      });
-    });
+    const select = props.auth.user.followed_organizations.map((org) => ({
+      value: org.id,
+      label: org.name,
+    }));
     setSelectOptions(select);
-    // set up the tags
-    var tags = [];
-    props.csvFile.tags.map((tagObj) => {
-      tags.push(tagObj.text);
-    });
+
+    const tags = props.csvFile.tags.map((tagObj) => tagObj.text);
     setCsvFileState({ ...csvFileState, tags: tags });
   }, []);
 
-  if (csvFileState.tags == undefined) return;
+  if (!csvFileState.tags) return null;
 
-  /*UTILITY: Used by the organization selection box, pushes the selected orgs onto the csvfilestate.
-   *INPUTS: Takes in the array of selected organizations.
-   *OUTPUTS: Changes the state of the selected organizations of the file state.
-   */
   const onSelectChange = (arrSelects) => {
-    // reset
-    var arrOrgs = [];
-    arrSelects.map((obj) => {
-      arrOrgs.push(obj.value);
-    });
+    const arrOrgs = arrSelects.map((obj) => obj.value);
     setCsvFileState({ ...csvFileState, registered_organizations: arrOrgs });
   };
 
-  /*UTILITY: Changes file state of the target that is passed through.
-   *INPUTS: Target to be changed.
-   *OUTPUTS: New file state for the csv.
-   */
   const onChange = (e) => {
-    const newState = { ...csvFileState, [e.target.name]: e.target.value };
-    setCsvFileState(newState);
+    setCsvFileState({ ...csvFileState, [e.target.name]: e.target.value });
   };
 
-  /*UTILITY: Submits the updates to the csv file information.
-   *INPUTS: Will take in the data from the form fields and apply it to the csv file state.
-   *OUTPUTS: Updated csvFileState.
-   */
   const onSubmit = (e) => {
     e.preventDefault();
     props.updateCsvFile(csvFileState);
   };
 
-  /*UTILITY: Determines the state of the visibility of the file on the visibility radio between public, public to organization, or private.
-   *INPUTS: Takes input based on change in the selected visibility level.
-   *OUTPUTS: True or false values to general publicity or organization publicity to the csv file state.
-   */
   const onRadioChange = (e) => {
-    var isPublic = false;
-    var publicOrgs = false;
+    let isPublic = false;
+    let publicOrgs = false;
 
-    // Check which radio was clicked
-    if (e.target.id == "publicRadio" && e.target.checked) {
+    if (e.target.id === "publicRadio" && e.target.checked) {
       isPublic = true;
-      publicOrgs = false;
-    } else if (e.target.id == "publicOrgRadio" && e.target.checked) {
-      isPublic = false;
+    } else if (e.target.id === "publicOrgRadio" && e.target.checked) {
       publicOrgs = true;
-    } else if (e.target.id == "privateRadio" && e.target.checked) {
-      isPublic = false;
-      publicOrgs = false;
     }
 
-    const newState = {
+    setCsvFileState({
       ...csvFileState,
-      ["is_public"]: isPublic,
-      ["is_public_orgs"]: publicOrgs,
-    };
-    setCsvFileState(newState);
+      is_public: isPublic,
+      is_public_orgs: publicOrgs,
+    });
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      data-testid="csv_file_form-1"
-      onKeyDown={(e) => {
-        e.key === "Enter" && e.preventDefault();
-      }}
-    >
-      {/* File name input group */}
-      <div className="input-group mb-3">
-        {/* Pre-fix label */}
-        <div className="input-group-prepend">
-          <span
-            className="input-group-text bg-secondary text-white"
-            id="basic-addon1"
-          >
-            Dataset Name
-          </span>
-        </div>
-
-        {/* Input Box */}
+    <form onSubmit={onSubmit} data-testid="csv_file_form-1" onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}>
+      <div className="mb-3">
+        <label htmlFor="name" className="form-label">Dataset Name</label>
         <input
-          className="form-control"
-          value={csvFileState.name}
-          placeholder={csvFileState.name}
-          name="name"
           type="text"
+          className="form-control"
+          id="name"
+          name="name"
+          value={csvFileState.name}
           onChange={onChange}
-          aria-label={csvFileState.name}
-          aria-describedby="basic-addon1"
-        ></input>
+          placeholder={csvFileState.name}
+        />
       </div>
 
-      {/* Description input group */}
-      <div className="input-group mb-3">
-        {/* Pre-fix label */}
-        <div className="input-group-prepend">
-          <span className="input-group-text bg-secondary text-white">
-            Description
-          </span>
-        </div>
-
-        {/* Input Box */}
+      <div className="mb-3">
+        <label htmlFor="description" className="form-label">Description</label>
         <textarea
           className="form-control"
-          value={csvFileState.description}
-          placeholder={csvFileState.description}
+          id="description"
           name="description"
+          value={csvFileState.description}
           onChange={onChange}
-          aria-label={csvFileState.description}
+          placeholder={csvFileState.description}
+          rows="3"
         ></textarea>
       </div>
 
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="radio"
-          name="is_public"
-          id="publicRadio"
-          value="is_public"
-          checked={csvFileState.is_public}
-          onChange={onRadioChange}
-        />
-        <label className="form-check-label">Public</label>
+      <div className="mb-3">
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="visibility"
+            id="publicRadio"
+            checked={csvFileState.is_public}
+            onChange={onRadioChange}
+          />
+          <label className="form-check-label" htmlFor="publicRadio">Public</label>
+        </div>
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="visibility"
+            id="publicOrgRadio"
+            checked={csvFileState.is_public_orgs}
+            onChange={onRadioChange}
+          />
+          <label className="form-check-label" htmlFor="publicOrgRadio">Public To Orgs</label>
+        </div>
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="visibility"
+            id="privateRadio"
+            checked={!csvFileState.is_public && !csvFileState.is_public_orgs}
+            onChange={onRadioChange}
+          />
+          <label className="form-check-label" htmlFor="privateRadio">Private</label>
+        </div>
       </div>
 
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="radio"
-          name="is_public"
-          id="publicOrgRadio"
-          value="is_public_orgs"
-          checked={csvFileState.is_public_orgs}
-          onChange={onRadioChange}
-        />
-        <label className="form-check-label">Public To Orgs</label>
-      </div>
-
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="radio"
-          name="is_public"
-          id="privateRadio"
-          value="private"
-          checked={!csvFileState.is_public && !csvFileState.is_public_orgs}
-          onChange={onRadioChange}
-        />
-        <label className="form-check-label">Private</label>
-      </div>
-      <div>
-        <h6>Registered Organizations</h6>
+      <div className="mb-3">
+        <label htmlFor="organizations" className="form-label">Registered Organizations</label>
         <Select
+          id="organizations"
           defaultValue={defaultSelectValues}
           options={selectOptions}
           onChange={onSelectChange}
           isMulti
         />
       </div>
-      <div>
-        <h6>Tags</h6>
+
+      <div className="mb-3">
+        <label htmlFor="tags" className="form-label">Tags</label>
         <TagsInput
-          priorTags={csvFileState["tags"]}
-          updateParentTags={(tags) =>
-            setCsvFileState({ ...csvFileState, tags: tags })
-          }
+          id="tags"
+          priorTags={csvFileState.tags}
+          updateParentTags={(tags) => setCsvFileState({ ...csvFileState, tags: tags })}
         />
       </div>
 
-      <br />
-      <br />
+    <div className="row">
+      <div>
+        <Link to={`/csvs/${csvFileState.id}`}>
+          <button className="btn btn-danger">Back</button>
+        </Link>
+      </div>
+      <div>
+        <button type="submit" className="btn btn-primary">Update Information</button>
+      </div>
+    </div>
 
-      {/* Update Information Button */}
-      <button className="btn btn-success mb-2">Update Information</button>
     </form>
   );
 };

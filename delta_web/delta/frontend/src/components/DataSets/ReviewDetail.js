@@ -20,7 +20,7 @@ import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { updateReview } from "../../actions/review";
 
-import styles from "./cssFile.module.css";
+import styles from "./ReviewDetail.module.css";
 import Star from "./Star";
 
 const ReviewDetail = (props) => {
@@ -39,10 +39,7 @@ const ReviewDetail = (props) => {
 
   const { id } = useParams();
 
-  /* UTILITY: Retrieves the data of the current review.
-   * INPUTS: Makes use of the review id.
-   * OUTPUTS: sets the data of the review and the index of the review.
-   */
+  /* UTILITY: Retrieves the data of the current review. */
   const getData = () => {
     axios
       .get(`/api/review/${id}`, {
@@ -67,31 +64,24 @@ const ReviewDetail = (props) => {
     getData();
   }, []);
 
-  /* UTILITY: Runs when part of the review is changed.
-   * INPUTS: Newly updated information from the review.
-   * OUTPUTS: Updated review.
-   */
+  /* UTILITY: Runs when part of the review is changed. */
   const onChange = (e) => {
     const newState = { ...reviewData, [e.target.name]: e.target.value };
-    // character limits
+    
     if(e.target.name == "title"){
-      const curLength = e.target.value.length;
-      setTitleLength(curLength);
+      setTitleLength(e.target.value.length);
     }
     else if(e.target.name=="text"){
-      // description
-      const curLength = e.target.value.length;
-      setDescLength(curLength);
+      setDescLength(e.target.value.length);
     }
+    
     setReviewData(newState);
   };
 
-  /* UTILITY: Runs when the form is submitted and updates the data of the review.
-   * INPUTS: Takes in the information from the review.
-   * OUTPUTS: Review with the updated information.
-   */
+  /* UTILITY: Runs when the form is submitted and updates the data of the review. */
   const onSubmit = (e) => {
     e.preventDefault();
+    
     if(reviewData.title.length ==0 && reviewData.text.length==0){
       alert("Please add text to the title and description.");
       return;
@@ -102,9 +92,10 @@ const ReviewDetail = (props) => {
       alert("Please add text to the title.");
       return;
     }
+    
     props.updateReview({
       id: reviewData.id,
-      title: reviewData.title,
+      title: reviewData.title, 
       text: reviewData.text,
       rating: reviewData.rating,
     });
@@ -113,14 +104,9 @@ const ReviewDetail = (props) => {
   if (reviewData == null) return <div data-testid="review_detail-1"></div>;
 
   const RATINGS = ["Poor", "Fair", "Good", "Very good", "Excellent"];
-  const activeStar = {
-    fill: "yellow",
-  };
+  const activeStar = { fill: "gold" };
 
-  /* UTILITY: Increases the rating's index by 1.
-   * INPUTS: Takes in the index of the rating.
-   * OUTPUTS: Updated review state with increased rating index.
-   */
+  /* UTILITY: Increases the rating's index by 1. */  
   const changeRatingIndex = (index) => {
     setRatingIndex(index);
     const newState = { ...reviewData, rating: parseInt(index) + 1 };
@@ -128,65 +114,66 @@ const ReviewDetail = (props) => {
   };
 
   return (
-    <div className="container" dadta-testid="review_detail-1">
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <div className="d-flex justify-content-between">
-            <div className={styles.stars}>
-              {RATINGS.map((rating, index) => (
-                <Star
-                  key={index}
-                  index={index}
-                  changeRatingIndex={changeRatingIndex}
-                  style={ratingIndex >= index ? activeStar : {}}
-                />
-              ))}
-            </div>
-            <div>
-              <p>
-                Rating:{" "}
-                {RATINGS[ratingIndex]
-                  ? RATINGS[ratingIndex]
-                  : "No rating present yet."}
-              </p>
-            </div>
+    <div className={styles.container} data-testid="review_detail-1">
+      <form onSubmit={onSubmit} className={styles.form}>
+        <div className={styles.ratingContainer}>
+          <div className={styles.stars}>
+            {RATINGS.map((rating, index) => (
+              <Star 
+                key={index}
+                index={index}
+                changeRatingIndex={changeRatingIndex}
+                style={ratingIndex >= index ? activeStar : {}}
+              />
+            ))}
           </div>
+          <p className={styles.ratingText}>
+            Rating: {RATINGS[ratingIndex] || "No rating yet"}
+          </p>
         </div>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="title" className={styles.label}>
+            Title
+          </label>
           <input
-            className="form-control"
+            className={styles.input}
             id="title"
             name="title"
             onChange={onChange}
             value={reviewData.title}
             maxLength={TITLE_CHAR_LENGTH_MAX}
           />
-          <small id="titleHelp">Add a descriptive title ({TITLE_CHAR_LENGTH_MAX - titleLength} remaining characters).</small>
+          <small className={styles.helperText}>
+            Add a descriptive title ({TITLE_CHAR_LENGTH_MAX - titleLength} characters left)
+          </small>
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="description" className={styles.label}>
+            Description  
+          </label>
           <textarea
-            type="text"
-            className="form-control"
+            className={styles.textarea}
             id="description"
             onChange={onChange}
             name="text"
             value={reviewData.text}
             maxLength={DESC_CHAR_LENGTH_MAX}
           />
-          <small id="descriptionHelp">Add a description ({DESC_CHAR_LENGTH_MAX-descLength} remaining characters).</small>
+          <small className={styles.helperText}>
+            Add a description ({DESC_CHAR_LENGTH_MAX - descLength} characters left)
+          </small>
         </div>
-        <button type="submit" className="btn btn-outline-success">
+
+        <button type="submit" className={styles.submitButton}>
           Submit
         </button>
       </form>
-      <br />
-      <div>
-        <Link to={`/csvs/${reviewData.file}`} className="btn btn-danger">
-          Back
-        </Link>
-      </div>
+
+      <Link to={`/csvs/${reviewData.file}`} className={styles.backLink}>
+        Back
+      </Link>
     </div>
   );
 };

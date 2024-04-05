@@ -1,19 +1,8 @@
-/**
- * Delta Project
- *
- * Authors:
- * Lexington Whalen (@lxaw)
- * Gives a more detailed view of the data held inside of a csv file, and the reviews of a file.
- * Displays reviews under a file and allows users to create a review
- */
-
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { getCsvFile, deleteCsvFile } from "../../actions/file";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-
-// components
 import ReviewForm from "./ReviewForm";
 import Review from "./Review";
 import CsvFile from "./CsvFile";
@@ -41,38 +30,32 @@ const CsvFileDetail = (props) => {
     retrieveData();
   }, []);
 
-  if (csvFile == null) return <div data-testid="csv_file_detail-1"></div>;
+  if (!csvFile) return <div data-testid="csv_file_detail-1"></div>;
 
   return (
-    <div className="container" data-testid="csv_file_detail-1">
+    <div className="container my-4" data-testid="csv_file_detail-1">
       <div className="row">
-        <div className="col-8">
-          <div className="product-image">
-            <CsvFile data={csvFile} />
-          </div>
+        <div className="col-md-8">
+          <CsvFile data={csvFile} />
         </div>
-        <div className="col-4">
-          <div className="product-details">
-            <h1>{csvFile.name}</h1>
-            <div className="rating">
-              <h5>{csvFile.avg_rating} out of 5</h5>
-              <h5>{csvFile.num_reviews} customer reviews</h5>
-            </div>
-            <hr />
-            <div className="add-to-cart">
-              <button className="btn btn-primary">Add to Cart</button>
-            </div>
+        <div className="col-md-4">
+          <h2>{csvFile.name}</h2>
+          <div className="rating mb-3">
+            <h5>{csvFile.avg_rating} out of 5</h5>
+            <h6 className="text-muted">{csvFile.num_reviews} customer reviews</h6>
           </div>
+          <hr />
+          <button className="btn btn-primary w-100">Add to Cart</button>
         </div>
       </div>
-      <div className="row">
-        <div className="col-12">
-          <hr />
+      <div className="row mt-4">
+        <div className="col-md-12">
           <h3>Reviews</h3>
           <ReviewForm csvFileId={id} handleSubmit={retrieveData} />
+          <hr />
           <div className="reviews">
             {arrReviews.map((data) => (
-              <Review reviewData={data} refreshReviews={retrieveData} key={data.id} />
+              <Review key={data.id} reviewData={data} refreshReviews={retrieveData} />
             ))}
           </div>
         </div>
@@ -85,6 +68,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCsvFile, deleteCsvFile })(
-  CsvFileDetail
-);
+export default connect(mapStateToProps, { getCsvFile, deleteCsvFile })(CsvFileDetail);
