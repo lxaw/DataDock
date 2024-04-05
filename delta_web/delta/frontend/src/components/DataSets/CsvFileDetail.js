@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getCsvFile, deleteCsvFile } from "../../actions/file";
+import { getCsvFile, deleteCsvFile, addToCart } from "../../actions/file";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReviewForm from "./ReviewForm";
@@ -26,6 +26,13 @@ const CsvFileDetail = (props) => {
       });
   };
 
+  const addFileToCart = () => {
+    const dictData = {
+      'file_id':id
+    }
+    props.addToCart(dictData)
+  }
+
   useEffect(() => {
     retrieveData();
   }, []);
@@ -45,7 +52,9 @@ const CsvFileDetail = (props) => {
             <h6 className="text-muted">{csvFile.num_reviews} customer reviews</h6>
           </div>
           <hr />
-          <button className="btn btn-primary w-100">Add to Cart</button>
+          <button className="btn btn-primary w-100" onClick={addFileToCart}>
+            Add to Cart
+          </button>
         </div>
       </div>
       <div className="row mt-4">
@@ -68,4 +77,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCsvFile, deleteCsvFile })(CsvFileDetail);
+export default connect(mapStateToProps, { getCsvFile, deleteCsvFile,addToCart})(CsvFileDetail);

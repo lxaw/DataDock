@@ -10,7 +10,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Profile, Cart
+from .models import Profile, Cart,CartItem
 
 # create the admin class for profile
 class ProfileAdmin(admin.ModelAdmin):
@@ -20,5 +20,9 @@ class ProfileAdmin(admin.ModelAdmin):
 class CartAdmin(admin.ModelAdmin):
     fields = ['user']
 
+class CartItemAdmin(admin.ModelAdmin):
+    fields = ['cart','dataset']
+
 admin.site.register(Profile,ProfileAdmin)
 admin.site.register(Cart,CartAdmin)
+admin.site.register(CartItem,CartItemAdmin)

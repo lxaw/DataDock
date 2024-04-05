@@ -2,22 +2,14 @@
 #
 # Delta project.
 #
-# Authors:
-# Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
-#
-# File name: urls.py
-#
 # Brief description: 
 #       This file handles the urls related to accounts. This is
 # mainly register, delete, login, and logout. 
 #
 from django.urls import path, include
 from .api import (RegisterAPI,LoginAPI,UserAPI
-,DeleteAPI,UpdateAPI,ViewsetPublicUser)
+,DeleteAPI,UpdateAPI,ViewsetPublicUser,ViewsetCart,
+ViewsetCartItem)
 from knox import views as knox_views
 
 from rest_framework import routers
@@ -38,5 +30,7 @@ urlpatterns = [
 router = routers.DefaultRouter()
 # public user
 router.register('api/user',ViewsetPublicUser,"PublicUser")
+router.register('api/cart',ViewsetCart,"Cart")
+router.register('api/cart_item',ViewsetCartItem,"CartItem")
 
 urlpatterns += router.urls

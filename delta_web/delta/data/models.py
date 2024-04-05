@@ -2,13 +2,6 @@
 #
 # Delta project.
 #
-# Authors:
-# Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
-#
 # models.py
 #
 # Stores all the information related to the models of `data` app.
@@ -30,6 +23,9 @@ import os
 
 # for add to org
 from organizations.models import Organization
+
+# cart
+from accounts.models import Cart
 
 User = get_user_model()
 

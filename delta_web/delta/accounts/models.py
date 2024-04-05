@@ -2,18 +2,13 @@
 #
 # Delta project.
 #
-# Authors:
-# Lexington Whalen (@lxaw)
-#
-# File name:
-# models.py
-#
 # Brief description:
 # 
 # Stores all the information related to the models of `accounts` app.
 
 from django.db import models
 from django.contrib.auth.models import User
+
 
 # simple profile
 # https://www.youtube.com/watch?v=FdVuKt_iuSI
@@ -35,5 +30,14 @@ class Profile(models.Model):
 class Cart(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
 
+# Item for cart
+#
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart,related_name='cart_items',
+                             on_delete=models.CASCADE)
+    dataset = models.ForeignKey(to='data.DataSet',
+                                on_delete=models.CASCADE,
+                                related_name='cart_items')
+
     def __str__(self):
-        return '{} Cart'.format(self.user.username)
+        return f"{self.cart.user.username}'s cart item: {self.dataset}"
