@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1712673060.60205 "/home/lex/Desktop/d/research/Delta/conference_paper/main.tex" "main.pdf" "main" 1712673061.95064 0
+["pdflatex"] 1712674361.18066 "/home/lex/Desktop/d/research/Delta/conference_paper/main.tex" "main.pdf" "main" 1712674362.5498 0
   "/home/lex/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1711981755.20458 28192 c58f621899f60e04e256426bc00c5852 ""
   "/home/lex/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt" 1711634391.87013 21110824 d49ad83a1dc11d68517ebbde01d9bfdf ""
   "/home/lex/.miktex/texmfs/install/fonts/enc/dvips/base/8r.enc" 1711457623.22374 4993 1194fb36dfcb11d9ae9802f2b00b60a3 ""
@@ -85,15 +85,16 @@
   "/home/lex/.miktex/texmfs/install/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1711459773.15587 9714 ba3194bd52c8499b3f1e3eb91d409670 ""
   "/home/lex/.miktex/texmfs/install/tex/latex/url/url.sty" 1711459768.23584 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/home/lex/.miktex/texmfs/install/tex/latex/xcolor/xcolor.sty" 1711457615.31169 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "/home/lex/Desktop/d/research/Delta/conference_paper/main.tex" 1712673057.7103 36813 c686f107e1c72d1f916b84a2f8d79503 ""
+  "/home/lex/Desktop/d/research/Delta/conference_paper/main.tex" 1712674356.82861 37065 458da62f6a1a68ab326f36c4badc9915 ""
   "figures/cart.png" 1712671057.70787 147101 ac41fa6ea8dd9ea883aaa36a5b4d102d ""
+  "figures/convo.png" 1712674272.94302 112278 9968153fa45be38755346fe0084d7b2c ""
   "figures/organization.png" 1712672986.60784 137816 b9bbfa0f06f6675a952df46c3a9c88c0 ""
   "figures/review.png" 1712672291.12734 101039 0a2bcbb9185652552265d3a0ac0ddb0e ""
   "figures/search.png" 1712672193.92243 165948 864ce8adfc3bfa9d2698274b534b2ec5 ""
   "figures/upload_page.png" 1712672527.25811 196467 644a01692f63b74f88db413290430326 ""
-  "main.aux" 1712673061.83444 6006 c87c2beff70c07f67d64147ab34964b7 "pdflatex"
-  "main.out" 1712673061.83844 2570 bb038d211ff740c1a140f03b97824990 "pdflatex"
-  "main.tex" 1712673057.7103 36813 c686f107e1c72d1f916b84a2f8d79503 ""
+  "main.aux" 1712674362.43271 6387 2706db07054a4bb3e48e5594c6d62890 "pdflatex"
+  "main.out" 1712674362.43271 2570 bb038d211ff740c1a140f03b97824990 "pdflatex"
+  "main.tex" 1712674356.82861 37065 458da62f6a1a68ab326f36c4badc9915 ""
   (generated)
   "main.aux"
   "main.log"
