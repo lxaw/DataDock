@@ -9,6 +9,12 @@ const DataCard = ({ data, isDownload, link, linkText }) => {
     width: '30rem',
   };
 
+  const descriptionStyle = {
+    height: '6rem',
+    overflowY: 'auto',
+    paddingRight: '1rem',
+  };
+
   const tagStyle = {
     display: 'inline-block',
     backgroundColor: '#f0f0f0',
@@ -35,22 +41,26 @@ const DataCard = ({ data, isDownload, link, linkText }) => {
             <div className="text-muted">{data.formatted_date}</div>
           </div>
         </div>
-        <p className="card-text">{data.description}</p>
-        <div className="mb-3">
-          <strong>Tags:</strong>
-          <div className="mt-1">
-            {data.tags.map((tag, index) => (
-              <span key={index} style={tagStyle}>
-                {tag.text}
-              </span>
-            ))}
+        <p className="card-text" style={descriptionStyle}>
+          {data.description}
+        </p>
+        <div className="row mt-auto">
+          <div className="col-8">
+            <strong>Tags:</strong>
+            <div className="mt-1">
+              {data.tags.map((tag, index) => (
+                <span key={index} style={tagStyle}>
+                  {tag.text}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-          <div>
+          <div className="col-4 d-flex justify-content-end align-items-end">
             <Link to={link} className="btn btn-sm btn-primary">
               {linkText}
             </Link>
           </div>
+        </div>
       </div>
     </div>
   );

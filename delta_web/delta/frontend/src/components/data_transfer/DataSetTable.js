@@ -68,77 +68,86 @@ const DataSetTable = (props) => {
     return null;
   }
 
-  return (
-    <div data-testid="public_csv_file_table-1">
-      <form onSubmit={onSubmit}>
-        <div className="mb-4">
-          <label htmlFor="inputSearchFileName" className="form-label">
-            File Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputSearchFileName"
-            placeholder={`Enter at least ${textMinLength} characters`}
-            onChange={onSearchChange}
-          />
+return (
+  <div data-testid="public_csv_file_table-1">
+    <form onSubmit={onSubmit}>
+      <div className="mb-4">
+        <label htmlFor="inputSearchFileName" className="form-label">
+          File Name
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputSearchFileName"
+          placeholder={`Enter at least ${textMinLength} characters`}
+          onChange={onSearchChange}
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="inputSearchTags" className="form-label">
+          Tags
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputSearchTags"
+          placeholder="Enter tags separated by spaces"
+          onChange={onSearchChange}
+        />
+        <div className="form-text">
+          For example, enter "cat dog" to see files with tags of "cat" and
+          "dog".
         </div>
-        <div className="mb-4">
-          <label htmlFor="inputSearchTags" className="form-label">
-            Tags
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputSearchTags"
-            placeholder="Enter tags separated by spaces"
-            onChange={onSearchChange}
-          />
-          <div className="form-text">
-            For example, enter "cat dog" to see files with tags of "cat" and
-            "dog".
+      </div>
+      <div className="row">
+        {/* right now we hide */}
+        <div className="col-md-3 d-none">
+          <div className="card mb-4">
+            <div className="card-body">
+              <h5 className="card-title">Download Queue</h5>
+              <p className="card-text fw-bold">
+                {numfilesSelected} File{numfilesSelected !== 1 && 's'}{' '}
+                Selected
+              </p>
+              <button
+                type="submit"
+                className="btn btn-primary d-flex align-items-center"
+              >
+                <i className="bi bi-cloud-download me-2"></i>
+                Download Files
+              </button>
+            </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-3">
-            <div className="card mb-4">
-              <div className="card-body">
-                <h5 className="card-title">Download Queue</h5>
-                <p className="card-text fw-bold">
-                  {numfilesSelected} File{numfilesSelected !== 1 && 's'}{' '}
-                  Selected
-                </p>
-                <button
-                  type="submit"
-                  className="btn btn-primary d-flex align-items-center"
-                >
-                  <i className="bi bi-cloud-download me-2"></i>
-                  Download Files
-                </button>
+        <div className="col-md-9">
+          <div
+            style={{
+              height: '80vh',
+              overflowY: 'scroll',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '1rem',
+            }}
+          >
+            {tableCsvs.map((item) => (
+              <div key={item.id}>
+                <DataCard
+                  data={item}
+                  link={`/csvs/${item.id}`}
+                  linkText="View Dataset"
+                  parentOnCheckChange={onCheckChange}
+                  isDownload={arrFilesToDownload.some(
+                    (csv) => csv.id === item.id
+                  )}
+                />
               </div>
-            </div>
-          </div>
-          <div className="col-md-9">
-            <div className="row row-cols-1 row-cols-md-1 g-4">
-              {tableCsvs.map((item) => (
-                <div key={item.id} className="col">
-                  <DataCard
-                    data={item}
-                    link={`/csvs/${item.id}`}
-                    linkText="View Dataset"
-                    parentOnCheckChange={onCheckChange}
-                    isDownload={arrFilesToDownload.some(
-                      (csv) => csv.id === item.id
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
-      </form>
-    </div>
-  );
+      </div>
+    </form>
+  </div>
+);
 };
 
 const mapStateToProps = (state) => ({

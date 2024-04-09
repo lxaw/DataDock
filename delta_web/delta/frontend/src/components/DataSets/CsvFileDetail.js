@@ -49,7 +49,7 @@ const CsvFileDetail = (props) => {
           <h2>{csvFile.name}</h2>
           <div className="rating mb-3">
             <h5>{csvFile.avg_rating} out of 5</h5>
-            <h6 className="text-muted">{csvFile.num_reviews} customer reviews</h6>
+            <h6 className="text-muted">{csvFile.num_reviews} reviews</h6>
           </div>
           <hr />
           <button className="btn btn-primary w-100" onClick={addFileToCart}>

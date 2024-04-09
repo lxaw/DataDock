@@ -172,7 +172,6 @@ class ViewsetDataSet(viewsets.ModelViewSet):
     
     def partial_update(self, request, *args, **kwargs):
         # super().partial_update(request,*args,**kwargs) # this causes an X-CSRF error
-        print(request.data)
         obj = DataSet.objects.get(id=kwargs['pk'])
 
         # NOTE: likely a better way to do this
@@ -187,7 +186,6 @@ class ViewsetDataSet(viewsets.ModelViewSet):
                         obj.registered_organizations.add(orgObj)
                         obj.save()
                     except Organization.DoesNotExist as e:
-                        print(e)
                         pass
             elif k.startswith('tags'):
                 # create new tags

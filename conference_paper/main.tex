@@ -183,7 +183,58 @@ The use of REST APIs provides a standardized and platform-agnostic interface for
 
 By leveraging the power of Django, Django REST Framework, React, Redux, and Axios, Delta provides a robust, scalable, and user-friendly platform for researchers and data scientists to manage, share, and collaborate on their data. The integration of these technologies enables a seamless and efficient data flow between the frontend and backend, resulting in a responsive and interactive user experience. The modular architecture and clear separation of concerns facilitate maintainability, extensibility, and independent scaling of the application components.
 \section{Current Product}
-[write]
+The current implementation of Delta provides a fully functional REST API with a range of features tailored for data sharing and collaboration among researchers. Key capabilities of the platform include:
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/cart.png}
+  \caption{Downloading data. The download page is designed to be similar to that of an e-commerce website.}
+  \label{fig:delta-download}
+\end{figure}
+
+\subsection{Data Upload and Management}
+Delta enables users to upload datasets through a simple and intuitive interface. The upload process supports both individual files and entire folders, allowing researchers to organize their data hierarchically. When uploading a dataset, users can provide essential metadata such as the dataset name, tags for easy discoverability, and a description to provide context and additional information. Furthermore, users can specify the privacy level of their datasets, choosing from options like public (accessible to all users), public to community (visible only to members of specific communities), or private (accessible only to the dataset owner).
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/upload_page.png}
+  \caption{Uploading data. You are able to add a name, description, visibility settings, organization settings, and tags.}
+  \label{fig:delta-upload}
+\end{figure}
+
+\subsection{User Authentication and Account Management}
+The platform incorporates a secure user authentication system, requiring users to register and log in to access the full range of features. User registration is straightforward, and the login process is designed to be seamless and efficient. Delta also provides account management functionalities, allowing users to update their profile information or remove their account if needed. This ensures that users have control over their personal data and can maintain the accuracy of their profile within the platform.
+
+\subsection{Data Discoverability and Review}
+To facilitate data discovery and quality assessment, Delta implements a rating system for datasets. Users can review and rate datasets on a scale of 1 to 5, providing valuable feedback to dataset owners and helping other researchers gauge the quality and relevance of the data. The reviews are prominently displayed alongside the dataset information, enabling users to make informed decisions when selecting datasets for their research. This feature promotes transparency and encourages the sharing of high-quality data within the research community.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/search.png}
+  \caption{Searching data. You can filter by name and tags.}
+  \label{fig:delta-search}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/review.png}
+  \caption{Reviewing data. You can rate the dataset from 1-5, and comment on its utility.}
+  \label{fig:delta-review}
+\end{figure}
+
+\subsection{Collaboration and Communication}
+Delta recognizes the importance of collaboration and communication in research. The platform offers a direct messaging feature, allowing users to initiate conversations with dataset authors. This facilitates direct interaction between researchers, enabling them to ask questions, provide feedback, or discuss potential collaborations. By fostering communication and knowledge sharing, Delta aims to break down silos and encourage cross-disciplinary research.
+
+\subsection{Community Building}
+To further support collaboration and knowledge exchange, Delta incorporates community creation and management features. Users can create communities focused on specific research areas, methodologies, or projects. Researchers can join these communities to connect with like-minded individuals, share datasets, and engage in discussions. The community feature enhances the discoverability of relevant datasets and promotes the formation of research networks. By enabling researchers to join and contribute to communities, Delta facilitates the growth of vibrant and collaborative research ecosystems.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/organization.png}
+  \caption{Organizations. Note that this is the same public-to-organizations file we uploaded prior. The file is only public to our registered organization.}
+  \label{fig:delta-organization}
+\end{figure}
+
+\subsection{Notifications and Updates}
+Delta keeps users informed about relevant activities and updates through a notification system. Users receive notifications for various events, such as when a new dataset is uploaded within their communities, when their datasets receive reviews or ratings, or when they receive direct messages from other users. These notifications ensure that researchers stay up to date with the latest developments and can promptly respond to feedback or inquiries. The notification system enhances user engagement and fosters a sense of active participation within the platform.
+
+The current implementation of Delta demonstrates a comprehensive set of features designed to streamline data sharing, collaboration, and discovery. By providing a user-friendly interface, robust data management capabilities, and communication tools, Delta empowers researchers to efficiently share their datasets, connect with peers, and advance their research endeavors. The platform's focus on user control, data quality, and community building sets it apart as a valuable tool for the research community.
+
 \section{Future Goals}
 [write]
 

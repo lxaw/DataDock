@@ -1,43 +1,27 @@
-/*
-###############################################################################
-
-Delta project
-
-Authors:
-Lexington Whalen (@lxaw)
-Carter Marlowe (@Cmarlowe132)
-Vince Kolb-LugoVince (@vancevince) 
-Blake Seekings (@j-blake-s)
-Naveen Chithan (@nchithan)
-
-File name:  MessageDetail.js
-
-Brief description: 
-    When having a conversation with another user, messages appear in cards.
-Each card displays the message, the time sent, and the user who sent the
-message. This file defines the layout of that message card.
-
-###############################################################################
-*/
-
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const MessageDetail = (props) => {
-    /*
-    Expects:
-    author_username
-    text
-    date
-    */
   return (
-    <div className="border m-3 p-2 rounded">
-        <div className = "row">
-          <small> Sent by <Link to={`/profile/${props.author_username}`}>{props.author_username}</Link> at {props.date}</small>
+    <div className="card mb-3">
+      <div className="card-body">
+        <div className="d-flex align-items-center mb-2">
+          <img
+            src={`https://ui-avatars.com/api/?name=${props.author_username}&background=random&size=32`}
+            alt={props.author_username}
+            className="rounded-circle me-2"
+          />
+          <div>
+            <Link to={`/profile/${props.author_username}`} className="text-primary fw-bold">
+              {props.author_username}
+            </Link>
+            <small className="text-muted ms-2">{props.date}</small>
+          </div>
         </div>
-        {props.text} 
+        <p className="card-text">{props.text}</p>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default MessageDetail
+export default MessageDetail;
