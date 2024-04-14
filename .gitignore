@@ -218,3 +218,6 @@ sketch
 static/users/*
 *.csv
 *.zip
+
+# Paper
+conference_paper/*
