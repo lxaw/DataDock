@@ -1,5 +1,5 @@
 # What is it ❓
-Delta is a web file system designed for use by researchers and data scientists. It is essentially a file transfer system with a social media and market aspect. Researchers or data scientists can perform CRUD operations on data, and can also assess the validity of data by creating posts on data sets or ML models or by rating data sets or ML models. 
+DataDock is a web file system designed for use by researchers and data scientists. It is essentially a file transfer system with a social media and market aspect. Researchers or data scientists can perform CRUD operations on data, and can also assess the validity of data by creating posts on data sets or ML models or by rating data sets or ML models. 
 
 # Style Guide 📓
 Please adhere to the guidelines for JavaScript and Python found [here](https://google.github.io/styleguide/)
@@ -8,9 +8,9 @@ Please adhere to the guidelines for JavaScript and Python found [here](https://g
 Note the following instructions are designed for *nix machines.
 
 To run, first clone the repository by running:
-`git clone https://github.com/SCCapstone/Delta` 
+`git clone https://github.com/SCCapstone/DataDock` 
 
-Then cd into `Delta`. 
+Then cd into `DataDock`. 
 
 You should have installed `pipenv`. Install following `https://pipenv.pypa.io/en/latest/install/` or some other resource online.
 
@@ -21,7 +21,7 @@ To run the backend, cd into `delta_web` with `cd delta_web`.
 Change directory into `delta` with `cd delta`.
 
 The currect working directory should be something like:
-`[OTHER_DIRECTORIES]/Delta/delta_web/delta/`
+`[OTHER_DIRECTORIES]/DataDock/delta_web/delta/`
 
 Then run `pipenv run python3 manage.py runserver`. Now the backend should be running.
 
@@ -44,7 +44,7 @@ In order to build this project, you will first have to install:
 - See [here](https://www.makeuseof.com/install-python-ubuntu/)
 
 # Testing 🧪
-Testing the Delta application includes more than a dozens unit and behavioral tests. To accomplish this, we
+Testing the DataDock application includes more than a dozens unit and behavioral tests. To accomplish this, we
 use a combination of testing libraries, which are listed below.
 
 ## Testing Technology 💻
@@ -54,7 +54,7 @@ For unit tests we use the standard Django testing framework. You can read more o
 
 ### Running Unit tests 📝
 All unit tests are found in subdirectories of the the delta directory
-`/Delta/delta_web/delta`
+`/DataDock/delta_web/delta`
 
 Be sure to be in this directory when running the following commands to perform unit tests.
 
@@ -84,11 +84,11 @@ Unit tests run against APIs in the following sub-directories:
 Behavioral tests are performed using [Jest](https://jestjs.io/). You can read more on how Jest is used with React [here](https://reactjs.org/docs/testing.html).
 
 All the behavioral tests can be found in 
-`/Delta/delta_web/delta/frontend/tests/`
+`/DataDock/delta_web/delta/frontend/tests/`
 
 When running behavior tests, be sure to be in the following directory:
 
-`/Delta/delta_web/delta/frontend/`
+`/DataDock/delta_web/delta/frontend/`
 
 To run the tests, from the above directory type
 `npm run coverage`.
@@ -98,4 +98,4 @@ From there the terminal will show what tests are found, what pass, and what warn
 Note that when making a behavioral test with Jest the JS file must have a `.test.js` extension. 
 
 ### Support ❤️
-- Delta is an ambitious project. As such, there are many things that can be added. Please feel free to open an issue for something you think may be useful. This is intended to be a community project.
+- DataDock is an ambitious project. As such, there are many things that can be added. Please feel free to open an issue for something you think may be useful. This is intended to be a community project.
