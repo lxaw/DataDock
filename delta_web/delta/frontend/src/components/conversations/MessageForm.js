@@ -47,7 +47,7 @@ const MessageForm = (props) => {
             </small>
         </div>
         <div className="row">
-            <div className="col-9">
+            <div className="col-10">
                 <div className = "form-group">
                     <input className="form-control" id = "text"
                     name="text"
@@ -55,8 +55,8 @@ const MessageForm = (props) => {
                     />
                 </div>
             </div>
-            <div className= "col-3">
-                <button className="btn btn-outline-success">
+            <div className= "col-2">
+                <button className="btn btn-outline-success" style={{width:"100%"}}>
                     Send
                 </button>
             </div>

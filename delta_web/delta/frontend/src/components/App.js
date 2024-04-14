@@ -15,6 +15,9 @@ import NotFound from './home/NotFound'
 // about page
 import About from './about/About';
 
+// bootstrap icons
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 // profile
 /*
 NOTE: 

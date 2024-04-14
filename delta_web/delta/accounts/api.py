@@ -17,8 +17,11 @@ from organizations.models import Organization
 from rest_framework import status
 from rest_framework.decorators import action
 from knox.models import AuthToken
-from .serializers import UserSerializer,RegisterSerializer,LoginSerializer,PublicUserSerializer
+from .serializers import (UserSerializer,RegisterSerializer,
+                          LoginSerializer,PublicUserSerializer,
+                          CartSerializer,CartItemSerializer)
 from organizations.serializers import OrganizationSerializer
+from django.http import HttpResponse
 
 from rest_framework import viewsets, permissions
 
@@ -32,6 +35,10 @@ from django.contrib.auth import get_user_model
 
 # Notifications
 from social.models import (NotificationNews,NotificationWhatsHot)
+
+# import the cart
+from .models import Cart,CartItem
+from data.models import DataSet
 
 User = get_user_model()
 
@@ -309,3 +316,35 @@ class ViewsetPublicUser(viewsets.ModelViewSet):
     def get_user(self,request):
         user = User.objects.get(username=request.data.get('username'))
         return Response(self.serializer_class(user).data)
+
+class ViewsetCart(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    serializer_class = CartSerializer    
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+class ViewsetCartItem(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    serializer_class = CartItemSerializer
+
+    def get_queryset(self):
+        return self.request.user.cart.cart_items.all()
+
+    def create(self,request):
+        # the dataset we will be adding to our cart
+        file_id = request.data['file_id']
+        dataSet = DataSet.objects.get(pk=file_id)
+
+        # the cart of the user
+        user_cart = request.user.cart
+
+        # create a new cartitem
+        cartItem = CartItem(cart=user_cart,dataset=dataSet)
+        cartItem.save()
+
+        return HttpResponse()

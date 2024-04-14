@@ -45,9 +45,6 @@ const CsvFileEdit = (props) => {
     <div className="container" data-testid="csv_file_edit-1">
       <div key={csvFile.id}>
         <CsvFileForm csvFile={csvFile} />
-        <Link to={`/csvs/${csvFile.id}`}>
-          <button className="btn btn-sm btn-primary">Back</button>
-        </Link>
       </div>
     </div>
   );

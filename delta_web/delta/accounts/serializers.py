@@ -22,6 +22,9 @@ from organizations.serializers import OrganizationSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
+# cart
+from .models import Cart,CartItem
+
 # User serializer
 class UserSerializer(serializers.ModelSerializer):
     # Number of followed organizations
@@ -96,3 +99,19 @@ class PublicUserSerializer(serializers.ModelSerializer):
     
     def get_bio(self,obj):
         return obj.profile.bio
+
+class CartSerializer(serializers.ModelSerializer):
+    cart_items = serializers.SerializerMethodField() 
+    class Meta:
+        model = Cart
+        fields = ('cart_items','user')
+    
+    def get_cart_items(self,obj):
+        return obj.cart_items.all().values()
+
+class CartItemSerializer(serializers.ModelSerializer):
+
+    
+    class Meta:
+        model = CartItem
+        fields = ('cart','dataset')

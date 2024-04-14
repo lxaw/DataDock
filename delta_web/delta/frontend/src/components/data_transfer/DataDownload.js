@@ -46,12 +46,10 @@ const DataDownload = (props) =>{
         <div className="container" data-testid="data_download-1">
             <div>
                 <h1>
-                    Download a Dataset
+                    Search Datasets
                 </h1>
                 <p>
-                    Click a file to add it to your download queue. Files in the queue will have a light blue background. 
-                    To remove a file from the queue, reclick it.
-                    You must click at least one file to be able to download. To download, click the cloud icon when having one or more files in the download queue.
+                    Click on a dataset to view it. From viewing, you can also add the dataset to your cart. You can search datasets by file name or by tags.
                 </p>
             </div>
             <DataSetTable 

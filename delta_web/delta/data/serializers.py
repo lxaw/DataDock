@@ -2,15 +2,6 @@
 #
 # Delta project.
 #
-# Authors:
-# Lexington Whalen (@lxaw)
-# Carter Marlowe (@Cmarlowe132)
-# Vince Kolb-LugoVince (@vancevince) 
-# Blake Seekings (@j-blake-s)
-# Naveen Chithan (@nchithan)
-#
-# serializers.py
-#
 # The serializers for the data app.
 #
 from rest_framework import serializers

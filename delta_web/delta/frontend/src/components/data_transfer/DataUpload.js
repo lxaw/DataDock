@@ -26,13 +26,7 @@ const DataUpload = (props) => {
   if(props.auth.user.username == undefined) return;
   return(
     <div className = "container" data-testid="data_upload-1">
-        <h1>
-            Data Upload        
-        </h1>
         <DataUploadForm availableOrgs= {props.auth.user.followed_organizations}/>
-        <a role="button" href="/#/data/download" className="btn btn-danger">
-            Cancel
-        </a> 
     </div>
   )
 }

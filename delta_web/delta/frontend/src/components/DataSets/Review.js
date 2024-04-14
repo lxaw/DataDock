@@ -1,74 +1,50 @@
-/**
- * Delta Project
- *
- * Authors:
- * Lexington Whalen (@lxaw)
- * Carter Marlowe (@Cmarlowe123)
- * Vince Kolb-Lugo (@vancevince)
- * Blake Seekings (@j-blake-s)
- * Naveen Chithan (@nchithan)
- *
- * Review.js
- *
- * Review component that will be displayed under files
- * Each Review shows the data associated with that review
- * such as the author, title, and the text for it
- * Users who create a review can also edit or delete the review
- * and the author's name links to their profile.
- */
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteReview } from "../../actions/review";
-
-import StarSvg from "./StarSvg";
+import { FaStar } from "react-icons/fa";
 
 const Review = (props) => {
-  const activeStar = { fill: "yellow" };
+  const { reviewData, auth, deleteReview, refreshReviews } = props;
 
-  var arrStars = [];
-  for (let i = 0; i < 5; i++) {
-    arrStars.push(
-      <StarSvg style={i < props.reviewData.rating ? activeStar : {}} />
-    );
-  }
+  const handleDelete = () => {
+    deleteReview(reviewData.id);
+    setTimeout(refreshReviews, 200);
+  };
 
-  /* UTILITY: Deletes the Review that a user is selecting to delete.
-   * INPUTS: Takes in the ID of the review that is going to be deleted.
-   * OUTPUTS: Deletes the selected Review.
-   */
-  const handleDelete = (e) => {
-    props.deleteReview(props.reviewData.id);
-    setTimeout(() => {
-      props.refreshReviews();
-    }, 200);
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <FaStar
+          key={i}
+          color={i < reviewData.rating ? "gold" : "gray"}
+          className="mr-1"
+        />
+      );
+    }
+    return stars;
   };
 
   return (
-    <div className="container border p-3 m-3" data-testid="review-1">
+    <div className="border p-3 m-3" data-testid="review-1">
       <div className="d-flex justify-content-between">
         <div>
           <p>
-            <Link to={`/profile/${props.reviewData.author_username}`}>
-              {props.reviewData.author_username}
-            </Link>
-            -{props.reviewData.formatted_date}
+            <Link to={`/profile/${reviewData.author_username}`}>
+              {reviewData.author_username}
+            </Link>{" "}
+            - {reviewData.formatted_date}
           </p>
-          <h4>{props.reviewData.title}</h4>
+          <h4>{reviewData.title}</h4>
         </div>
-        <div>
-          <div className="d-flex flex-row">
-            {arrStars.map((starSvg) => starSvg)}
-          </div>
-        </div>
+        <div className="d-flex">{renderStars()}</div>
       </div>
       <hr />
-      <div style={{inlineSize:"100%",overflowWrap:"break-word"}}>
-        <p>{props.reviewData.text}</p>
-      </div>
-      {props.auth.user.id == props.reviewData.author && (
-        <div className="d-flex justify-content-between">
-          <Link to={`/reviews/${props.reviewData.id}`}>
+      <p className="text-wrap">{reviewData.text}</p>
+      {auth.user.id === reviewData.author && (
+        <div className="d-flex justify-content-between mt-3">
+          <Link to={`/reviews/${reviewData.id}`}>
             <button className="btn btn-sm btn-outline-success">Edit</button>
           </Link>
           <button

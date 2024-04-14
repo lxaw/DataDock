@@ -1,13 +1,6 @@
 /**
  * Delta Project
  *
- * Authors:
- * Lexington Whalen (@lxaw)
- * Carter Marlowe (@Cmarlowe123)
- * Vince Kolb-Lugo (@vancevince)
- * Blake Seekings (@j-blake-s)
- * Naveen Chithan (@nchithan)
- *
  * Dashboard.js
  *
  * Defines the home page that a user is brought to after logging in.

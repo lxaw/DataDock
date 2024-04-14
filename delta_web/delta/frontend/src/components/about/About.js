@@ -1,83 +1,52 @@
-/**
- * Delta Project
- *
- * Authors:
- * Lexington Whalen (@lxaw)
- * Carter Marlowe (@Cmarlowe123)
- * Vince Kolb-Lugo (@vancevince)
- * Blake Seekings (@j-blake-s)
- * Naveen Chithan (@nchithan)
- *
- * About.js
- *
- * Defines the home page that a user is brought to after logging in.
- * Contains the notification scrollers that display any notifications that a user has built up.
- */
 import React from "react";
 import { connect } from "react-redux";
-import AboutUsCarousel from "../carousel/AboutUsCarousel";
 
 const About = (props) => {
-
   return (
-    <div className="container">
-      <div>
-        <h1>About Delta</h1>
-        <p>
-          The <a href="https://github.com/SCCapstone/Delta">Delta</a> application is a platform for researchers to share data sets,
-          communicate with fellow scholars, rate and provide valuable feedback, and more.
+    <div className="container my-5">
+      <section className="mb-5">
+        <h1 className="display-4 mb-4">About Delta</h1>
+        <p className="lead">
+          The <a href="https://github.com/lxaw/Delta">Delta</a> application is a platform designed for researchers to efficiently share data sets,
+          collaborate with fellow scholars, provide valuable feedback, and streamline their research workflow.
+        </p>
+      </section>
 
-          Delta was created under the guidance of <a href="https://ifestos.cse.sc.edu/members.php">Dr. Valafar</a>, who noticed that while there are many of
-          file sharing services, these are often not right for the needs of researchers. Most services only allow for transfer of data, not evaluation of it.
-          With Delta, you can do both.
+      <section className="mb-5">
+        <h1 className="display-4 mb-4">Why Use Delta?</h1>
+        <p className="lead">
+          Delta bridges the gap between modern file transfer services and the unique needs of researchers. By incorporating social media-inspired features into
+          the file transfer system, Delta enables researchers to not only share files but also engage in meaningful discussions and evaluations of the shared data.
+          This innovative approach fosters a more collaborative and efficient research environment.
+        </p>
+      </section>
 
-          Register as an individual or under an organization and get started immediatly. Delta
-          is designed to make sharing files and connecting with others easy so that researchers can focus on what really
-          matters: pushing innovation and knowlege further.
+      <section className="mb-5">
+        <h1 className="display-4 mb-4">Getting Started with Delta</h1>
+        <ol className="list-group">
+          <li className="list-group-item">Register as an individual or under an organization (if you are part of a lab or research group).</li>
+          <li className="list-group-item">Upload files by visiting the file upload page, as shown in the carousel below. Organize files by organization or tags for easy access.</li>
+          <li className="list-group-item">Explore files uploaded by others, write reviews, and engage in direct messaging to initiate conversations related to specific files.</li>
+          <li className="list-group-item">Easily search and download files based on file names or tags.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h1 className="display-4 mb-4">Open Source Contribution</h1>
+        <p className="lead">
+          Delta is an open source project, and we welcome contributions from the community. If you have ideas for improvements, new features, or bug fixes, we encourage you to get involved:
         </p>
-      </div>
-      <div>
-        <h1>Why use Delta?</h1>
-        <p>
-          Delta fills the gap between modern file transfer services and what researchers need by taking ideas from social media platforms and integrating them into 
-          the file transfer system. Whereas in the past researchers would only share files, now researchers can share their opinions on the files, allowing for more efficient evaulation of data in a research lab.
+        <ul className="list-group mb-4">
+          <li className="list-group-item">Fork the <a href="https://github.com/lxaw/Delta">Delta repository</a> on GitHub.</li>
+          <li className="list-group-item">Create a new branch for your changes.</li>
+          <li className="list-group-item">Make your modifications and enhancements.</li>
+          <li className="list-group-item">Submit a pull request detailing your changes.</li>
+          <li className="list-group-item">If you encounter any issues or have suggestions, please <a href="https://github.com/lxaw/Delta/issues">create an issue</a> on the GitHub repository.</li>
+        </ul>
+        <p className="lead">
+          Your contributions help make Delta a better platform for the research community. Together, we can create a powerful tool that revolutionizes the way researchers collaborate and share knowledge.
         </p>
-      </div>
-      <div>
-        <h1>How to use Delta?</h1>
-        <p>First register. You can register as an individual, or under an organization (if you are a part of a lab or other group).
-          Then upload a file. You do that by visiting the file upload page, which is shown in the below carousel. Files can be organized by organization or tags.
-          As others upload files, you can write reviews or direct message the user, creating a conversation related to the file itself. 
-          You can also download files, searching by file name or tags. 
-        </p>
-      </div>
-      <div>
-        <h1>The Team</h1>
-        <p>
-          Delta was designed by a team of aspiring software engineers, researchers, and
-          entrepreneurs. Their names and LinkedIn pages are as follows: <a href="https://www.linkedin.com/in/lxaw/">Lexington Whalen</a>,
-          <a href="https://www.linkedin.com/in/cartermarlowe/">Carter Marlowe</a>,
-          <a href="https://www.linkedin.com/in/naveenchithan/"> Naveen Chithan</a>,
-          <a href="https://www.linkedin.com/in/vincent-kolb-lugo-944222175/">Vince Kolb-Lugo</a>
-          <a href="https://www.linkedin.com/in/blake-seekings-8051631b4/"> Blake Seekings</a>.
-        </p>
-      </div>
-      <div>
-        <h1>Demo Video</h1>
-        <div>
-          <p>Below is a link to the demo video. Note that it is hosted on YouTube. Depending on browser settings, external videos may not appear. If that is the case, please click the following &nbsp;
-            <a href="https://www.youtube.com/watch?v=MjlnZD8MqHA">link</a>.
-          </p>
-        </div>
-        <div className="row">
-          <iframe src="https://www.youtube.com/watch?v=MjlnZD8MqHA"/>
-        </div>
-      </div>
-      <div>
-        <h1>Delta in Action</h1>
-        <p>The following is a carousel of images from the app.</p>
-        <AboutUsCarousel />
-      </div>
+      </section>
     </div>
   );
 };

@@ -257,7 +257,6 @@ export const fileTokenConfig = (getState) => {
     return config
 }
 
-
 export const getPublicUserData = (username) => async (dispatch,getState) =>{
     try {
         const res = await axios.post('/api/user/get_user/', { username: username }, fileTokenConfig(getState));
