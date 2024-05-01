@@ -220,4 +220,4 @@ static/users/*
 *.zip
 
 # Paper
-conference_paper/*
+# conference_paper/*
