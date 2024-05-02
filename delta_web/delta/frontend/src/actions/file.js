@@ -17,7 +17,7 @@ export const getCartItems = () => (dispatch,getState) =>{
     // console.log('getting cart items')
     return axios.get('/api/cart',fileTokenConfig(getState))
     .then((res)=>{
-        console.log(res)
+        return res.data
     })
 }
 

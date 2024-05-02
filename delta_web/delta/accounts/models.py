@@ -35,7 +35,7 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart,related_name='cart_items',
                              on_delete=models.CASCADE)
-    dataset = models.ForeignKey(to='data.DataSet',
+    dataset = models.OneToOneField(to='data.DataSet',
                                 on_delete=models.CASCADE,
                                 related_name='cart_items')
 

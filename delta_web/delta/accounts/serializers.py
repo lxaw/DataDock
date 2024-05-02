@@ -24,6 +24,8 @@ from rest_framework import status
 
 # cart
 from .models import Cart,CartItem
+# dataset
+from data.serializers import SerializerDataSet
 
 # User serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -106,12 +108,16 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields = ('cart_items','user')
     
-    def get_cart_items(self,obj):
-        return obj.cart_items.all().values()
+    def get_cart_items(self, obj):
+        cart_items = obj.cart_items.all()
+
+        return CartItemSerializer(cart_items,many=True).data
 
 class CartItemSerializer(serializers.ModelSerializer):
-
-    
+    dataset = serializers.SerializerMethodField()
     class Meta:
         model = CartItem
         fields = ('cart','dataset')
+    
+    def get_dataset(self,obj):
+        return SerializerDataSet(obj.dataset).data
