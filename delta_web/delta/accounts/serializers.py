@@ -117,7 +117,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     dataset = serializers.SerializerMethodField()
     class Meta:
         model = CartItem
-        fields = ('cart','dataset')
+        fields = ('cart','dataset','id')
     
     def get_dataset(self,obj):
         return SerializerDataSet(obj.dataset).data

@@ -21,6 +21,19 @@ export const getCartItems = () => (dispatch,getState) =>{
     })
 }
 
+export const deleteCartItem = (id) => (dispatch, getState) => {
+  axios
+    .delete(`/api/cart_item/${id}/`, fileTokenConfig(getState))
+    .then((res) => {
+      console.log(res);
+      // Handle successful deletion
+    })
+    .catch((err) => {
+      console.log(err);
+      // Handle error
+    });
+};
+
 // POST FILE 
 export const addCsvFile = (dictData) => (dispatch,getState) =>{
 
@@ -99,7 +112,7 @@ export const deleteCsvFile = (id) => (dispatch,getState) =>{
             payload: id
         });
     })
-    .catch(err=>{});
+    .catch(err=>{console.log(err)});
 }
 
 // GET PUBLIC FILES

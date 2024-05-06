@@ -328,8 +328,7 @@ class ViewsetCart(viewsets.ModelViewSet):
     serializer_class = CartSerializer    
 
     def get_queryset(self):
-        user_cart = get_object_or_404(Cart,user=self.request.user)
-        return Cart.objects.filter(pk=user_cart.pk)
+        return Cart.objects.filter(user=self.request.user)
 
 class ViewsetCartItem(viewsets.ModelViewSet):
     permission_classes = [
@@ -337,6 +336,21 @@ class ViewsetCartItem(viewsets.ModelViewSet):
     ]
     serializer_class = CartItemSerializer
 
+    def get_object(self,request,*args,**kwargs):
+        queryset = self.request.user.cart.cart_items.all()
+        return queryset
+
+    def destroy(self, request,*args,**kwargs):
+        try:
+            id = kwargs['pk']
+            print(id)
+            instance = get_object_or_404(CartItem, pk=id)
+            print(instance)
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
     def create(self,request):
         # the dataset we will be adding to our cart
         file_id = request.data['file_id']

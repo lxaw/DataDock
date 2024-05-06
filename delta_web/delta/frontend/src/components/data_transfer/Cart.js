@@ -1,7 +1,7 @@
 // Modified Cart component
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getCartItems } from '../../actions/file';
+import { downloadCsvFile,getCartItems,deleteCartItem} from '../../actions/file';
 import tag_styles from "../data_transfer/tags.module.css";
 
 const Cart = (props) => {
@@ -15,6 +15,7 @@ const Cart = (props) => {
       try{
         const cartItems = (await props.getCartItems())[0].cart_items;
         setArrCartItems(cartItems)
+        console.log(cartItems)
       }catch (error){
         console.log(error)
       }
@@ -25,15 +26,35 @@ const Cart = (props) => {
     fetchCartItems();
   }, []);
 
-  const handleDownload = () => {
-    // Implement the download functionality here
-    console.log("Download clicked");
+  const handleDownload = async () => {
+    for(const cartItem of arrCartItems){
+      const dataSet = cartItem.dataset
+      const dataSetId = dataSet.id
+      // call download
+      try{
+        const result = (await props.downloadCsvFile(dataSetId))
+      }catch(error){
+        console.log(error)
+      }
+      finally{
+        // do something here if needed
+      }
+    }
   };
 
-  const handleRemove = (itemId) => {
+  const handleRemove = async (itemId) => {
     // Remove the item from the cart
     const updatedCartItems = arrCartItems.filter((item) => item.id !== itemId);
     setArrCartItems(updatedCartItems);
+    // delete cart item
+    try{
+      const result = (await props.deleteCartItem(itemId))
+    }catch(error){
+      console.log(error)
+    }
+    finally{
+      // to something here if needed
+    }
   };
 
   if(isLoadingCart){
@@ -54,7 +75,7 @@ const Cart = (props) => {
           </div>
         </div>
         <div className="col-md-9">
-          <div style={{ maxHeight: '80%', overflowY: 'auto' }}>
+          <div style={{overflowY: 'auto' }}>
             {arrCartItems.map((item) => (
               <div key={item.dataset.id} className="card mb-3">
                 <div className="card-body">
@@ -66,7 +87,7 @@ const Cart = (props) => {
                     <button
                       className="btn btn-link text-danger p-0"
                       style={{ background: 'none', border: 'none' }}
-                      onClick={() => handleRemove(item.dataset.id)}
+                      onClick={() => handleRemove(item.id)}
                     >
                       <i className="bi bi-trash"></i>
                     </button>
@@ -96,4 +117,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCartItems })(Cart);
+export default connect(mapStateToProps, { getCartItems,downloadCsvFile,deleteCartItem})(Cart);

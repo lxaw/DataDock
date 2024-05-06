@@ -99,34 +99,15 @@ return (
           "dog".
         </div>
       </div>
-      <div className="row">
-        {/* right now we hide */}
-        <div className="col-md-3 d-none">
-          <div className="card mb-4">
-            <div className="card-body">
-              <h5 className="card-title">Download Queue</h5>
-              <p className="card-text fw-bold">
-                {numfilesSelected} File{numfilesSelected !== 1 && 's'}{' '}
-                Selected
-              </p>
-              <button
-                type="submit"
-                className="btn btn-primary d-flex align-items-center"
-              >
-                <i className="bi bi-cloud-download me-2"></i>
-                Download Files
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-9">
+      <div>
+        <div>
           <div
             style={{
               height: '80vh',
               overflowY: 'scroll',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '1rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(500, 1fr))',
+              gap: '2rem',
             }}
           >
             {tableCsvs.map((item) => (
