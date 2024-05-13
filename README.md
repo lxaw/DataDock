@@ -4,14 +4,32 @@ DataDock is a web file system designed for use by researchers and data scientist
 ### NOTE: Name Change
 Please note that DataDock used to be called Delta. We are working on renaming the files accordingly. At the moment, there may be some directories / files with Delta in the name.
 
-# Style Guide 📓
-Please adhere to the guidelines for JavaScript and Python found [here](https://google.github.io/styleguide/)
+# Screenshots
+Below are some images of the service.
+
+### Cart
+![Example image of cart.](conference_paper/figures/cart.png)
+
+### Conversations
+![Example image of conversations.](conference_paper/figures/convo.png)
+
+### Organizations
+![Example image of organizations.](conference_paper/figures//organization.png)
+
+### Reviews
+![Example image of reviews.](conference_paper/figures/review.png)
+
+### Search
+![Example image of search.](conference_paper/figures/search.png)
+
+### Upload
+![Example image of upload.](conference_paper/figures/upload.png)
 
 # Running 🏃
 Note the following instructions are designed for *nix machines.
 
 To run, first clone the repository by running:
-`git clone https://github.com/SCCapstone/DataDock` 
+`git clone https://github.com/lxaw/DataDock` 
 
 Then cd into `DataDock`. 
 
