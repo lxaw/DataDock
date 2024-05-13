@@ -65,8 +65,8 @@ function TagsInput(props){
         <div className={styles.tags_input_container} data-testid="tags_input-1">
             { tags.map((tag, index) => (
                 <div className={styles.tag_item} key={index}>
-                    <span className={styles.text}>{tag}</span>
-                    <span className={styles.close} onClick={() => removeTag(index)}>&times;</span>
+                <span className={styles.text}>{tag}</span>
+                <span className={styles.close} onClick={() => removeTag(index)}>&times;</span>
                 </div>
             )) }
             <input  

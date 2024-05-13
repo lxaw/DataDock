@@ -106,8 +106,8 @@ return (
               height: '80vh',
               overflowY: 'scroll',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(500, 1fr))',
-              gap: '2rem',
+              gridTemplateColumns: 'repeat(2,minmax(480,1fr))',
+              gap: '1rem',
             }}
           >
             {tableCsvs.map((item) => (
