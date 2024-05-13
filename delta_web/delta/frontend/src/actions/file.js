@@ -3,13 +3,16 @@ import axios from 'axios';
 import {createMessage,returnErrors} from "./messages";
 import {fileTokenConfig,tokenConfig} from './auth';
 
-import {ADD_CSV_FILE, DELETE_CSV_FILE, GET_CSV_FILES,GET_CSV_FILE, 
+import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
+    ADD_CART_ITEM,DELETE_CART_ITEM, 
     CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC} from "./types";
 
 export const addToCart = (dictData) => (dispatch,getState) =>{
     return axios.post('/api/cart_item/',dictData,fileTokenConfig(getState))
     .then((res)=>{
-        console.log(res)
+        dispatch(createMessage({addCartItemSuccess:"Added dataset to cart."}))
+        dispatch({type:ADD_CART_ITEM,payload:res.data});
+        return res;
     })
 }
 
@@ -25,8 +28,9 @@ export const deleteCartItem = (id) => (dispatch, getState) => {
   axios
     .delete(`/api/cart_item/${id}/`, fileTokenConfig(getState))
     .then((res) => {
-      console.log(res);
-      // Handle successful deletion
+        dispatch(createMessage({removeCartItemSuccess:"Cart item removed."}));
+        dispatch({type:DELETE_CART_ITEM,payload:res.data})
+
     })
     .catch((err) => {
       console.log(err);

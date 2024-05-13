@@ -48,6 +48,14 @@ export class Alerts extends Component {
         }
         // check for changed message
         if(message !== prevProps.message){
+            // cart items
+            if(message.addCartItemSuccess){
+                alert.success(message.addCartItemSuccess);
+            }
+            if(message.removeCartItemSuccess){
+                alert.success(message.removeCartItemSuccess);
+            }
+            // files
             if(message.addCsvFileSuccess){
                 alert.success(message.addCsvFileSuccess);
             }
