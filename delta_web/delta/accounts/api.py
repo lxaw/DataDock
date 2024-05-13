@@ -10,6 +10,10 @@
 # Is the API functionality for the `accounts` app of Django.
 # Deals with all user actions, such as registration, login, logout, et cetera.
 
+from data.serializers import SerializerDataSet
+
+from django.shortcuts import get_object_or_404
+
 from unicodedata import name
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -332,19 +336,36 @@ class ViewsetCartItem(viewsets.ModelViewSet):
     ]
     serializer_class = CartItemSerializer
 
-    def get_queryset(self):
-        return self.request.user.cart.cart_items.all()
+    def get_object(self,request,*args,**kwargs):
+        queryset = self.request.user.cart.cart_items.all()
+        return queryset
 
+    def destroy(self, request,*args,**kwargs):
+        try:
+            id = kwargs['pk']
+            print(id)
+            instance = get_object_or_404(CartItem, pk=id)
+            print(instance)
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
     def create(self,request):
         # the dataset we will be adding to our cart
         file_id = request.data['file_id']
-        dataSet = DataSet.objects.get(pk=file_id)
+        dataset = DataSet.objects.get(pk=file_id)
 
         # the cart of the user
         user_cart = request.user.cart
 
-        # create a new cartitem
-        cartItem = CartItem(cart=user_cart,dataset=dataSet)
+        # check if existing item
+        existing_cart_item = user_cart.cart_items.filter(dataset=dataset).first()
+        if existing_cart_item:
+            return HttpResponse("CartItem already exists for given dataset")
+        
+        # else we create
+        cartItem = CartItem(cart=user_cart,dataset=dataset)
         cartItem.save()
 
-        return HttpResponse()
+        return HttpResponse("CartItem added.")

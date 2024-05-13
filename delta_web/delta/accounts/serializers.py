@@ -24,6 +24,8 @@ from rest_framework import status
 
 # cart
 from .models import Cart,CartItem
+# dataset
+from data.serializers import SerializerDataSet
 
 # User serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -33,12 +35,15 @@ class UserSerializer(serializers.ModelSerializer):
     followed_organizations = serializers.SerializerMethodField()
     # bio
     bio = serializers.SerializerMethodField()
+    # num cart items
+    num_cart_items = serializers.SerializerMethodField()
 
     class Meta:
         # Need unique validator on name and email https://stackoverflow.com/a/38160343/12939325
         model = User
         fields = ('id','username','email','first_name','last_name',
-            'followed_organization_count','followed_organizations','bio')
+            'followed_organization_count','followed_organizations','bio',
+            "num_cart_items")
         # cant change id
         read_only_fields = ['id']
     
@@ -52,6 +57,9 @@ class UserSerializer(serializers.ModelSerializer):
     
     def get_bio(self,obj):
         return obj.profile.bio
+
+    def get_num_cart_items(self,obj):
+        return obj.cart.cart_items.count()
 
 # Register serializer
 class RegisterSerializer(serializers.ModelSerializer):
@@ -106,12 +114,16 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields = ('cart_items','user')
     
-    def get_cart_items(self,obj):
-        return obj.cart_items.all().values()
+    def get_cart_items(self, obj):
+        cart_items = obj.cart_items.all()
+
+        return CartItemSerializer(cart_items,many=True).data
 
 class CartItemSerializer(serializers.ModelSerializer):
-
-    
+    dataset = serializers.SerializerMethodField()
     class Meta:
         model = CartItem
-        fields = ('cart','dataset')
+        fields = ('cart','dataset','id')
+    
+    def get_dataset(self,obj):
+        return SerializerDataSet(obj.dataset).data
