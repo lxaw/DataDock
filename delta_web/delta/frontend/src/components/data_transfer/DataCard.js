@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styles from "./tags.module.css";
 
 const DataCard = ({ data, isDownload, link, linkText }) => {
   const cardStyle = {
@@ -19,7 +20,6 @@ const DataCard = ({ data, isDownload, link, linkText }) => {
     display: 'inline-block',
     backgroundColor: '#f0f0f0',
     color: '#333',
-    padding: '4px 8px',
     borderRadius: '4px',
     marginRight: '4px',
     marginBottom: '4px',
@@ -49,9 +49,9 @@ const DataCard = ({ data, isDownload, link, linkText }) => {
             <strong>Tags:</strong>
             <div className="mt-1">
               {data.tags.map((tag, index) => (
-                <span key={index} style={tagStyle}>
-                  {tag.text}
-                </span>
+              <div className={styles.tag_item} key={index}>
+                <span className={styles.text}>{tag.text}</span>
+              </div>
               ))}
             </div>
           </div>
