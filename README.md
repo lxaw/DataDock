@@ -23,7 +23,7 @@ Below are some images of the service.
 ![Example image of search.](conference_paper/figures/search.png)
 
 ### Upload
-![Example image of upload.](conference_paper/figures/upload.png)
+![Example image of upload.](conference_paper/figures/upload_page.png)
 
 # Running 🏃
 Note the following instructions are designed for *nix machines.
