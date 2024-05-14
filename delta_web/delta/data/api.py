@@ -85,8 +85,15 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
         return response
 
-def process_files(file_data_list,user_file_path,dataset_path,dataset_zip_path):
-    print('DATASETPATH: ',dataset_path)
+# helper thread work for save file
+def write_file(file_path,file_chunks):
+    with open(file_path,'wb+') as f:
+        for chunk in file_chunks:
+            f.write(chunk)
+
+def process_files(file_data_list,dataset_path,dataset_zip_path):
+    threads = []
+
     if not os.path.exists(dataset_path):
         os.makedirs(dataset_path)
 
@@ -96,13 +103,17 @@ def process_files(file_data_list,user_file_path,dataset_path,dataset_zip_path):
         file_path = file_obj['file_path']
 
         # write the file
-        # this should be threaded!
-        with open(file_path,'wb+') as f:
-            for chunk in file_chunks:
-                f.write(chunk)
+        thread = threading.Thread(
+            target=write_file,
+            args=(file_path,file_chunks),
+        )
+        thread.start()
+
+    # wait for threads
+    for thread in threads:
+        thread.join()
         
     # zip the files
-    print("ZIP PATH:",dataset_zip_path)
     shutil.make_archive(base_name=dataset_zip_path[:-4],
                         format='zip',
                         root_dir=dataset_path,
@@ -155,7 +166,8 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         # step 1: create the dataset
         dataSet = DataSet(author=author,is_public=is_public,description=desc,
                           is_public_orgs=is_public_orgs,
-                          name=name,original_name=name)
+                          name=name,original_name=name,
+                          num_files=num_files)
         dataSet.save()
 
         # Step 2: Create File objects with file paths
@@ -182,7 +194,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
                 t.save()
 
         # Step 4: Start a new thread to process the files
-        thread = threading.Thread(target=process_files,args=(fileDatas,strUserFilePath,strDataSetPath,dataSet.get_zip_path()))
+        thread = threading.Thread(target=process_files,args=(fileDatas,strDataSetPath,dataSet.get_zip_path()))
         thread.start()
 
         return Response(self.get_serializer(dataSet).data)
