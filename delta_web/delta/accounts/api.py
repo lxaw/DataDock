@@ -1,7 +1,5 @@
 ########################
 #
-# Delta project.
-#
 # File name:
 #
 # api.py

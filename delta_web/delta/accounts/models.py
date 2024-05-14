@@ -1,7 +1,5 @@
 ########################
 #
-# Delta project.
-#
 # Brief description:
 # 
 # Stores all the information related to the models of `accounts` app.

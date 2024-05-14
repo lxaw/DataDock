@@ -80,6 +80,7 @@ const DataUploadForm = (props) => {
       registered_organizations: arrOrgs,
       tags: tags,
       file: acceptedFiles,
+      num_files:acceptedFiles.length,
       author: props.auth.user.id,
     };
 
