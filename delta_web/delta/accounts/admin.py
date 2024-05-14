@@ -1,7 +1,5 @@
 ########################
 #
-# Delta project.
-#
 # Brief description:
 #
 # This file is the configuration for the admin page of the `accounts` Django app.

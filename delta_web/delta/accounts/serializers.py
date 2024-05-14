@@ -1,10 +1,5 @@
 ########################
 #
-# Delta project.
-#
-# Authors:
-# Lexington Whalen (@lxaw)
-#
 # File name:
 # serializer.py
 #

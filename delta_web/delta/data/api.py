@@ -19,6 +19,9 @@ from rest_framework.decorators import action
 # zip the folder (dataset)
 import shutil
 
+# threading
+import threading
+
 from pathlib import Path
 
 import random
@@ -82,7 +85,45 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
         return response
 
-# CSV viewset api
+# helper thread work for save file
+def write_file(file_path,file_chunks):
+    with open(file_path,'wb+') as f:
+        for chunk in file_chunks:
+            f.write(chunk)
+
+def process_files(file_data_list,dataset_path,dataset_zip_path):
+    threads = []
+
+    if not os.path.exists(dataset_path):
+        os.makedirs(dataset_path)
+
+    # Process the files
+    for file_obj in file_data_list:
+        file_chunks = file_obj['chunks']
+        file_path = file_obj['file_path']
+
+        # write the file
+        thread = threading.Thread(
+            target=write_file,
+            args=(file_path,file_chunks),
+        )
+        thread.start()
+
+    # wait for threads
+    for thread in threads:
+        thread.join()
+        
+    # zip the files
+    shutil.make_archive(base_name=dataset_zip_path[:-4],
+                        format='zip',
+                        root_dir=dataset_path,
+                        )
+
+    # # now delete the files you just zipped
+    shutil.rmtree(dataset_path)
+        
+
+# DataSet viewset api
 # Has the permission classes for the csv file viewset
 # Makes viewable only if csv files are marked as public.
 class ViewsetDataSet(viewsets.ModelViewSet):
@@ -105,6 +146,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         desc = self.request.data.get('description')
         is_public_orgs = self.request.data.get('is_public_orgs')
         name = self.request.data.get('name')
+        num_files = self.request.data.get('num_files') # likely a better way to do this (05/14/2024)
 
         # javascript sometimes uses "true" and "false", we need "True" and "False"
         if is_public == "true":
@@ -124,49 +166,36 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         # step 1: create the dataset
         dataSet = DataSet(author=author,is_public=is_public,description=desc,
                           is_public_orgs=is_public_orgs,
-                          name=name,original_name=name)
+                          name=name,original_name=name,
+                          num_files=num_files)
         dataSet.save()
 
-        # Check if the directory already exists
-        if not os.path.exists(strDataSetPath):
-            # Create the directory and any necessary intermediate directories
-            os.makedirs(strDataSetPath)
+        # Step 2: Create File objects with file paths
+        fileDatas = []
 
-
-        intNumFiles = 0
-        # step 2: create the files / tags
-        for k,v in request.data.items():
-            # file
+        # Step 3: Create TagDataset objects
+        for k, v in request.data.items():
             if k.startswith('file'):
-                intNumFiles += 1
-                # file path
                 file_path = os.path.join(strDataSetPath,str(v))
+                file_obj = File(dataset=dataSet, file_path=file_path, file_name=str(v))
+                file_obj.save()
 
-                with open(file_path,'wb+') as f:
-                    for chunk in v.chunks():
-                        f.write(chunk)
+                # for use in threaded process
+                fileDatas.append(
+                    {
+                        'file_path':file_path,
+                        'chunks' :v.chunks()
+                     }
+                )
 
-                # create file objects
-                file = File(dataset=dataSet,file_path=file_path,file_name=str(v))
-                file.save()
-            # tag
-            elif k.startswith('tag'):
+            if k.startswith('tag'):
                 t = TagDataset(text=v)
                 t.dataset = dataSet
                 t.save()
-        # update number of files
-        dataSet.num_files = intNumFiles
-        dataSet.save()
 
-        # zip the files
-        shutil.make_archive(dataSet.get_zip_path()[:-4], 'zip',strUserFilePath)
-
-        # now delete the files you just zipped
-        shutil.rmtree(strDataSetPath)
-
-
-
-        # need an id for dataset prior to set
+        # Step 4: Start a new thread to process the files
+        thread = threading.Thread(target=process_files,args=(fileDatas,strDataSetPath,dataSet.get_zip_path()))
+        thread.start()
 
         return Response(self.get_serializer(dataSet).data)
     
