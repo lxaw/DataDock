@@ -13,23 +13,7 @@ const DataSetTable = (props) => {
   const [searchAuthor,setSearchAuthor] = useState('')
   const [tableCsvs, setTableCsvs] = useState(props.dataSets);
   const [arrFilesToDownload, setArrFilesToDownload] = useState([]);
-  const [numfilesSelected, setNumFilesSelected] = useState(0);
   const textMinLength = props.textMinLength ?? 3;
-
-  const onCheckChange = (csvFileData) => {
-    const newFiles = [...arrFilesToDownload];
-    const index = newFiles.findIndex((item) => item.id === csvFileData.id);
-
-    if (index === -1) {
-      newFiles.push(csvFileData);
-      setNumFilesSelected((prev) => prev + 1);
-    } else {
-      newFiles.splice(index, 1);
-      setNumFilesSelected((prev) => prev - 1);
-    }
-
-    setArrFilesToDownload(newFiles);
-  };
 
   const onSearchChange = () => {
     // note, for now we do case insensitive
@@ -82,6 +66,19 @@ const DataSetTable = (props) => {
     return null;
   }
 
+  const renderItems = () => {
+    let items = tableCsvs.map((item,index) =>{
+        return (
+         <div class="col-4" key={item.id}>
+          <DataCard
+            data={item}
+          />
+        </div>
+        )
+    });
+    return items
+  }
+
 return (
   <div data-testid="public_csv_file_table-1">
     <form onSubmit={onSubmit}>
@@ -128,32 +125,8 @@ return (
           For example, enter "user123" to see public files uploaded by "user123".
         </div>
       </div>
-      <div>
-        <div>
-          <div
-            style={{
-              height: '80vh',
-              overflowY: 'scroll',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2,minmax(480,1fr))',
-              gap: '1rem',
-            }}
-          >
-            {tableCsvs.map((item) => (
-              <div key={item.id}>
-                <DataCard
-                  data={item}
-                  link={`/csvs/${item.id}`}
-                  linkText="View Dataset"
-                  parentOnCheckChange={onCheckChange}
-                  isDownload={arrFilesToDownload.some(
-                    (csv) => csv.id === item.id
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="row">
+          {renderItems()}
       </div>
     </form>
   </div>
