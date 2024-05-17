@@ -3,9 +3,43 @@ import { connect } from 'react-redux';
 import { downloadCsvFile } from '../../actions/file';
 import DataCard from './DataCard';
 
+const styles = {
+  tagInputContainer: {
+    position: 'relative',
+  },
+  tagSuggestions: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    width: '100%',
+    listStyleType: 'none',
+    padding: 0,
+    margin: 0,
+    backgroundColor: '#fff',
+    border: '1px solid #ccc',
+    borderTop: 'none',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    zIndex: 1,
+  },
+  tagSuggestionItem: {
+    padding: '8px 12px',
+    cursor: 'pointer',
+  },
+  tagSuggestionText: {
+    color: '#333',
+  },
+  tagSuggestionTextHover: {
+    backgroundColor: '#f5f5f5',
+    color: '#333',
+  },
+};
+
+
 const DataSetTable = (props) => {
+
+  // dataset items
   const [dataSets, setCsvFiles] = useState(props.dataSets);
-  // 
+  // search text for file name
   const [searchText, setSearchFileName] = useState('');
   // tag search
   const [searchTags, setSearchTags] = useState([]);
@@ -15,6 +49,27 @@ const DataSetTable = (props) => {
   const [arrFilesToDownload, setArrFilesToDownload] = useState([]);
   const textMinLength = props.textMinLength ?? 3;
 
+  // state for tag suggestions
+  const [tagSuggestions,setTagSuggestions] = useState([]);
+
+  // all tags
+  const allTags = new Set(
+    props.dataSets.flatMap((csvFile)=>csvFile.tags.map((tag)=>tag.text))
+  )
+
+  // handle tag clicks
+  const handleTagClick = (tag) => {
+
+    // Add the clicked tag to the array if it doesn't already exist
+    const updatedTags = [...new Set([...searchTags.slice(0,searchTags.length-1), tag])];
+    console.log(updatedTags)
+
+    setSearchTags(updatedTags)
+    // update the search field
+    $('#inputSearchTags').val(updatedTags.join(' '))
+  };
+
+  // when search
   const onSearchChange = () => {
     // note, for now we do case insensitive
     const strFileNameSearch = $('#inputSearchFileName').val().toLowerCase();
@@ -30,6 +85,12 @@ const DataSetTable = (props) => {
     setSearchAuthor(strAuthorSearch)
 
     let filteredCsvs = props.dataSets;
+
+    // does not need to be repeated across datasets
+    const filteredTags = Array.from(allTags).filter((tag)=>
+      tag.toLowerCase().includes(arrStrTagSearch[arrStrTagSearch.length - 1])
+    );
+    setTagSuggestions(filteredTags)
 
     filteredCsvs = filteredCsvs.filter((csvFile) => {
       const arrStrFileTags = csvFile.tags.map((strObj) => strObj.text);
@@ -55,17 +116,11 @@ const DataSetTable = (props) => {
     setTableCsvs(filteredCsvs);
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    arrFilesToDownload.forEach((csvFileData) => {
-      props.downloadCsvFile(csvFileData.id);
-    });
-  };
-
   if (!dataSets) {
     return null;
   }
 
+  // render table items
   const renderItems = () => {
     let items = tableCsvs.map((item,index) =>{
         return (
@@ -81,7 +136,6 @@ const DataSetTable = (props) => {
 
 return (
   <div data-testid="public_csv_file_table-1">
-    <form onSubmit={onSubmit}>
       <div className="mb-2">
         <label htmlFor="inputSearchFileName" className="form-label">
           File Name
@@ -109,6 +163,25 @@ return (
           For example, enter "cat dog" to see files with tags of "cat" and
           "dog".
         </div>
+        {tagSuggestions.length >0 && (
+          <ul className="tag-suggestions">
+            {tagSuggestions.map((tag)=>(
+              <li key={tag} 
+              onClick={()=>handleTagClick(tag)}
+              style={styles.tagSuggestionItem}
+              >
+              <span
+                style={{
+                  ...styles.tagSuggestionText,
+                  ...(styles.tagSuggestionTextHover),
+                }}
+                >
+                  {tag}
+                </span>
+              </li>
+            ))} 
+          </ul>
+        )}
       </div>
       <div className="mb-2">
         <label htmlFor="inputSearchAuthor" className="form-label">
@@ -128,7 +201,6 @@ return (
       <div className="row">
           {renderItems()}
       </div>
-    </form>
   </div>
 );
 };
@@ -137,4 +209,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { downloadCsvFile })(DataSetTable);
+export default connect(mapStateToProps,)(DataSetTable);
