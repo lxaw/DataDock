@@ -3,9 +3,43 @@ import { connect } from 'react-redux';
 import { downloadCsvFile } from '../../actions/file';
 import DataCard from './DataCard';
 
+const styles = {
+  tagInputContainer: {
+    position: 'relative',
+  },
+  tagSuggestions: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    width: '100%',
+    listStyleType: 'none',
+    padding: 0,
+    margin: 0,
+    backgroundColor: '#fff',
+    border: '1px solid #ccc',
+    borderTop: 'none',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    zIndex: 1,
+  },
+  tagSuggestionItem: {
+    padding: '8px 12px',
+    cursor: 'pointer',
+  },
+  tagSuggestionText: {
+    color: '#333',
+  },
+  tagSuggestionTextHover: {
+    backgroundColor: '#f5f5f5',
+    color: '#333',
+  },
+};
+
+
 const DataSetTable = (props) => {
+
+  // dataset items
   const [dataSets, setCsvFiles] = useState(props.dataSets);
-  // 
+  // search text for file name
   const [searchText, setSearchFileName] = useState('');
   // tag search
   const [searchTags, setSearchTags] = useState([]);
@@ -132,8 +166,18 @@ return (
         {tagSuggestions.length >0 && (
           <ul className="tag-suggestions">
             {tagSuggestions.map((tag)=>(
-              <li key={tag} onClick={()=>handleTagClick(tag)}>
-                {tag}
+              <li key={tag} 
+              onClick={()=>handleTagClick(tag)}
+              style={styles.tagSuggestionItem}
+              >
+              <span
+                style={{
+                  ...styles.tagSuggestionText,
+                  ...(styles.tagSuggestionTextHover),
+                }}
+                >
+                  {tag}
+                </span>
               </li>
             ))} 
           </ul>
