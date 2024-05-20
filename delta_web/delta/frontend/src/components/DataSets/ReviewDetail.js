@@ -49,7 +49,6 @@ const ReviewDetail = (props) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setReviewData(res.data);
         setRatingIndex(res.data.rating - 1);
         setDescLength(res.data.text.length);
