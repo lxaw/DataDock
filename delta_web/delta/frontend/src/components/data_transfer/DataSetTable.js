@@ -2,38 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { downloadCsvFile } from '../../actions/file';
 import DataCard from './DataCard';
-
-const styles = {
-  tagInputContainer: {
-    position: 'relative',
-  },
-  tagSuggestions: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    width: '100%',
-    listStyleType: 'none',
-    padding: 0,
-    margin: 0,
-    backgroundColor: '#fff',
-    border: '1px solid #ccc',
-    borderTop: 'none',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    zIndex: 1,
-  },
-  tagSuggestionItem: {
-    padding: '8px 12px',
-    cursor: 'pointer',
-  },
-  tagSuggestionText: {
-    color: '#333',
-  },
-  tagSuggestionTextHover: {
-    backgroundColor: '#f5f5f5',
-    color: '#333',
-  },
-};
-
+import styles from './tags.module.css'
 
 const DataSetTable = (props) => {
 
@@ -62,11 +31,12 @@ const DataSetTable = (props) => {
 
     // Add the clicked tag to the array if it doesn't already exist
     const updatedTags = [...new Set([...searchTags.slice(0,searchTags.length-1), tag])];
-    console.log(updatedTags)
 
     setSearchTags(updatedTags)
     // update the search field
     $('#inputSearchTags').val(updatedTags.join(' '))
+    // remove the tags
+    setTagSuggestions([])
   };
 
   // when search
@@ -76,7 +46,6 @@ const DataSetTable = (props) => {
     const arrStrTagSearch = $('#inputSearchTags')
       .val()
       .split(' ')
-      .filter((e) => e !== '')
       .map((e) => e.toLowerCase());
     const strAuthorSearch = $('#inputSearchAuthor').val().toLowerCase()
 
@@ -164,23 +133,18 @@ return (
           "dog".
         </div>
         {tagSuggestions.length >0 && (
-          <ul className="tag-suggestions">
-            {tagSuggestions.map((tag)=>(
-              <li key={tag} 
-              onClick={()=>handleTagClick(tag)}
-              style={styles.tagSuggestionItem}
+          <div className="tag-suggestions" style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {tagSuggestions.map((tag) => (
+              <div
+                key={tag}
+                onClick={() => handleTagClick(tag)}
+                style={{ ...styles.tagSuggestionItem, display: 'flex' }}
               >
-              <span
-                style={{
-                  ...styles.tagSuggestionText,
-                  ...(styles.tagSuggestionTextHover),
-                }}
-                >
-                  {tag}
-                </span>
-              </li>
-            ))} 
-          </ul>
+                <span className={styles.tag_item}>{tag}</span>
+              </div>
+            ))}
+          </div>
+
         )}
       </div>
       <div className="mb-2">
