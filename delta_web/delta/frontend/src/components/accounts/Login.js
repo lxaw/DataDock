@@ -70,7 +70,10 @@ export class Login extends Component {
                   </button>
                 </form>
                 <p className="text-center mt-3">
-                  Don't have an account? <Link to="/register">Register</Link>
+                  Don't have an account? <Link to="/register">Register.</Link>
+                </p>
+                <p className="text-center mt-3">
+                  Forgot login information? <Link to="/forgot">Click here.</Link>
                 </p>
               </div>
             </div>

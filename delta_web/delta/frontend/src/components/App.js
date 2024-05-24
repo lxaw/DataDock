@@ -12,6 +12,10 @@ import Alerts from './layout/Alerts';
 import Login from './accounts/Login';
 import Register from './accounts/Register';
 import NotFound from './home/NotFound'
+
+// forgot information
+import ForgotInformation from "./accounts/ForgotInformation"
+
 // about page
 import About from './about/About';
 
@@ -167,6 +171,10 @@ class App extends Component{
                                         </PrivateRoute>
                                     } />
                                     
+                                    <Route exact path = "/forgot" element = {
+                                        <ForgotInformation/>
+                                    }/>
+
                                     <Route exact path ="/register"element={
                                         <Register/>
                                     }/>
