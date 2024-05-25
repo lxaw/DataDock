@@ -9,7 +9,7 @@
 from django.urls import path, include
 from .api import (RegisterAPI,LoginAPI,UserAPI
 ,DeleteAPI,UpdateAPI,ViewsetPublicUser,ViewsetCart,
-ViewsetCartItem)
+ViewsetCartItem,PasswordTokenCheckAPIView,RequestPasswordResetEmail)
 from knox import views as knox_views
 
 from rest_framework import routers
@@ -25,6 +25,11 @@ urlpatterns = [
     # invalidates the token, so they need to log back in to grab the token
     # this destroys the token created at log in
     path('api/auth/logout',knox_views.LogoutView.as_view(),name='knox_logout'),
+
+    # reset password
+    path('password-reset/<uidb64>/<token>/', PasswordTokenCheckAPIView.as_view(), name='password-reset-confirm'),
+    # reset email
+    path('request-reset-email/',RequestPasswordResetEmail.as_view(),name='request-reset-email')
 ]
 
 router = routers.DefaultRouter()
