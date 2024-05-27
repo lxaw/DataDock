@@ -7,13 +7,16 @@ import styles from './tags.module.css'
 const DataSetTable = (props) => {
 
   // dataset items
-  const [dataSets, setCsvFiles] = useState(props.dataSets);
+  const [dataSets, setDataSets] = useState(props.dataSets);
   // search text for file name
   const [searchText, setSearchFileName] = useState('');
   // tag search
   const [searchTags, setSearchTags] = useState([]);
   // author search
   const [searchAuthor,setSearchAuthor] = useState('')
+  // file type search
+  const [searchFileTypes,setSearchFileTypes] = useState([])
+
   const [tableCsvs, setTableCsvs] = useState(props.dataSets);
   const [arrFilesToDownload, setArrFilesToDownload] = useState([]);
   const textMinLength = props.textMinLength ?? 3;
@@ -41,6 +44,7 @@ const DataSetTable = (props) => {
 
   // when search
   const onSearchChange = () => {
+
     // note, for now we do case insensitive
     const strFileNameSearch = $('#inputSearchFileName').val().toLowerCase();
     const arrStrTagSearch = $('#inputSearchTags')
@@ -48,6 +52,10 @@ const DataSetTable = (props) => {
       .split(' ')
       .map((e) => e.toLowerCase());
     const strAuthorSearch = $('#inputSearchAuthor').val().toLowerCase()
+    const arrFileTypeSearch = $("#inputSearchFileTypes")
+      .val()
+      .split(' ')
+      .map((e)=>e.toLowerCase())
 
     setSearchFileName(strFileNameSearch);
     setSearchTags(arrStrTagSearch);
@@ -56,13 +64,20 @@ const DataSetTable = (props) => {
     let filteredCsvs = props.dataSets;
 
     // does not need to be repeated across datasets
-    const filteredTags = Array.from(allTags).filter((tag)=>
-      tag.toLowerCase().includes(arrStrTagSearch[arrStrTagSearch.length - 1])
-    );
-    setTagSuggestions(filteredTags)
+    if($('#inputSearchTags').val()==''){
+      // nothing present, remove
+      setTagSuggestions([])
+    }else{
+      // else we have to show tags
+      const filteredTags = Array.from(allTags).filter((tag)=>
+        tag.toLowerCase().includes(arrStrTagSearch[arrStrTagSearch.length - 1])
+      );
+      setTagSuggestions(filteredTags)
+    }
 
     filteredCsvs = filteredCsvs.filter((csvFile) => {
       const arrStrFileTags = csvFile.tags.map((strObj) => strObj.text);
+      const arrStrFileTypes = csvFile.files.map((obj)=>obj.file_name.split('.').pop())
 
       // tag search
       const allTagsMatch = arrStrTagSearch.every((searchTag) =>
@@ -79,7 +94,14 @@ const DataSetTable = (props) => {
         strAuthorSearch.length < textMinLength || 
           csvFile.author_username.includes(strAuthorSearch)
 
-      return allTagsMatch && nameMatches && authorMatches;
+      // file type search
+      const fileTypeMatchs = arrFileTypeSearch.every((searchType)=>
+        arrStrFileTypes.some((fileType)=>fileType.includes(searchType))
+      )
+      
+        
+
+      return allTagsMatch && nameMatches && authorMatches && fileTypeMatchs;
     });
 
     setTableCsvs(filteredCsvs);
@@ -113,6 +135,18 @@ return (
           type="text"
           className="form-control"
           id="inputSearchFileName"
+          placeholder={`Enter at least ${textMinLength} characters`}
+          onChange={onSearchChange}
+        />
+      </div>
+      <div className="mb-2">
+        <label htmlFor="inputSearchFileTypes" className="form-label">
+          File Type(s)
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputSearchFileTypes"
           placeholder={`Enter at least ${textMinLength} characters`}
           onChange={onSearchChange}
         />
