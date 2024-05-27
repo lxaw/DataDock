@@ -22,6 +22,7 @@ const CsvFileDetail = (props) => {
       })
       .then((res) => {
         setCsvFile(res.data);
+        console.log(res.data)
         setArrReviews(res.data.reviews);
       });
   };
@@ -46,16 +47,36 @@ const CsvFileDetail = (props) => {
           <CsvFile data={csvFile} />
         </div>
         <div className="col-md-4">
-          <h2>{csvFile.name}</h2>
-          <div className="rating mb-3">
-            <h5>{csvFile.avg_rating} out of 5</h5>
-            <h6 className="text-muted">{csvFile.num_reviews} reviews</h6>
-          </div>
-          <hr />
-          <button className="btn btn-primary w-100" onClick={addFileToCart}>
-            Add to Cart
-          </button>
-        </div>
+  <h2>{csvFile.name}</h2>
+  <div className="rating mb-3">
+    <h5>{csvFile.avg_rating} out of 5</h5>
+    <h6 className="text-muted">{csvFile.num_reviews} reviews</h6>
+  </div>
+    <div className="file-info mb-3">
+      <h6>Files:</h6>
+      <p>{csvFile.files.length} file(s)</p>
+      <div
+        className="file-list"
+        style={{
+          maxHeight: '150px', // Set the maximum height for the scrollable area
+          overflowY: 'auto', // Enable vertical scrolling
+        }}
+      >
+        <ul className="list-unstyled">
+          {csvFile.files.map((file, index) => (
+            <li key={index} className="mb-2">
+              <span>{file.file_name.split('.')[0]}</span>{' '}
+              <small>({file.file_name.split('.').pop()})</small>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <button className="btn btn-primary w-100" onClick={addFileToCart}>
+      Add to Cart
+    </button>
+  </div>
       </div>
       <div className="row mt-4">
         <div className="col-md-12">

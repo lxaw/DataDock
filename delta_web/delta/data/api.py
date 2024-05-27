@@ -119,7 +119,7 @@ def process_files(file_data_list,dataset_path,dataset_zip_path):
                         root_dir=dataset_path,
                         )
 
-    # # now delete the files you just zipped
+    # now delete the files you just zipped
     shutil.rmtree(dataset_path)
         
 
@@ -146,7 +146,6 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         desc = self.request.data.get('description')
         is_public_orgs = self.request.data.get('is_public_orgs')
         name = self.request.data.get('name')
-        num_files = self.request.data.get('num_files') # likely a better way to do this (05/14/2024)
 
         # javascript sometimes uses "true" and "false", we need "True" and "False"
         if is_public == "true":
@@ -166,8 +165,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         # step 1: create the dataset
         dataSet = DataSet(author=author,is_public=is_public,description=desc,
                           is_public_orgs=is_public_orgs,
-                          name=name,original_name=name,
-                          num_files=num_files)
+                          name=name,original_name=name)
         dataSet.save()
 
         # Step 2: Create File objects with file paths

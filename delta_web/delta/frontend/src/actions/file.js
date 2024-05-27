@@ -44,7 +44,6 @@ export const addCsvFile = (dictData) => (dispatch,getState) =>{
     .then((res)=>{
         dispatch(createMessage({addCsvFileSuccess:"File Posted"}))
         dispatch({type:ADD_CSV_FILE,payload:res.data});
-        console.log(res)
         return res;
     })
     .catch((err)=>{
@@ -55,7 +54,6 @@ export const addCsvFile = (dictData) => (dispatch,getState) =>{
 export const getCsvFiles = () => (dispatch,getState) =>{
     axios.get('/api/csv/',tokenConfig(getState))
         .then(res => {
-            console.log(res);
             return res;
         })
         .catch(err=>dispatch(
@@ -92,7 +90,6 @@ id (id of file)
 export const updateCsvFile = (dictData) => (dispatch,getState)=>{
     axios.patch(`api/csv/${dictData['id']}/`,dictData,fileTokenConfig(getState))
         .then(res=>{
-            console.log(res)
             dispatch(createMessage({updateCsvFileSuccess:"File successfully updated."}))
             dispatch({
                 type:CSV_FILE_UPDATE_SUCCESS,
@@ -139,7 +136,6 @@ export const downloadCsvFile = (id) => (dispatch, getState) =>{
     config['responseType'] = "arraybuffer"
     axios.get(`/api/public_csvs/${id}/download`,config)
     .then(res=>{
-        console.log(res)
         var fileContent = res.data;
         // temporary solution to get file name, naive
         var fileName = res.headers['content-disposition'].split('filename=')[1].split(';')[0];

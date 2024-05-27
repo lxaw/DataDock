@@ -5,7 +5,7 @@
 # The serializers for the data app.
 #
 from rest_framework import serializers
-from .models import (DataSet,TagDataset)
+from .models import (DataSet,TagDataset,File)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -17,6 +17,11 @@ from social.serializers import SerializerReview
 
 from organizations.serializers import OrganizationSerializer
 
+class SerializerFile(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = "__all__"
+
 # serializer for csv file
 class SerializerDataSet(serializers.ModelSerializer):
     author_username = serializers.SerializerMethodField()
@@ -26,11 +31,12 @@ class SerializerDataSet(serializers.ModelSerializer):
     avg_rating = serializers.SerializerMethodField()
     org_objs = serializers.SerializerMethodField()
     num_reviews = serializers.SerializerMethodField()
+    files = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet
         fields = "__all__"
-        read_only_fields = ['id','file_path']
+        read_only_fields = ['id']
 
     def get_author_username(self,obj):
         return obj.author.username
@@ -57,6 +63,8 @@ class SerializerDataSet(serializers.ModelSerializer):
     def get_org_objs(self,obj):
         return OrganizationSerializer(obj.registered_organizations.all(),many=True).data
     
+    def get_files(self,obj):
+        return SerializerFile(obj.files.all(),many=True).data
 
 # serializer for tag csv file
 class SerializerTagDataset(serializers.ModelSerializer):
