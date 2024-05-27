@@ -85,13 +85,13 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
         return response
 
-# helper thread work for save file
-def write_file(file_path,file_chunks):
-    with open(file_path,'wb+') as f:
+def write_file(file_path, file_chunks):
+    with open(file_path, 'wb+') as f:
         for chunk in file_chunks:
             f.write(chunk)
 
-def process_files(file_data_list,dataset_path,dataset_zip_path):
+def process_files(file_data_list, dataset_path, dataset_zip_path):
+    print(file_data_list)
     threads = []
 
     if not os.path.exists(dataset_path):
@@ -101,23 +101,29 @@ def process_files(file_data_list,dataset_path,dataset_zip_path):
     for file_obj in file_data_list:
         file_chunks = file_obj['chunks']
         file_path = file_obj['file_path']
+        print(f'FILE PATH: {file_path}')
+
+        # create directory if not exists
+        directory = os.path.dirname(file_path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
         # write the file
         thread = threading.Thread(
             target=write_file,
-            args=(file_path,file_chunks),
+            args=(file_path, file_chunks),
         )
         thread.start()
+        threads.append(thread)
 
     # wait for threads
     for thread in threads:
         thread.join()
-        
+
     # zip the files
     shutil.make_archive(base_name=dataset_zip_path[:-4],
                         format='zip',
-                        root_dir=dataset_path,
-                        )
+                        root_dir=dataset_path)
 
     # now delete the files you just zipped
     shutil.rmtree(dataset_path)
@@ -146,6 +152,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         desc = self.request.data.get('description')
         is_public_orgs = self.request.data.get('is_public_orgs')
         name = self.request.data.get('name')
+        print(self.request.data)
 
         # javascript sometimes uses "true" and "false", we need "True" and "False"
         if is_public == "true":
@@ -161,6 +168,8 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         strUserFilePath = f'static/users/{request.user.username}/files'
         # folder is the dataset
         strDataSetPath = os.path.join(strUserFilePath,name)
+        # Create the directory if it doesn't exist
+        os.makedirs(strDataSetPath,exist_ok=True)
 
         # step 1: create the dataset
         dataSet = DataSet(author=author,is_public=is_public,description=desc,
@@ -171,25 +180,38 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         # Step 2: Create File objects with file paths
         fileDatas = []
 
-        # Step 3: Create TagDataset objects
-        for k, v in request.data.items():
-            if k.startswith('file'):
-                file_path = os.path.join(strDataSetPath,str(v))
-                file_obj = File(dataset=dataSet, file_path=file_path, file_name=str(v))
-                file_obj.save()
-
-                # for use in threaded process
-                fileDatas.append(
-                    {
-                        'file_path':file_path,
-                        'chunks' :v.chunks()
-                     }
-                )
-
+        # create dataset tags first
+        num_files = 0
+        for (k,v) in request.data.items():
             if k.startswith('tag'):
                 t = TagDataset(text=v)
                 t.dataset = dataSet
                 t.save()
+            elif k.endswith('relativePath'):
+                # count the number of files
+                num_files +=1
+        
+        # then create the files
+        for index in range(0,num_files):
+            file_key = f"file.{index}"
+            relative_path_key = file_key + '.relativePath'
+            full_path= os.path.join(strDataSetPath,request.data[relative_path_key])
+            file = request.data[file_key]
+            
+            # probably better way to do this
+            file_obj = File(dataset=dataSet, 
+                            file_path=full_path, 
+                            file_name=str(file))
+            file_obj.save()
+
+            # for use in threaded process
+            fileDatas.append(
+                {
+                    'file_path':full_path,
+                    'chunks' :file.chunks()
+                    }
+            )
+
 
         # Step 4: Start a new thread to process the files
         thread = threading.Thread(target=process_files,args=(fileDatas,strDataSetPath,dataSet.get_zip_path()))

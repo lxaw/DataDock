@@ -59,37 +59,50 @@ const DataUploadForm = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+  
     const isPublic = $('#flexCheckPublic').is(':checked');
     const isPublicOrgs = $('#flexCheckPublicToOrg').is(':checked');
     const description = $('#DataSetDescription').val();
     const DataSetName = $('#DataSetName').val();
-
+  
     if (isPublicOrgs && arrOrgs.length === 0) {
       alert(
         'For a file to be public under organizations, you must select an organization. Please either select an organization, or if there are none switch to a different visibility.'
       );
       return;
     }
-
-    const dictData = {
-      is_public: isPublic,
-      is_public_orgs: isPublicOrgs,
-      description: description,
-      name: DataSetName,
-      registered_organizations: arrOrgs,
-      tags: tags,
-      file: acceptedFiles,
-      num_files:acceptedFiles.length,
-      author: props.auth.user.id,
-    };
-
+  
+    const dictData = new FormData();
+    dictData.append('is_public', isPublic);
+    dictData.append('is_public_orgs', isPublicOrgs);
+    dictData.append('description', description);
+    dictData.append('name', DataSetName);
+    dictData.append('author', props.auth.user.id);
+  
+    // Append registered organizations
+    arrOrgs.forEach((orgId, index) => {
+      dictData.append(`registered_organizations.${index}`, orgId);
+    });
+  
+    // Append tags
+    tags.forEach((tag, index) => {
+      dictData.append(`tag.${index}`, tag);
+    });
+  
+    // Append file data and relative paths
+    acceptedFiles.forEach((file, index) => {
+      dictData.append(`file.${index}`, file);
+      const relativePath = file.webkitRelativePath || file.path || '';
+      dictData.append(`file.${index}.relativePath`, relativePath);
+    });
+  
     props.addCsvFile(dictData).then((res) => {
       if (res.status === 200) {
         navigate('/data/download');
       }
     });
   };
+
 
   const updateTags = (tags) => {
     setTags(tags);
