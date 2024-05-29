@@ -1,6 +1,9 @@
 // basically just constants that hold a str
 // like an enum
 
+// cart actions
+export const UPDATE_CART_ITEMS = "UPDATE_CART_ITEMS"
+
 // data accel
 export const GET_DATA_ACCEL = "GET_DATA_ACCEL";
 export const DELETE_DATA_ACCEL = "DELETE_DATA_ACCEL";

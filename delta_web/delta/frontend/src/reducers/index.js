@@ -20,9 +20,11 @@ import { combineReducers } from 'redux';
 import errors from "./errors";
 import messages from "./messages";
 import auth from "./auth";
+import cartItems from './cartActions'; // Import the new reducer
 
 export default combineReducers({
     errors,
     messages,
     auth,
+    cartItems,
 });

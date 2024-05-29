@@ -171,7 +171,7 @@ const renderItems = () => {
 
     return (
       <div className="col-4" key={`${item.id}-${isHighlighted}`}>
-        <span onClick={handleClick} style={{ backgroundColor }}>
+        <span onClick={handleClick} style={{ backgroundColor:backgroundColor }}>
           <DataCard data={item} />
         </span>
       </div>

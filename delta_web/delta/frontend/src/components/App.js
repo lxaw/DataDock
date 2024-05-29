@@ -64,6 +64,7 @@ import ReviewDetail from './DataSets/ReviewDetail';
 
 // Cart
 import Cart from './data_transfer/Cart';
+import { initializeCart } from '../reducers/cartActions';
 
 // Alert options
 const alertOptions = {
@@ -75,6 +76,7 @@ class App extends Component{
     // fire when main app is loaded
     componentDidMount(){
         store.dispatch(loadUser());
+        store.dispatch(initializeCart());
     };
 
 
