@@ -4,9 +4,7 @@ import styles from "./tags.module.css";
 import { FaStar,FaArrowDown } from 'react-icons/fa';
 
 const DataCard = ({ data}) => {
-  const [isHovered, setIsHovered] = useState(false);
   const cardStyle = {
-    backgroundColor: isHovered ?'#f5f5f5':'white',
     transition: 'background-color 0.3s',
     height: '20rem',
     width: '26rem',
@@ -17,14 +15,6 @@ const DataCard = ({ data}) => {
     height: '6rem',
     overflowY: 'auto',
     paddingRight: '1rem',
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
   };
 
   const renderStars = (rating) =>{
@@ -57,9 +47,7 @@ const DataCard = ({ data}) => {
   }
 
   return (
-    <Link to={`/csvs/${data.id}`} style = {{textDecoration:'none',color:'inherit'}}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+    <span style = {{textDecoration:'none',color:'inherit'}}
     >
       <div className="card" style={cardStyle} data-testid="data_card-1">
         <div className="card-body">
@@ -98,7 +86,7 @@ const DataCard = ({ data}) => {
           </div>
         </div>
       </div>
-    </Link>
+    </span>
   );
 };
 

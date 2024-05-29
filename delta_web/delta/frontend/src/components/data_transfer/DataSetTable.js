@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { downloadCsvFile } from '../../actions/file';
 import DataCard from './DataCard';
 import styles from './tags.module.css'
+import { useNavigate } from 'react-router-dom';
+import { addToCart } from '../../actions/file';
 
 const DataSetTable = (props) => {
+  const [highlightedDataSetIds,setHighlightedDataSetIds] = useState([])
+  // for handle double click
+  const doubleClickTimeout = useRef(null);
+
+  // web browser history
+  const navigate = useNavigate();
 
   // dataset items
   const [dataSets, setDataSets] = useState(props.dataSets);
@@ -111,19 +118,67 @@ const DataSetTable = (props) => {
     return null;
   }
 
-  // render table items
-  const renderItems = () => {
-    let items = tableCsvs.map((item,index) =>{
-        return (
-         <div class="col-4" key={item.id}>
-          <DataCard
-            data={item}
-          />
-        </div>
-        )
+  // handle what happens when we click the dataset cart
+  // on single click highlight
+  // on double click enter
+  const handleSingleClickDataSet = (item) => {
+    setHighlightedDataSetIds((prevIds) => {
+      if (prevIds.includes(item.id)) {
+        // Remove the item.id from the list
+        return prevIds.filter((id) => id !== item.id);
+      } else {
+        // Add the item.id to the list
+        return [...prevIds, item.id];
+      }
     });
-    return items
+  };
+  
+  const handleDoubleClickDataSet = (item) => {
+    navigate(`/csvs/${item.id}`);
+  };
+  // for double click
+  useEffect(() => {
+    return () => {
+      clearTimeout(doubleClickTimeout.current);
+    };
+  }, []);
+
+  const massAddToCart = () =>{
+    // add all highlighted items to cart
+    highlightedDataSetIds.map((id)=>{props.addToCart({'file_id':id})})
   }
+
+
+  // render table items
+const renderItems = () => {
+  return tableCsvs.map((item) => {
+    const isHighlighted = highlightedDataSetIds.includes(item.id);
+    const backgroundColor = isHighlighted ? 'red' : 'white';
+    console.log(backgroundColor)
+
+    const handleClick = () => {
+      if (doubleClickTimeout.current) {
+        clearTimeout(doubleClickTimeout.current);
+        handleDoubleClickDataSet(item);
+        doubleClickTimeout.current = null;
+      } else {
+        handleSingleClickDataSet(item);
+        doubleClickTimeout.current = setTimeout(() => {
+          doubleClickTimeout.current = null;
+        }, 200);
+      }
+    };
+
+    return (
+      <div className="col-4" key={`${item.id}-${isHighlighted}`}>
+        <span onClick={handleClick} style={{ backgroundColor }}>
+          <DataCard data={item} />
+        </span>
+      </div>
+    );
+  });
+};
+
 
 return (
   <div data-testid="public_csv_file_table-1">
@@ -196,6 +251,16 @@ return (
           For example, enter "user123" to see public files uploaded by "user123".
         </div>
       </div>
+      <div>
+        <div>
+          Num files selected: {highlightedDataSetIds.length}
+        </div>
+        <button className="btn btn-primary"
+          onClick={massAddToCart}
+        >
+          Add to cart
+          </button>
+      </div>
       <div className="row">
           {renderItems()}
       </div>
@@ -207,4 +272,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps,)(DataSetTable);
+export default connect(mapStateToProps,{addToCart})(DataSetTable);
