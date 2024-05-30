@@ -153,8 +153,7 @@ const DataSetTable = (props) => {
 const renderItems = () => {
   return tableCsvs.map((item) => {
     const isHighlighted = highlightedDataSetIds.includes(item.id);
-    const backgroundColor = isHighlighted ? 'red' : 'white';
-    console.log(backgroundColor)
+    const backgroundColor = isHighlighted ? '#c2e7ff' : 'white';
 
     const handleClick = () => {
       if (doubleClickTimeout.current) {
@@ -170,9 +169,9 @@ const renderItems = () => {
     };
 
     return (
-      <div className="col-4" key={`${item.id}-${isHighlighted}`}>
-        <span onClick={handleClick} style={{ backgroundColor:backgroundColor }}>
-          <DataCard data={item} />
+      <div className="col-4" key={`${item.id}`}>
+        <span onClick={handleClick}>
+          <DataCard data={item} style={{backgroundColor:backgroundColor}}/>
         </span>
       </div>
     );
@@ -251,16 +250,16 @@ return (
           For example, enter "user123" to see public files uploaded by "user123".
         </div>
       </div>
-      <div>
-        <div>
-          Num files selected: {highlightedDataSetIds.length}
-        </div>
-        <button className="btn btn-primary"
-          onClick={massAddToCart}
-        >
-          Add to cart
-          </button>
+      <div className="d-flex flex-row-reverse">
+      <div className="d-flex align-items-center">
+        <span>
+          <strong>{highlightedDataSetIds.length}</strong> file(s) selected.
+        </span>
       </div>
+      <button className="btn btn-primary" onClick={massAddToCart}>
+        Add to cart
+      </button>
+    </div>
       <div className="row">
           {renderItems()}
       </div>

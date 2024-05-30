@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import styles from "./tags.module.css";
 import { FaStar,FaArrowDown } from 'react-icons/fa';
 
-const DataCard = ({ data}) => {
-  const cardStyle = {
-    transition: 'background-color 0.3s',
-    height: '20rem',
-    width: '26rem',
-    margin:'0.5rem'
-  };
+const DataCard = ({ data,style}) => {
+    const cardStyle = {
+      transition: 'background-color 0.3s',
+      height: '20rem',
+      width: '26rem',
+      margin: '0.5rem',
+      ...style, // Spread the style prop here
+    };
 
   const descriptionStyle = {
     height: '6rem',
