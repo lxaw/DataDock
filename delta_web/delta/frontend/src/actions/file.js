@@ -5,16 +5,30 @@ import {fileTokenConfig,tokenConfig} from './auth';
 
 import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
     ADD_CART_ITEM,DELETE_CART_ITEM, 
-    CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC} from "./types";
+    CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC,
+    USER_UPDATE_SUCCESS
+} from "./types";
 
-export const addToCart = (dictData) => (dispatch,getState) =>{
-    return axios.post('/api/cart_item/',dictData,fileTokenConfig(getState))
-    .then((res)=>{
-        dispatch(createMessage({addCartItemSuccess:"Added dataset to cart."}))
-        dispatch({type:ADD_CART_ITEM,payload:res.data});
-        return res;
-    })
+
+import { updateCartItems } from '../reducers/cartActions';
+
+export const addToCart = (dictData) => (dispatch, getState) => {
+    return axios.post('/api/cart_item/', dictData, fileTokenConfig(getState))
+        .then((res) => {
+            dispatch(createMessage({ addCartItemSuccess: "Added dataset to cart." }));
+            dispatch({ type:USER_UPDATE_SUCCESS,payload:res.data});
+
+            // Get the updated number of cart items
+            const updatedNumCartItems = getState().cartItems.numCartItems + 1;
+            dispatch(updateCartItems(updatedNumCartItems));  // Update the cart items count
+
+            return res;
+        })
+        .catch((err) => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        });
 }
+
 
 export const getCartItems = () => (dispatch,getState) =>{
     // console.log('getting cart items')
@@ -25,18 +39,22 @@ export const getCartItems = () => (dispatch,getState) =>{
 }
 
 export const deleteCartItem = (id) => (dispatch, getState) => {
-  axios
-    .delete(`/api/cart_item/${id}/`, fileTokenConfig(getState))
-    .then((res) => {
-        dispatch(createMessage({removeCartItemSuccess:"Cart item removed."}));
-        dispatch({type:DELETE_CART_ITEM,payload:res.data})
+    axios
+      .delete(`/api/cart_item/${id}/`, fileTokenConfig(getState))
+      .then((res) => {
+          dispatch(createMessage({ removeCartItemSuccess: "Cart item removed." }));
+            dispatch({ type:USER_UPDATE_SUCCESS,payload:res.data});
+  
+          // Get the updated number of cart items
+          const updatedNumCartItems = getState().cartItems.numCartItems - 1;
+          dispatch(updateCartItems(updatedNumCartItems));  // Update the cart items count
+      })
+      .catch((err) => {
+        console.log(err);
+        // Handle error
+      });
+  };
 
-    })
-    .catch((err) => {
-      console.log(err);
-      // Handle error
-    });
-};
 
 // POST FILE 
 export const addCsvFile = (dictData) => (dispatch,getState) =>{

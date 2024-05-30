@@ -358,7 +358,11 @@ class ViewsetCartItem(viewsets.ModelViewSet):
             id = kwargs['pk']
             instance = get_object_or_404(CartItem, pk=id)
             self.perform_destroy(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({
+                # give the serialized user
+                # this is to update the cart count
+                "user":UserSerializer(request.user,context=self.get_serializer_context()).data,
+            })
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -379,7 +383,11 @@ class ViewsetCartItem(viewsets.ModelViewSet):
         cartItem = CartItem(cart=user_cart,dataset=dataset)
         cartItem.save()
 
-        return HttpResponse("CartItem added.")
+        return Response({
+            # give the serialized user
+            # this is to update the cart count
+            "user":UserSerializer(request.user,context=self.get_serializer_context()).data,
+        })
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer

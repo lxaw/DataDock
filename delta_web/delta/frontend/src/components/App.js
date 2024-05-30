@@ -74,8 +74,8 @@ const alertOptions = {
 class App extends Component{
     // fire when main app is loaded
     componentDidMount(){
-        store.dispatch(loadUser());
-    };
+        store.dispatch(loadUser())
+    }
 
 
     render(){
