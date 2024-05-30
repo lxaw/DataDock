@@ -5,14 +5,18 @@ import {fileTokenConfig,tokenConfig} from './auth';
 
 import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
     ADD_CART_ITEM,DELETE_CART_ITEM, 
-    CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC} from "./types";
+    CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC,
+    USER_UPDATE_SUCCESS
+} from "./types";
+
+
 import { updateCartItems } from '../reducers/cartActions';
 
 export const addToCart = (dictData) => (dispatch, getState) => {
     return axios.post('/api/cart_item/', dictData, fileTokenConfig(getState))
         .then((res) => {
             dispatch(createMessage({ addCartItemSuccess: "Added dataset to cart." }));
-            dispatch({ type: ADD_CART_ITEM, payload: res.data });
+            dispatch({ type:USER_UPDATE_SUCCESS,payload:res.data});
 
             // Get the updated number of cart items
             const updatedNumCartItems = getState().cartItems.numCartItems + 1;
@@ -39,7 +43,7 @@ export const deleteCartItem = (id) => (dispatch, getState) => {
       .delete(`/api/cart_item/${id}/`, fileTokenConfig(getState))
       .then((res) => {
           dispatch(createMessage({ removeCartItemSuccess: "Cart item removed." }));
-          dispatch({ type: DELETE_CART_ITEM, payload: res.data });
+            dispatch({ type:USER_UPDATE_SUCCESS,payload:res.data});
   
           // Get the updated number of cart items
           const updatedNumCartItems = getState().cartItems.numCartItems - 1;

@@ -8,15 +8,15 @@ export const updateCartItems = (count) => ({
 export const initializeCart = () => (dispatch, getState) => {
   // Check if auth user data is available
   const authUser = getState().auth.user;
+
   if (authUser) {
     const numCartItems = authUser.num_cart_items || 0;
     dispatch(updateCartItems(numCartItems));
   }
 };
 
-
 const initialState = {
-  numCartItems: 0,
+  numCartItems: 0, // Set the initial value to 0
 };
 
 export default function (state = initialState, action) {
