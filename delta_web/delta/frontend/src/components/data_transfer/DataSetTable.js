@@ -4,6 +4,7 @@ import DataCard from './DataCard';
 import styles from './tags.module.css'
 import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../../actions/file';
+import { FaFolderPlus, FaCartPlus } from 'react-icons/fa';
 
 const DataSetTable = (props) => {
   const [highlightedDataSetIds,setHighlightedDataSetIds] = useState([])
@@ -150,33 +151,33 @@ const DataSetTable = (props) => {
 
 
   // render table items
-const renderItems = () => {
-  return tableCsvs.map((item) => {
-    const isHighlighted = highlightedDataSetIds.includes(item.id);
-    const backgroundColor = isHighlighted ? '#c2e7ff' : 'white';
-
-    const handleClick = () => {
-      if (doubleClickTimeout.current) {
-        clearTimeout(doubleClickTimeout.current);
-        handleDoubleClickDataSet(item);
-        doubleClickTimeout.current = null;
-      } else {
-        handleSingleClickDataSet(item);
-        doubleClickTimeout.current = setTimeout(() => {
+  const renderItems = () => {
+    return tableCsvs.map((item) => {
+      const isHighlighted = highlightedDataSetIds.includes(item.id);
+      const backgroundColor = isHighlighted ? '#c2e7ff' : 'white';
+  
+      const handleClick = () => {
+        if (doubleClickTimeout.current) {
+          clearTimeout(doubleClickTimeout.current);
+          handleDoubleClickDataSet(item);
           doubleClickTimeout.current = null;
-        }, 200);
-      }
-    };
-
-    return (
-      <div className="col-4" key={`${item.id}`}>
-        <span onClick={handleClick}>
-          <DataCard data={item} style={{backgroundColor:backgroundColor}}/>
-        </span>
-      </div>
-    );
-  });
-};
+        } else {
+          handleSingleClickDataSet(item);
+          doubleClickTimeout.current = setTimeout(() => {
+            doubleClickTimeout.current = null;
+          }, 200);
+        }
+      };
+  
+      return (
+        <div className="col-4" key={`${item.id}`}>
+          <span onClick={handleClick}>
+            <DataCard data={item} style={{ backgroundColor}} />
+          </span>
+        </div>
+      );
+    });
+  };
 
 
 return (
@@ -250,16 +251,21 @@ return (
           For example, enter "user123" to see public files uploaded by "user123".
         </div>
       </div>
-      <div className="d-flex flex-row-reverse">
-      <div className="d-flex align-items-center">
-        <span>
-          <strong>{highlightedDataSetIds.length}</strong> file(s) selected.
-        </span>
+      <div className="d-flex flex-row align-items-center mb-3">
+        <div className="d-flex align-items-center">
+          <button className="btn btn-primary d-flex align-items-center me-2">
+            <FaFolderPlus className="me-1" />
+            Add to Folder
+          </button>
+        </div>
+        <button className="btn btn-success d-flex align-items-center" onClick={massAddToCart}>
+          <FaCartPlus className="me-1" />
+          Add to Cart
+        </button>
       </div>
-      <button className="btn btn-primary" onClick={massAddToCart}>
-        Add to cart
-      </button>
-    </div>
+      <span>
+        <strong>{highlightedDataSetIds.length}</strong> file(s) selected.
+      </span>
       <div className="row">
           {renderItems()}
       </div>

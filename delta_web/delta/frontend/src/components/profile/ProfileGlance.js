@@ -94,6 +94,18 @@ const ProfileGlance = (props) => {
 
     <div className="panel panel-default mt-4">
         <div className="panel-heading">
+            <h1 className="panel-title">Your Folders</h1>
+        </div>
+        {csvFiles.length > 0 ? (
+            <div className="panel-body">
+            </div>
+        ) : (
+            <div>Nothing yet.</div>
+        )}
+    </div>
+
+    <div className="panel panel-default mt-4">
+        <div className="panel-heading">
             <h1 className="panel-title">Your Files</h1>
         </div>
         {csvFiles.length > 0 ? (
@@ -103,7 +115,7 @@ const ProfileGlance = (props) => {
         ) : (
             <div>Nothing yet.</div>
         )}
-    </div>
+    </div>    
 
 </div>
 
