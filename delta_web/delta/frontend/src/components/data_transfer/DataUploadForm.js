@@ -22,7 +22,7 @@ const DataUploadForm = (props) => {
   if (props.auth.user.username === undefined) return;
 
   const navigate = useNavigate();
-  const maxNumMb = 500;
+  const maxNumMb = 100000;
   const maxSize = maxNumMb * 1048576;
 
   const [selectOptions, setSelectOptions] = useState([]);
