@@ -85,13 +85,11 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename={instance.name + ".zip"}'
         return response
 
-def write_file(file_path, file_chunks):
+def write_file(file_path, file_data):
     with open(file_path, 'wb+') as f:
-        for chunk in file_chunks:
-            f.write(chunk)
+        f.write(file_data)
 
 def process_files(file_data_list, dataset_path, dataset_zip_path):
-    print(file_data_list)
     threads = []
 
     if not os.path.exists(dataset_path):
@@ -99,7 +97,7 @@ def process_files(file_data_list, dataset_path, dataset_zip_path):
 
     # Process the files
     for file_obj in file_data_list:
-        file_chunks = file_obj['chunks']
+        file_data = file_obj['file_data']
         file_path = file_obj['file_path']
         print(f'FILE PATH: {file_path}')
 
@@ -111,7 +109,7 @@ def process_files(file_data_list, dataset_path, dataset_zip_path):
         # write the file
         thread = threading.Thread(
             target=write_file,
-            args=(file_path, file_chunks),
+            args=(file_path, file_data),
         )
         thread.start()
         threads.append(thread)
@@ -205,12 +203,11 @@ class ViewsetDataSet(viewsets.ModelViewSet):
             file_obj.save()
 
             # for use in threaded process
-            fileDatas.append(
-                {
-                    'file_path':full_path,
-                    'chunks' :file.chunks()
-                    }
-            )
+            file_data = file.read()
+            fileDatas.append({
+                    'file_path': full_path,
+                    'file_data': file_data
+                })
 
 
         # Step 4: Start a new thread to process the files
