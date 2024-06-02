@@ -1,13 +1,75 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import DataCard from './DataCard';
-import styles from './tags.module.css'
+import tag_styles from './tags.module.css'
 import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../../actions/file';
 import { FaFolderPlus, FaCartPlus } from 'react-icons/fa';
+import popup_styles from "./popup.module.css"
+
+// popup used for dataset
+const DataSetPopup = ({ isVisible, onClose, selectedDataSets }) => {
+  const [folderName, setFolderName] = useState('');
+  const [folderDescription, setFolderDescription] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    alert('submit!')
+  };
+  
+  if (!isVisible) return null;
+
+  return (
+    <div className={popup_styles.popupOverlay}>
+      <div className={popup_styles.popupContent}>
+        <h3>Selected Datasets</h3>
+        {selectedDataSets.map(dataset => (
+          <div key={dataset.id} className={popup_styles.datasetInfo}>
+            <h4>{dataset.name}</h4>
+            <p>Author: {dataset.author_username}</p>
+            <p>Tags: {dataset.tags.map(tag => tag.text).join(', ')}</p>
+            <p>Files: {dataset.files.map(file => file.file_name).join(', ')}</p>
+          </div>
+        ))}
+
+        <h3>Create New Folder</h3>
+        <form onSubmit={handleSubmit}>
+          <div className={popup_styles.formGroup}>
+            <label htmlFor="folderName" className={popup_styles.formLabel}>Folder Name</label>
+            <input 
+              type="text" 
+              id="folderName" 
+              className={popup_styles.formInput}
+              value={folderName}
+              onChange={(e) => setFolderName(e.target.value)}
+              maxLength={128}
+              required
+            />
+          </div>
+          <div className={popup_styles.formGroup}>
+            <label htmlFor="folderDescription" className={popup_styles.formLabel}>Description</label>
+            <textarea 
+              id="folderDescription" 
+              className={popup_styles.formTextarea}
+              value={folderDescription}
+              onChange={(e) => setFolderDescription(e.target.value)}
+            ></textarea>
+          </div>
+          {error && <p className={popup_styles.formError}>{error}</p>}
+          <button type="submit" className={popup_styles.formSubmit}>Create Folder</button>
+        </form>
+
+        <button className={popup_styles.closeButton} onClick={onClose} style={{ marginTop: '20px' }}>Close</button>
+      </div>
+    </div>
+  );
+};
+
 
 const DataSetTable = (props) => {
-  const [highlightedDataSetIds,setHighlightedDataSetIds] = useState([])
+  // popup
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
   // for handle double click
   const doubleClickTimeout = useRef(null);
 
@@ -16,6 +78,8 @@ const DataSetTable = (props) => {
 
   // dataset items
   const [dataSets, setDataSets] = useState(props.dataSets);
+  // selected datasets
+  const [selectedDataSets,setSelectedDataSets] = useState([])
   // search text for file name
   const [searchText, setSearchFileName] = useState('');
   // tag search
@@ -48,6 +112,15 @@ const DataSetTable = (props) => {
     $('#inputSearchTags').val(updatedTags.join(' '))
     // remove the tags
     setTagSuggestions([])
+  };
+  // when add to folder
+  const handleAddToFolder = () => {
+    if (selectedDataSets.length > 0) {
+      setIsPopupVisible(true);
+    } else {
+      // Optionally, show an alert or toast message if no datasets are selected
+      alert("Please select at least one dataset to add to the folder.");
+    }
   };
 
   // when search
@@ -122,14 +195,12 @@ const DataSetTable = (props) => {
   // handle what happens when we click the dataset cart
   // on single click highlight
   // on double click enter
-  const handleSingleClickDataSet = (item) => {
-    setHighlightedDataSetIds((prevIds) => {
-      if (prevIds.includes(item.id)) {
-        // Remove the item.id from the list
-        return prevIds.filter((id) => id !== item.id);
+  const handleSingleClickDataSet = (e) => {
+    setSelectedDataSets((items) => {
+      if (items.includes(e)) {
+        return items.filter((item) => item !== e);
       } else {
-        // Add the item.id to the list
-        return [...prevIds, item.id];
+        return [...items, e];
       }
     });
   };
@@ -146,14 +217,14 @@ const DataSetTable = (props) => {
 
   const massAddToCart = () =>{
     // add all highlighted items to cart
-    highlightedDataSetIds.map((id)=>{props.addToCart({'file_id':id})})
+    selectedDataSets.map((dataset)=>{props.addToCart({'file_id':dataset.id})})
   }
 
 
   // render table items
   const renderItems = () => {
     return tableCsvs.map((item) => {
-      const isHighlighted = highlightedDataSetIds.includes(item.id);
+      const isHighlighted = selectedDataSets.includes(item);
       const backgroundColor = isHighlighted ? '#c2e7ff' : 'white';
   
       const handleClick = () => {
@@ -227,9 +298,9 @@ return (
               <div
                 key={tag}
                 onClick={() => handleTagClick(tag)}
-                style={{ ...styles.tagSuggestionItem, display: 'flex' }}
+                style={{ ...tag_styles.tagSuggestionItem, display: 'flex' }}
               >
-                <span className={styles.tag_item}>{tag}</span>
+                <span className={tag_styles.tag_item}>{tag}</span>
               </div>
             ))}
           </div>
@@ -253,7 +324,10 @@ return (
       </div>
       <div className="d-flex flex-row align-items-center mb-3">
         <div className="d-flex align-items-center">
-          <button className="btn btn-primary d-flex align-items-center me-2">
+          <button 
+            className="btn btn-primary d-flex align-items-center me-2"
+            onClick={handleAddToFolder}
+          >
             <FaFolderPlus className="me-1" />
             Add to Folder
           </button>
@@ -264,11 +338,16 @@ return (
         </button>
       </div>
       <span>
-        <strong>{highlightedDataSetIds.length}</strong> file(s) selected.
+        <strong>{selectedDataSets.length}</strong> file(s) selected.
       </span>
       <div className="row">
           {renderItems()}
       </div>
+      <DataSetPopup 
+      isVisible={isPopupVisible} 
+      onClose={() => setIsPopupVisible(false)} 
+      selectedDataSets={selectedDataSets}
+    />
   </div>
 );
 };

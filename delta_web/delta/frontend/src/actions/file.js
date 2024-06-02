@@ -12,6 +12,15 @@ import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
 
 import { updateCartItems } from '../reducers/cartActions';
 
+// create folder
+export const createFolderAction = (folderData) => async (dispatch) => {
+  try {
+    console.log('create folder')
+  } catch (err) {
+    console.log('error: ',err)
+  }
+};
+
 export const addToCart = (dictData) => (dispatch, getState) => {
     return axios.post('/api/cart_item/', dictData, fileTokenConfig(getState))
         .then((res) => {
