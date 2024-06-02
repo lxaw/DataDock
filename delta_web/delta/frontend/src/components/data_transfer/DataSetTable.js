@@ -8,17 +8,36 @@ import { FaFolderPlus, FaCartPlus } from 'react-icons/fa';
 import popup_styles from "./popup.module.css"
 
 // popup used for dataset
-const DataSetPopup = ({ isVisible, onClose, selectedDataSets }) => {
+const DataSetPopup = ({ isVisible, onClose, selectedDataSets, auth, createFolder }) => {
   const [folderName, setFolderName] = useState('');
   const [folderDescription, setFolderDescription] = useState('');
   const [error, setError] = useState('');
 
+  if (!isVisible) return null;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('submit!')
+    if (!folderName) {
+      setError('Folder name is required.');
+      return;
+    }
+
+    try {
+      await createFolder({
+        name: folderName,
+        description: folderDescription,
+        author: auth.user.id  // Assuming the user id is available in the auth state
+      });
+
+      // Reset form and close popup
+      setFolderName('');
+      setFolderDescription('');
+      setError('');
+      onClose();
+    } catch (err) {
+      setError('Failed to create folder. Please try again.');
+    }
   };
-  
-  if (!isVisible) return null;
 
   return (
     <div className={popup_styles.popupOverlay}>
@@ -65,7 +84,6 @@ const DataSetPopup = ({ isVisible, onClose, selectedDataSets }) => {
     </div>
   );
 };
-
 
 const DataSetTable = (props) => {
   // popup
