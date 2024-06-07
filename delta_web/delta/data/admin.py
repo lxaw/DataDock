@@ -12,7 +12,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import File, TagDataset,DataSet
+from .models import (File, TagDataset,DataSet,Folder)
+
+class FolderAdmin(admin.ModelAdmin):
+    fields = ['name','author','description']
 
 class DataSetAdmin(admin.ModelAdmin):
     fields = ['name','description','is_public','is_public_orgs','download_count','timestamp','registered_organizations','original_name']
@@ -25,6 +28,7 @@ class FileAdmin(admin.ModelAdmin):
 class TagDatasetAdmin(admin.ModelAdmin):
     fields = ['text','timestamp','dataset']
 
+admin.site.register(Folder,FolderAdmin)
 admin.site.register(File,FileAdmin)
 admin.site.register(TagDataset,TagDatasetAdmin)
 admin.site.register(DataSet,DataSetAdmin)

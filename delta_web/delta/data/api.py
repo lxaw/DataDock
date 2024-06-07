@@ -12,7 +12,7 @@
 
 # import necessary models
 from django.http import FileResponse,HttpResponse
-from .models import DataSet, TagDataset,File
+from .models import (DataSet, TagDataset,File,Folder)
 from rest_framework import status,renderers
 from rest_framework.decorators import action
 
@@ -41,7 +41,8 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser
 from organizations.models import Organization
 
 # import necessary serializers
-from .serializers import SerializerDataSet,SerializerTagDataset
+from .serializers import (SerializerDataSet,SerializerTagDataset,
+                          SerializerFolder)
 
 #https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
 # Passes the generated file to the browser
@@ -51,6 +52,16 @@ class PassthroughRenderer(renderers.BaseRenderer):
     format = None
     def render(self,data,accepted_media_type=None,renderer_context=None):
         return data
+
+class ViewsetFolder(viewsets.ModelViewSet):
+    serializer_class = SerializerFolder
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Folder.objects.filter(author=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 # Public CSV viewset api
 # For dealing with public viewing of csv files

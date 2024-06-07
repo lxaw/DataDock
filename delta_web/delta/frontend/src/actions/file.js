@@ -13,12 +13,25 @@ import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
 import { updateCartItems } from '../reducers/cartActions';
 
 // create folder
-export const createFolderAction = (folderData) => async (dispatch) => {
-  try {
-    console.log('create folder')
-  } catch (err) {
-    console.log('error: ',err)
-  }
+export const createFolder = () => (dispatch,getState) => {
+  return axios.get('/api/folder/',fileTokenConfig(getState))
+  .then((res)=>{
+    console.log(res)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+};
+
+// get folders
+export const getFolders = () => (dispatch,getState) => {
+  return axios.get('/api/folder/',fileTokenConfig(getState))
+  .then((res)=>{
+    return res
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
 };
 
 export const addToCart = (dictData) => (dispatch, getState) => {

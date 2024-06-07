@@ -13,6 +13,9 @@ import Login from './accounts/Login';
 import Register from './accounts/Register';
 import NotFound from './home/NotFound'
 
+// folder
+import FolderDetail from './profile/FolderDetail';
+
 // forgot information
 import ForgotInformation from "./accounts/ForgotInformation"
 
@@ -96,6 +99,12 @@ class App extends Component{
                                     <Route exact path ="/profile/:username" element={
                                         <PrivateRoute>
                                             <PublicProfile />
+                                        </PrivateRoute>
+                                    }/>
+                                    {/* FolderDetail */}
+                                    <Route exact path="/folders/detail/:id" element={
+                                        <PrivateRoute>
+                                            <FolderDetail/>
                                         </PrivateRoute>
                                     }/>
 

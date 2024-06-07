@@ -18,6 +18,8 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import OrganizationCard from '../community/OrganizationCard';
 import DataSetTable from '../data_transfer/DataSetTable';
+import FolderList from './FolderList';
+import { getFolders } from '../../actions/file';
 
 <script src="https://kit.fontawesome.com/f45b95bc62.js" crossorigin="anonymous"></script>
 
@@ -27,13 +29,20 @@ import DataSetTable from '../data_transfer/DataSetTable';
 const ProfileGlance = (props) => {
     //This is the rendering for the profile at a glance page.
     const { isAuthenticated, user } = props.auth; //Making sure that its the specific user thats information is displayed
-    const [csvFiles, setCsvFiles] = useState(null);
+    const [csvFiles, setCsvFiles] = useState([]);
+    const [folders,setFolders] = useState([]);
 
     useEffect(() => {
         axios.get('/api/csv/', { headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${props.auth.token}` } })
             .then(res => {
                 setCsvFiles(res.data);
             })
+        props.getFolders().then((res)=>{
+            setFolders(res.data)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
     }, [])
 
     if (csvFiles == null) return <div data-testid="profile_glance-1"></div>;
@@ -95,6 +104,9 @@ const ProfileGlance = (props) => {
     <div className="panel panel-default mt-4">
         <div className="panel-heading">
             <h1 className="panel-title">Your Folders</h1>
+            <FolderList
+                folders={folders}
+            />
         </div>
         {csvFiles.length > 0 ? (
             <div className="panel-body">
@@ -126,4 +138,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps)(ProfileGlance);
+export default connect(mapStateToProps,{getFolders})(ProfileGlance);

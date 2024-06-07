@@ -5,7 +5,8 @@
 # The serializers for the data app.
 #
 from rest_framework import serializers
-from .models import (DataSet,TagDataset,File)
+from .models import (DataSet,TagDataset,File,
+                     Folder)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -16,6 +17,13 @@ from django.db.models import Avg
 from social.serializers import SerializerReview
 
 from organizations.serializers import OrganizationSerializer
+
+
+class SerializerFolder(serializers.ModelSerializer):
+    class Meta:
+        model = Folder
+        fields = ['id','name','author','description']
+        read_only_fields = ['author']
 
 class SerializerFile(serializers.ModelSerializer):
     class Meta:
