@@ -6,22 +6,34 @@ import {fileTokenConfig,tokenConfig} from './auth';
 import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
     ADD_CART_ITEM,DELETE_CART_ITEM, 
     CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC,
-    USER_UPDATE_SUCCESS
+    USER_UPDATE_SUCCESS,
 } from "./types";
 
 
 import { updateCartItems } from '../reducers/cartActions';
 
 // create folder
-export const createFolder = () => (dispatch,getState) => {
-  return axios.get('/api/folder/',fileTokenConfig(getState))
+export const createFolder = (dictData) => (dispatch,getState) => {
+  return axios.post('/api/folder/',dictData,fileTokenConfig(getState))
   .then((res)=>{
+    dispatch(createMessage({createFolderSuccess: "Successfully created folder." }));
     console.log(res)
   })
   .catch((err)=>{
     console.log(err)
   })
 };
+
+// get a specific folder's info
+export const getFolderById = (id) =>(dispatch,getState) =>{
+    return axios.get(`/api/folder/${id}`,fileTokenConfig(getState))
+    .then((res)=>{
+        return res
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
 
 // get folders
 export const getFolders = () => (dispatch,getState) => {

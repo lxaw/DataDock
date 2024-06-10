@@ -43,7 +43,7 @@ const FolderList = ({ folders }) => {
         <ul style={folderListStyle}>
           {folders.map((folder) => (
             <li key={folder.id} style={folderItemStyle}>
-              <Link to={`/folders/detail/`}>
+              <Link to={`/folders/detail/${folder.id}`}>
                 <div style={folderIconContainer}>
                     <FaFolder style={folderIconStyle} />
                     <span style={folderNameStyle}>{folder.name}</span>

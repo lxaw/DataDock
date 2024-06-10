@@ -35,6 +35,9 @@ class Folder(models.Model):
     author = models.ForeignKey(User, related_name='folders', on_delete=models.CASCADE)
     description = models.TextField(blank=True, default='')
 
+    class Meta:
+        unique_together = ('author', 'name')
+
     def __str__(self):
         return self.name
 

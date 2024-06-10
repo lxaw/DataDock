@@ -114,6 +114,9 @@ export class Alerts extends Component {
             if(message.addMessageSuccess){
                 alert.success(message.addMessageSuccess)
             }
+            if(message.createFolderSuccess){
+                alert.success(message.createFolderSuccess)
+            }
         }
     }
 

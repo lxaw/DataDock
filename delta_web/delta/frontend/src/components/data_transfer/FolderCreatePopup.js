@@ -26,7 +26,8 @@ const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createF
       await createFolder({
         name: folderName,
         description: folderDescription,
-        author: auth.user.id  // Assuming the user id is available in the auth state
+        author: auth.user.id,  // Assuming the user id is available in the auth state
+        dataset_ids: JSON.stringify(selectedDataSets.map(obj => obj.id))
       });
 
       // Reset form and close popup

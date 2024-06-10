@@ -10,6 +10,9 @@
 # Is the API for the data app. It handles the logic for the data app of Django.
 # This includes the logic for uploading, downloading, deleting csv files, and who can see them.
 
+# json
+import json
+
 # import necessary models
 from django.http import FileResponse,HttpResponse
 from .models import (DataSet, TagDataset,File,Folder)
@@ -61,7 +64,15 @@ class ViewsetFolder(viewsets.ModelViewSet):
         return Folder.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        folder = serializer.save(author=self.request.user)
+
+        # get the dataset ids
+        dataset_ids= json.loads(self.request.data.get('dataset_ids', []))
+        # then update the datasets
+        datasets = DataSet.objects.filter(id__in=dataset_ids, author=self.request.user)
+        for dataset in datasets:
+            dataset.folder = folder
+            dataset.save()
 
 # Public CSV viewset api
 # For dealing with public viewing of csv files

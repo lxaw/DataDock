@@ -20,10 +20,14 @@ from organizations.serializers import OrganizationSerializer
 
 
 class SerializerFolder(serializers.ModelSerializer):
+    datasets = serializers.SerializerMethodField()
     class Meta:
         model = Folder
-        fields = ['id','name','author','description']
+        fields = ['id','name','author','description',
+                  'datasets']
         read_only_fields = ['author']
+    def get_datasets(self,obj):
+        return SerializerDataSet(obj.datasets.all(),many=True).data
 
 class SerializerFile(serializers.ModelSerializer):
     class Meta:
