@@ -9,7 +9,7 @@ const FolderList = ({ folders }) => {
   };
 
   const folderIconStyle = {
-    fontSize: '5rem',
+    fontSize: '10rem',
     color: '#ffd480',
   };
 
@@ -49,8 +49,6 @@ const FolderList = ({ folders }) => {
                     <span style={folderNameStyle}>{folder.name}</span>
                 </div>
               </Link>
-              <p>Author: {folder.author}</p>
-              <p>{folder.description}</p>
             </li>
           ))}
         </ul>
