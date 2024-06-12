@@ -2,20 +2,18 @@ import {createMessage,returnErrors} from './messages';
 import {tokenConfig,fileTokenConfig} from './auth';
 import axios from 'axios';
 
-export const addReview = (dictData) => (dispatch,getState) =>{
+export const addReview = (dictData) => (dispatch, getState) => {
+  axios.post('/api/review/', dictData, fileTokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ addReviewSuccess: "Your review has been posted." }));
+    })
+    .catch((err) => {
+        const errorText = err.response ? err.response.data.detail : "Error uploading review.";
+        console.log(errorText)
+        dispatch(createMessage({ addReviewFail: errorText}));
+    });
+};
 
-    axios.post('/api/review/',dictData,fileTokenConfig(getState))
-    .then((res)=>{
-        dispatch(createMessage({addReviewSuccess:"Your review has been posted."}))
-    })
-    .catch((err)=>{
-        if(err.response){
-            dispatch(returnErrors(err.response.data, err.response.status));
-        }else{
-            dispatch(createMessage({addReviewFail: "Failed to add review. Please check that you have not already added a review."}));
-        }
-    })
-}
 
 export const deleteReview = (id) => (dispatch,getState) => {
     axios.delete(`api/review/${id}`,fileTokenConfig(getState))
