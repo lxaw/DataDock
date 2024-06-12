@@ -29,12 +29,27 @@ from accounts.models import Cart
 
 User = get_user_model()
 
+# folders hold datasets
+class Folder(models.Model):
+    name = models.CharField(max_length=128)
+    author = models.ForeignKey(User, related_name='folders', on_delete=models.CASCADE)
+    description = models.TextField(blank=True, default='')
+
+    class Meta:
+        unique_together = ('author', 'name')
+
+    def __str__(self):
+        return self.name
+
 class DataSet(models.Model):
     # user who created dataset
     author = models.ForeignKey(
         User,related_name="datasets", on_delete = models.CASCADE,
         null=True
     )
+
+    # if want to add to folder
+    folder = models.ForeignKey(Folder, related_name='datasets', on_delete=models.SET_NULL, null=True, blank=True)
 
     is_public = models.BooleanField(default=False)
 

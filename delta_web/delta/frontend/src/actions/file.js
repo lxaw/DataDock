@@ -6,11 +6,71 @@ import {fileTokenConfig,tokenConfig} from './auth';
 import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
     ADD_CART_ITEM,DELETE_CART_ITEM, 
     CSV_FILE_UPDATE_SUCCESS,GET_CSV_FILES_PUBLIC,
-    USER_UPDATE_SUCCESS
+    USER_UPDATE_SUCCESS,
 } from "./types";
 
 
 import { updateCartItems } from '../reducers/cartActions';
+
+export const updateFolder = (id, folderData) => (dispatch, getState) => {
+    return axios
+      .patch(`/api/folder/${id}/`, folderData, fileTokenConfig(getState))
+      .then((res) => {
+        dispatch(createMessage({ updateFolderSuccess: 'Folder updated successfully.' }));
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(createMessage({ updateFolderError: 'Failed to update folder.' }));
+      });
+  };
+
+// delete folder
+export const deleteFolder = (id) => (dispatch,getState) =>{
+    return axios.delete(`/api/folder/${id}`,fileTokenConfig(getState))
+    .then((res)=>{
+        dispatch(createMessage({deleteFolderSuccess: "Successfully deleted folder." }));
+        console.log(res)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+
+// create folder
+export const createFolder = (dictData) => (dispatch,getState) => {
+  return axios.post('/api/folder/',dictData,fileTokenConfig(getState))
+  .then((res)=>{
+    dispatch(createMessage({createFolderSuccess: "Successfully created folder." }));
+    console.log(res)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+};
+
+// get a specific folder's info
+export const getFolderById = (id) =>(dispatch,getState) =>{
+    return axios.get(`/api/folder/${id}`,fileTokenConfig(getState))
+    .then((res)=>{
+        return res
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+
+// get folders
+export const getFolders = () => (dispatch,getState) => {
+  return axios.get('/api/folder/',fileTokenConfig(getState))
+  .then((res)=>{
+    return res
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+};
 
 export const addToCart = (dictData) => (dispatch, getState) => {
     return axios.post('/api/cart_item/', dictData, fileTokenConfig(getState))
@@ -166,5 +226,6 @@ export const downloadCsvFile = (id) => (dispatch, getState) =>{
         link.click();
     })
     .catch(err=>{
+        console.log(err)
     })
 }

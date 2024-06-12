@@ -13,6 +13,8 @@ import Login from './accounts/Login';
 import Register from './accounts/Register';
 import NotFound from './home/NotFound'
 
+// folder
+
 // forgot information
 import ForgotInformation from "./accounts/ForgotInformation"
 
@@ -64,6 +66,7 @@ import ReviewDetail from './DataSets/ReviewDetail';
 
 // Cart
 import Cart from './data_transfer/Cart';
+import FolderDetail from './data_transfer/FolderDetail';
 
 // Alert options
 const alertOptions = {
@@ -96,6 +99,12 @@ class App extends Component{
                                     <Route exact path ="/profile/:username" element={
                                         <PrivateRoute>
                                             <PublicProfile />
+                                        </PrivateRoute>
+                                    }/>
+                                    {/* FolderDetail */}
+                                    <Route exact path="/folders/detail/:id" element={
+                                        <PrivateRoute>
+                                            <FolderDetail/>
                                         </PrivateRoute>
                                     }/>
 

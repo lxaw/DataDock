@@ -10,9 +10,12 @@
 # Is the API for the data app. It handles the logic for the data app of Django.
 # This includes the logic for uploading, downloading, deleting csv files, and who can see them.
 
+# json
+import json
+
 # import necessary models
 from django.http import FileResponse,HttpResponse
-from .models import DataSet, TagDataset,File
+from .models import (DataSet, TagDataset,File,Folder)
 from rest_framework import status,renderers
 from rest_framework.decorators import action
 
@@ -41,7 +44,8 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser
 from organizations.models import Organization
 
 # import necessary serializers
-from .serializers import SerializerDataSet,SerializerTagDataset
+from .serializers import (SerializerDataSet,SerializerTagDataset,
+                          SerializerFolder)
 
 #https://stackoverflow.com/questions/38697529/how-to-return-generated-file-download-with-django-rest-framework
 # Passes the generated file to the browser
@@ -51,6 +55,35 @@ class PassthroughRenderer(renderers.BaseRenderer):
     format = None
     def render(self,data,accepted_media_type=None,renderer_context=None):
         return data
+
+class ViewsetFolder(viewsets.ModelViewSet):
+    serializer_class = SerializerFolder
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+    def get_queryset(self):
+        return Folder.objects.filter(author=self.request.user)
+
+    def perform_create(self, serializer):
+        folder = serializer.save(author=self.request.user)
+
+        # get the dataset ids
+        dataset_ids= json.loads(self.request.data.get('dataset_ids', []))
+        # then update the datasets
+        datasets = DataSet.objects.filter(id__in=dataset_ids, author=self.request.user)
+        for dataset in datasets:
+            dataset.folder = folder
+            dataset.save()
 
 # Public CSV viewset api
 # For dealing with public viewing of csv files

@@ -23,8 +23,6 @@ import { markReadNotificationMessage} from '../../actions/notification';
 
 const NotificationMessage = (props) => {
 
-    console.log(props)
-
     const [style,setStyle] = useState({});
     
     const handleRead = () =>{

@@ -14,13 +14,14 @@ from django.urls import path
 from rest_framework import routers
 from .api import (ViewsetDataSet,
      ViewsetPublicDataSet,
-    ViewsetTagDataset
+    ViewsetTagDataset,ViewsetFolder
 )
 
 router = routers.DefaultRouter()
 router.register('api/csv',ViewsetDataSet,'DataSets')
 router.register('api/public_csvs',ViewsetPublicDataSet,'Publics')
 router.register('api/tags',ViewsetTagDataset,'TagDataset')
+router.register('api/folder',ViewsetFolder,'Folders')
 
 
 # for all non viewsets, need to add to regular urls

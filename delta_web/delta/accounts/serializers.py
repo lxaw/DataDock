@@ -37,15 +37,17 @@ class UserSerializer(serializers.ModelSerializer):
     followed_organizations = serializers.SerializerMethodField()
     # bio
     bio = serializers.SerializerMethodField()
-    # num cart items
+    # num cart items (this should be removed soon)
     num_cart_items = serializers.SerializerMethodField()
+    # cart items
+    cart_items = serializers.SerializerMethodField()
 
     class Meta:
         # Need unique validator on name and email https://stackoverflow.com/a/38160343/12939325
         model = User
         fields = ('id','username','email','first_name','last_name',
             'followed_organization_count','followed_organizations','bio',
-            "num_cart_items")
+            "num_cart_items",'cart_items')
         # cant change id
         read_only_fields = ['id']
     
@@ -62,6 +64,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_num_cart_items(self,obj):
         return obj.cart.cart_items.count()
+    
+    def get_cart_items(self,obj):
+        return CartItemSerializer(obj.cart.cart_items.all(),many=True).data
 
 # Register serializer
 class RegisterSerializer(serializers.ModelSerializer):
