@@ -76,20 +76,15 @@ const FolderDetail = (props) => {
   return (
     <div className="folder-detail">
       {folder && (
-        <div className="folder-header">
-          <div className="folder-title">
-            <h1>{folder.name}</h1>
-            <div className="folder-actions">
-              <button className="edit-btn" onClick={() => setIsEditPopupOpen(true)}>Edit</button>
-              <button className="delete-btn" onClick={handleDeleteFolder}>Delete</button>
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">{folder.name}</h5>
+            <p className="card-text">{folder.description}</p>
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-primary me-2" onClick={() => setIsEditPopupOpen(true)}>Edit</button>
+              <button className="btn btn-danger" onClick={handleDeleteFolder}>Delete</button>
             </div>
           </div>
-          <div className="folder-description">
-            <p>{folder.description}</p>
-          </div>
-          <h1>
-            {folder.id}
-          </h1>
         </div>
       )}
       <div className="row">
