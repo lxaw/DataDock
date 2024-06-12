@@ -49,7 +49,7 @@ class DataSet(models.Model):
     )
 
     # if want to add to folder
-    folder = models.ForeignKey(Folder, related_name='datasets', on_delete=models.CASCADE, null=True, blank=True)
+    folder = models.ForeignKey(Folder, related_name='datasets', on_delete=models.SET_NULL, null=True, blank=True)
 
     is_public = models.BooleanField(default=False)
 

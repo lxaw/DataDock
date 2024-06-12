@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import DataCard from './DataCard';
-import tag_styles from './tags.module.css'
+import tag_styles from './tags.module.css';
 import { useNavigate } from 'react-router-dom';
-import { addToCart,createFolder } from '../../actions/file';
+import { addToCart, createFolder } from '../../actions/file';
 import { FaFolderPlus, FaCartPlus } from 'react-icons/fa';
-import popup_styles from "./popup.module.css"
+import popup_styles from "./popup.module.css";
 
-// popup used for dataset
 const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createFolder }) => {
   const [folderName, setFolderName] = useState('');
   const [folderDescription, setFolderDescription] = useState('');
@@ -21,29 +20,27 @@ const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createF
       setError('Folder name is required.');
       return;
     }
-
     try {
       await createFolder({
         name: folderName,
         description: folderDescription,
-        author: auth.user.id,  // Assuming the user id is available in the auth state
+        author: auth.user.id, // Assuming the user id is available in the auth state
         dataset_ids: JSON.stringify(selectedDataSets.map(obj => obj.id))
       });
-
       // Reset form and close popup
       setFolderName('');
       setFolderDescription('');
       setError('');
       onClose();
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError('Failed to create folder. Please try again.');
     }
   };
 
   return (
     <div className={popup_styles.popupOverlay}>
-      <div className={popup_styles.popupContent}>
+      <div className={popup_styles.popupContent} style={{ width: '80%', maxWidth: '800px' }}>
         <h3>Selected Datasets</h3>
         {selectedDataSets.map(dataset => (
           <div key={dataset.id} className={popup_styles.datasetInfo}>
@@ -53,14 +50,13 @@ const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createF
             <p>Files: {dataset.files.map(file => file.file_name).join(', ')}</p>
           </div>
         ))}
-
         <h3>Create New Folder</h3>
         <form onSubmit={handleSubmit}>
           <div className={popup_styles.formGroup}>
             <label htmlFor="folderName" className={popup_styles.formLabel}>Folder Name</label>
-            <input 
-              type="text" 
-              id="folderName" 
+            <input
+              type="text"
+              id="folderName"
               className={popup_styles.formInput}
               value={folderName}
               onChange={(e) => setFolderName(e.target.value)}
@@ -70,8 +66,8 @@ const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createF
           </div>
           <div className={popup_styles.formGroup}>
             <label htmlFor="folderDescription" className={popup_styles.formLabel}>Description</label>
-            <textarea 
-              id="folderDescription" 
+            <textarea
+              id="folderDescription"
               className={popup_styles.formTextarea}
               value={folderDescription}
               onChange={(e) => setFolderDescription(e.target.value)}
@@ -80,14 +76,14 @@ const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createF
           {error && <p className={popup_styles.formError}>{error}</p>}
           <button type="submit" className={popup_styles.formSubmit}>Create Folder</button>
         </form>
-
         <button className={popup_styles.closeButton} onClick={onClose} style={{ marginTop: '20px' }}>Close</button>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) =>({
-    auth:state.auth
-})
-export default connect(mapStateToProps,{createFolder})(FolderCreatePopup)
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { createFolder })(FolderCreatePopup);

@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import OrganizationCard from '../community/OrganizationCard';
 import DataSetTable from '../data_transfer/DataSetTable';
-import FolderList from './FolderList';
+import FolderList from "../data_transfer/FolderList"
 import { getFolders } from '../../actions/file';
 
 <script src="https://kit.fontawesome.com/f45b95bc62.js" crossorigin="anonymous"></script>

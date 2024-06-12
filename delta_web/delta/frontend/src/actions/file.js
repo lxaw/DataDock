@@ -12,6 +12,32 @@ import {ADD_CSV_FILE, DELETE_CSV_FILE,GET_CSV_FILE,
 
 import { updateCartItems } from '../reducers/cartActions';
 
+export const updateFolder = (id, folderData) => (dispatch, getState) => {
+    return axios
+      .patch(`/api/folder/${id}/`, folderData, fileTokenConfig(getState))
+      .then((res) => {
+        dispatch(createMessage({ updateFolderSuccess: 'Folder updated successfully.' }));
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(createMessage({ updateFolderError: 'Failed to update folder.' }));
+      });
+  };
+
+// delete folder
+export const deleteFolder = (id) => (dispatch,getState) =>{
+    return axios.delete(`/api/folder/${id}`,fileTokenConfig(getState))
+    .then((res)=>{
+        dispatch(createMessage({deleteFolderSuccess: "Successfully deleted folder." }));
+        console.log(res)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
+
 // create folder
 export const createFolder = (dictData) => (dispatch,getState) => {
   return axios.post('/api/folder/',dictData,fileTokenConfig(getState))
@@ -200,5 +226,6 @@ export const downloadCsvFile = (id) => (dispatch, getState) =>{
         link.click();
     })
     .catch(err=>{
+        console.log(err)
     })
 }
