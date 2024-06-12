@@ -30,8 +30,16 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser
 # https://stackoverflow.com/questions/739776/how-do-i-do-an-or-filter-in-a-django-query
 from django.db.models import Q
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.exceptions import APIException
+
 User = get_user_model()
 
+class SamePersonReviewError(APIException):
+    status_code = status.HTTP_403_FORBIDDEN
+    default_detail = 'You cannot review your own dataset.'
+    default_code = 'forbidden'
 # review api 
 class ViewsetReview(viewsets.ModelViewSet):
     # need to be logged in (ie have an API key) to use this resource
@@ -45,17 +53,19 @@ class ViewsetReview(viewsets.ModelViewSet):
         return self.request.user.review_set.all().order_by('-pub_date')
     
     # create an object
-    def perform_create(self,serializer):
+    def perform_create(self, serializer):
         modelCsvDataSet = DataSet.objects.get(pk=self.request.data['dataset'])
-        modelReview = serializer.save(author=self.request.user,dataset=modelCsvDataSet)
+        if self.request.user == modelCsvDataSet.author:
+            raise SamePersonReviewError()
+        modelReview = serializer.save(author=self.request.user, dataset=modelCsvDataSet)
         # create Notification
-        #
         reviewText = self.request.data["text"]
         csvDataSetName = modelCsvDataSet.name
         # prepare notification text
         notifText = f"Review of file {csvDataSetName} from user {self.request.user}. \n\"{reviewText}\""
-        modelNotif = NotificationReview(sender = self.request.user,recipient = modelCsvDataSet.author,review=modelReview,text=notifText)
+        modelNotif = NotificationReview(sender=self.request.user, recipient=modelCsvDataSet.author, review=modelReview, text=notifText)
         modelNotif.save()
+        return Response(self.serializer_class(modelReview).data)
 
     # get an instance of an object
     def retrieve(self,request,pk=None):
