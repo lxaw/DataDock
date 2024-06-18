@@ -14,7 +14,8 @@ const ProfileForm = (props) => {
     bio: props.auth.user.bio,
     password: "",
     organizations: props.auth.user.followed_organizations,
-    newOrgKey: ""
+    org_key: "",
+    org_name:''
   });
 
   const onChange = (e) => {
@@ -137,13 +138,21 @@ const ProfileForm = (props) => {
             )}
           </div>
           <div className="mb-3">
-            <label htmlFor="newOrgKey" className="form-label">Join Organization via Secret Key</label>
+            <label htmlFor="org_name" className="form-label">Join Organization via Secret Key</label>
+            <input
+              className="form-control"
+              id="org_name"
+              name="org_name"
+              value={userInfo.org_name}
+              onChange={onChange}
+              autoComplete="new-password"
+            />
             <input
               type="password"
               className="form-control"
-              id="newOrgKey"
-              name="newOrgKey"
-              value={userInfo.newOrgKey}
+              id="org_key"
+              name="org_key"
+              value={userInfo.org_key}
               onChange={onChange}
               autoComplete="new-password"
               placeholder="Enter the key of an organization you wish to join, or leave blank for no change"

@@ -60,20 +60,22 @@ class ViewsetOrganizations(viewsets.ModelViewSet):
         instance = self.get_object()
 
         user_in_org = False
-        if request.user not in instance.following_users.all():
-            return Response()
+        if request.user in instance.following_users.all():
+            user_in_org = True
             
-        # PublicCsvDataSets = instance.uploaded_datasets.filter(is_public=True)
+        PublicCsvDataSets = instance.uploaded_datasets.filter(is_public=True)
         PublicOrgCsvDataSets = instance.uploaded_datasets.filter(is_public_orgs=True)
 
-        # if user_in_org:
-        #     csvDataSets = list(chain(PublicOrgCsvDataSets, PublicCsvDataSets))
-        #     print("HERE")
-        #     print(csvDataSets)
-        # else:
-        #     csvDataSets = PublicCsvDataSets
+        # if user in org, see all org data
+        if user_in_org:
+            csvDataSets = list(chain(PublicOrgCsvDataSets, PublicCsvDataSets))
+        # if not in org, see only public data
+        else:
+            csvDataSets = PublicCsvDataSets
+            print('here')
+            print(csvDataSets)
 
-        serializer = SerializerDataSet(PublicOrgCsvDataSets,many=True)
+        serializer = SerializerDataSet(csvDataSets,many=True)
 
         return Response(serializer.data)
     

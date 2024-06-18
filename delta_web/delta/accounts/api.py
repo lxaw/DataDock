@@ -67,6 +67,7 @@ class RegisterAPI(generics.GenericAPIView):
 
     # Handling post request
     def post(self,request,*args, **kwargs):
+        print(request.data)
 
         # create a serialized object from the request's data
         serializer = self.get_serializer(data=request.data)
@@ -81,21 +82,17 @@ class RegisterAPI(generics.GenericAPIView):
         #user.profile = Profile(user=user)
         #user.profile.save()
 
-        # grab the organization key 
+
+        # for registering under an organization
+        organization_name = request.data.get('organization_name')
         organization_key = request.data.get("organization_key")
         
         # get organization or null if key invalid
-        try: 
-            modelOrg = Organization.objects.get(key=organization_key)
-            modelOrg.following_users.add(user)
-            modelOrg.save()
-        # TO DO: 
-        # MAKE THIS BETTER
-        except Exception as e:
-            # Indicate that the entered organization key is invalid to the user, 
-            # and offer them to register again or not
-            pass
-        
+        if organization_key != '' and organization_name != '':
+            modelOrg = Organization.objects.get(name=organization_name)
+            if organization_key == modelOrg.key:
+                modelOrg.following_users.add(user)
+                modelOrg.save()
         ######
         # Create notifications for the new users.
         #
@@ -211,6 +208,8 @@ class UpdateAPI(generics.UpdateAPIView):
         strNewLastName = request.data.get("last_name",None)
         strNewPassword = request.data.get("password",None)
         strNewBio = request.data.get('bio',None)
+        strOrgName = request.data.get('org_name',None)
+        strOrgKey = request.data.get('org_key',None)
 
 
         # Perform tests on username
@@ -270,17 +269,18 @@ class UpdateAPI(generics.UpdateAPIView):
 
         # check for new organizations
         # using the new org key
-        newOrgKey = request.data.get('newOrgKey')
 
         msg = ""
         # need a try except here as Django returns an error when no org object exists with the key
-        if newOrgKey != "":
+        if strOrgName != "" and strOrgKey != "":
             try:
-                modelOrg = Organization.objects.get(key=newOrgKey)
-                modelOrg.following_users.add(request.user)
-                modelOrg.save()
+                modelOrg = Organization.objects.get(name=strOrgName)
+                if modelOrg.key == strOrgKey:
+                    modelOrg = Organization.objects.get(name=strOrgName)
+                    modelOrg.following_users.add(request.user)
+                    modelOrg.save()
             except Exception as e:
-                msg = "Invalid organization key. All other changes were saved."
+                msg = "Invalid organization name or key. All other changes were saved."
                 pass
 
         # Save the changes

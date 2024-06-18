@@ -87,6 +87,7 @@ const OrganizationDetail = (props) => {
   const getPosts = () => {
     axios.get(`/api/organization/${id}/data_posts/`, { headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${props.auth.token}` } })
       .then((res) => {
+        console.log(res)
         setDataPosts(res.data);
       })
   }
