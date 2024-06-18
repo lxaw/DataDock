@@ -1,50 +1,68 @@
-/**********************************************
- * Delta Project
- * 
- * Authors:
- * Lexington Whalen (@lxaw)
- * Carter Marlowe (@Cmarlowe123)
- * Vince Kolb-Lugo (@vancevince)
- * Blake Seekings (@j-blake-s)
- * Naveen Chithan (@nchithan)
- * 
- * OrganizationCard.js
- * 
- * A functional component used to display identifying information for an
- * organization. Used in the Organization.js component as the item in the 
- * list of items to display, in this case a list of organizations registered
- * under the Delta app.
- *************************************************/
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaRocket } from 'react-icons/fa';
 
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+const CardContainer = styled.div`
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  display: inline-block;
+  margin-right: 10px;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
+const CardBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ccc;
+  font-size: 60px;
+`;
+
+const CardContent = styled.div`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+`;
 
 const OrganizationCard = (props) => {
-    // hover changes color
-    const [hover, setHover] = useState(false);
+  return (
+    <CardContainer>
+      <CardBackground>
+        <FaRocket />
+      </CardBackground>
+      <Link to={`/community/organizations/${props.orgObj.id}`} style={{ textDecoration: 'none' }}>
+        <CardContent>
+          {props.imgSrc !== undefined && (
+            <div>
+              <img src={props.imgSrc} className="card-img-top" alt={`Image for ${props.orgObj.name}`} />
+            </div>
+          )}
+          <h5 className="card-title">{props.orgObj.name}</h5>
+        </CardContent>
+      </Link>
+    </CardContainer>
+  );
+};
 
-    const style = {
-        background: hover ? '#cce6ff' : '',
-        width: "21rem"
-    }
-    return (
-        <div
-            data-testid="organization_card-1"
-            className="border card m-2" style={style} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            <Link to={`/community/organizations/${props.orgObj.id}`} style={{ textDecoration: 'none' }}>
-                {props.imgSrc != undefined &&
-                    <div>
-                        <img src={props.imgSrc} className="card-img-top" alt={`Image for ${props.orgObj.name}`} />
-                    </div> 
-                }
-                <div className="card-body">
-                    <h5 className="card-title">
-                        {props.orgObj.name}
-                    </h5>
-                </div>
-            </Link>
-        </div>
-    )
-}
-
-export default OrganizationCard
+export default OrganizationCard;

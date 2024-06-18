@@ -52,7 +52,6 @@ const OrganizationDetail = (props) => {
         axios.get('/api/organization/' + id + '/data_posts/', { headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${props.auth.token}` } })
             .then((res) => {
                 setDataPosts(res.data);
-                console.log(res.data)
             })
     }
 
@@ -87,7 +86,7 @@ const OrganizationDetail = (props) => {
                 <hr />
 
                 <div>
-                    <DataSetTable dataSets={dataPosts} textMinLength={3} />
+                    {/* <DataSetTable dataSets={dataPosts} textMinLength={3} /> */}
                 </div>
 
                 <span>

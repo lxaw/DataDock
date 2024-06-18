@@ -9,7 +9,7 @@
 * Blake Seekings (@j-blake-s)
 * Naveen Chithan (@nchithan)
 *
-* ProfileDetailed.js
+* ProfileSettings.js
 *
 * This is the parent frame of the Edit Profile page. This has the side bar and the main frame that the editing form is in.
 * The Remove account button can be found here. 
@@ -21,7 +21,7 @@ import { deleteUser } from "../../actions/auth";
 import { connect } from "react-redux";
 import ProfileForm from './ProfileForm';
 import "./profile.css"
-const ProfileDetailed = (props) => {
+const ProfileSettings = (props) => {
     const { isAuthenticated, user } = props.auth;
     return (
         <div className='container' data-testid="profile_detailed-1">
@@ -44,4 +44,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 })
 
-export default connect(mapStateToProps, { deleteUser })(ProfileDetailed);
+export default connect(mapStateToProps, { deleteUser })(ProfileSettings);
