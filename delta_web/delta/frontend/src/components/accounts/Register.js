@@ -37,6 +37,7 @@ export class Register extends Component {
     last_name: '',
     password: '',
     password2: '',
+    organization_name:'',
     organization_key: '',
   };
 
@@ -49,7 +50,7 @@ export class Register extends Component {
   onSubmit = e => {
     e.preventDefault();
     // pull the password and password2 from the state
-    const { username, first_name, last_name, email, password, password2, organization_key } = this.state;
+    const { username, first_name, last_name, email, password, password2, organization_name,organization_key } = this.state;
     if (password != password2) {
       this.props.createMessage({ passwordsDoNotMatch: 'Passwords do not match' })
     } else if (first_name === '' || last_name === '' || email === '') {
@@ -63,7 +64,8 @@ export class Register extends Component {
         last_name,
         password,
         email,
-        organization_key
+        organization_name,
+        organization_key,
       }
       // call register action
       this.props.register(newUser);
@@ -77,7 +79,7 @@ export class Register extends Component {
     if (this.props.isAuthenticated) {
       return <Navigate to="/" />;
     }
-    const { username, first_name, last_name, email, password, password2, organization_key } = this.state;
+    const { username, first_name, last_name, email, password, password2, organization_name, organization_key } = this.state;
     // form
     return (
       <div className="container">
@@ -156,6 +158,16 @@ export class Register extends Component {
                   />
                 </div>
 
+                <div className="form-group">
+                  <label>Organization Name</label>
+                  <input
+                    className="form-control border-dark"
+                    name="organization_name" 
+                    onChange={this.onChange}
+                    value={organization_name} 
+                    placeholder="Or leave blank if not a part of an organization."
+                  />
+                </div>
                 <div className="form-group">
                   <label>Organization Key</label>
                   <input
