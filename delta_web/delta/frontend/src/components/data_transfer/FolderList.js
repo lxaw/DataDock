@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFolder } from 'react-icons/fa';
+import { FaBackspace, FaFolder } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const FolderList = ({ folders }) => {
@@ -10,13 +10,12 @@ const FolderList = ({ folders }) => {
 
   const folderIconStyle = {
     fontSize: '10rem',
-    color: '#ffd480',
+    color:'#e5e5e5'
   };
 
   const folderNameStyle = {
     fontSize: '18px',
     fontWeight: 'bold',
-    color: '#333',
     position: 'absolute',
     top: '50%',
     left: '50%',
