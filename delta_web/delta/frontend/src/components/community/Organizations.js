@@ -50,7 +50,6 @@ const Organizations = (props) => {
                 {orgData.map((item, index) => (
                     <OrganizationCard
                         orgObj={item}
-                        imgSrc={'/media/Generic_Laboratory_Logo.png'}
                         key={index}
                     />
                 ))}

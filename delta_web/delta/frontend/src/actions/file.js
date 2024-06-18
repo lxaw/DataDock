@@ -118,7 +118,6 @@ export const deleteCartItem = (id) => (dispatch, getState) => {
 
 // POST FILE 
 export const addCsvFile = (dictData) => (dispatch,getState) =>{
-    console.log(dictData)
     return axios.post('/api/csv/',dictData,fileTokenConfig(getState))
     .then((res)=>{
         dispatch(createMessage({addCsvFileSuccess:"File Posted"}))

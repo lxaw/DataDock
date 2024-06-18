@@ -1,37 +1,42 @@
-/*
-###############################################################################
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaCommentAlt } from 'react-icons/fa';
 
-Delta project
+const CardContainer = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
 
-Brief description: 
-    Users can communicate with each other through conversations. Each
-conversation is displayed through a conversation card similar to the data
-card for public data. This shows the title, the user, and the data of the 
-conversation. This file defines the layout of that card.
+const IconContainer = styled.div`
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-###############################################################################
-*/
-
-import React from 'react'
-import { Link } from 'react-router-dom'
+const ContentContainer = styled.div`
+  width: 80%;
+  padding-left: 16px;
+`;
 
 const ConversationCard = (props) => {
-    /*
-    Takes in a conversation object, or a serialized 
-    */
   return (
-    <div className="container border border-rounded p-3">
-        <p>
-            {props.convoObj.pub_date}
-        </p>
-        <p>
-            {props.convoObj.title}
-        </p>
-        <Link to={`/messages/conversations/${props.convoObj.id}`}>
-            View
-        </Link>
-    </div>
-  )
-}
+    <CardContainer>
+      <IconContainer>
+        <FaCommentAlt size={32} color="#888" />
+      </IconContainer>
+      <ContentContainer>
+        <p>{props.convoObj.pub_date}</p>
+        <p>{props.convoObj.title}</p>
+        <Link to={`/messages/conversations/${props.convoObj.id}`}>View</Link>
+      </ContentContainer>
+    </CardContainer>
+  );
+};
 
-export default ConversationCard
+export default ConversationCard;

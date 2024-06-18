@@ -31,7 +31,7 @@ ANYTHING THAT NEEDS MAP STATE DOES NOT USE SQUARE BRACKETS
 https://stackoverflow.com/questions/70140588/const-authenticated-this-props-is-undefined-though-i-can-clearly-see-it-in
 */
 import ProfileGlance from "./profile/ProfileGlance";
-import ProfileDetailed from "./profile/ProfileDetailed";
+import ProfileSettings from "./profile/ProfileSettings";
 // community
 import Organizations from "./community/Organizations"
 import OrganizationDetail from "./community/OrganizationDetail"
@@ -133,9 +133,9 @@ class App extends Component{
                                             <ProfileGlance/>
                                         </PrivateRoute>
                                     }/>
-                                    <Route exact path ="/profile/detailed" element={
+                                    <Route exact path ="/profile/settings" element={
                                         <PrivateRoute>
-                                            <ProfileDetailed/>
+                                            <ProfileSettings/>
                                         </PrivateRoute>
                                     }/>
                                     <Route exact path ={"/csvs/:id"} element={

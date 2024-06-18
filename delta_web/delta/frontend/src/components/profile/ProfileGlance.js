@@ -82,6 +82,7 @@ const ProfileGlance = (props) => {
     <div className="panel panel-default mt-4">
         <div className="panel-heading">
             <h1 className="panel-title">Your Organizations</h1>
+            <small>Organizations are a way for groups of people to organize their data. Organizations can only be created by admins, and require a unique password to join.</small>
         </div>
         {user.followed_organizations.length > 0 ? (
         <div className="panel-body">
@@ -104,6 +105,7 @@ const ProfileGlance = (props) => {
     <div className="panel panel-default mt-4">
         <div className="panel-heading">
             <h1 className="panel-title">Your Folders</h1>
+            <small>Folders are a way for you to organize your own data.</small>
             <FolderList
                 folders={folders}
             />

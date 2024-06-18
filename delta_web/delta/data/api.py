@@ -178,12 +178,12 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         return self.request.user.datasets.all()
 
     def create(self,request):
+        print(self.request.data)
         author = self.request.user
         is_public = self.request.data.get("is_public")
         desc = self.request.data.get('description')
         is_public_orgs = self.request.data.get('is_public_orgs')
         name = self.request.data.get('name')
-        print(self.request.data)
 
         # javascript sometimes uses "true" and "false", we need "True" and "False"
         if is_public == "true":
@@ -213,6 +213,13 @@ class ViewsetDataSet(viewsets.ModelViewSet):
 
         # create dataset tags first
         num_files = 0
+        
+        # NOTE!
+        # As of (06/18/2024) have not found a better way to do this.
+        # I know, I hate it too! But I cannot seem to find a better way using 
+        # Django REST than to just loop through the items. Even if I try to send
+        # the items as an array of dictionaries in JSON, I still receive indexed values
+        # in Django. 
         for (k,v) in request.data.items():
             if k.startswith('tag'):
                 t = TagDataset(text=v)
@@ -221,6 +228,15 @@ class ViewsetDataSet(viewsets.ModelViewSet):
             elif k.endswith('relativePath'):
                 # count the number of files
                 num_files +=1
+            # attach organizations
+            elif k.startswith('registered_organizations'):
+                org_id = int(v)
+                # get the org 
+                # Get the organization instance with the given id
+                organization = Organization.objects.get(id=org_id)
+
+                # Add the organization to the ManyToManyField
+                dataSet.registered_organizations.add(organization)
         
         # then create the files
         for index in range(0,num_files):
@@ -242,6 +258,9 @@ class ViewsetDataSet(viewsets.ModelViewSet):
                     'file_data': file_data
                 })
 
+        # then attach the organizations
+
+    
 
         # Step 4: Start a new thread to process the files
         thread = threading.Thread(target=process_files,args=(fileDatas,strDataSetPath,dataSet.get_zip_path()))
