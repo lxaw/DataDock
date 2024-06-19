@@ -18,10 +18,12 @@
 from rest_framework import serializers
 from .models import (Review,NotificationReview,
 NotificationWhatsHot,NotificationNews,
-Conversation,Message,NotificationMessage)
+Conversation,Message,NotificationMessage,
+ReviewComment)
 
 from rest_framework.validators import UniqueTogetherValidator
 from rest_framework.decorators import action
+
 
 # Serializer for review class
 class SerializerReview(serializers.ModelSerializer):
@@ -29,6 +31,8 @@ class SerializerReview(serializers.ModelSerializer):
     formatted_date = serializers.SerializerMethodField()
     # to get the user who recieved the review
     recipient_id = serializers.SerializerMethodField()
+    # get the comments
+    review_comments = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -40,6 +44,10 @@ class SerializerReview(serializers.ModelSerializer):
                 fields=['author','title']
             )
         ]
+
+    def get_review_comments(self,obj):
+        return SerializerReviewComment(obj.review_comment_set.all(),many=True).data
+
 
     # UTILITY: Gets the review author's name
     # INPUT: Current review object instance and reviewer's name
@@ -58,6 +66,20 @@ class SerializerReview(serializers.ModelSerializer):
     # OUTPUT: String of the id of the user who RECEIVED the review
     def get_recipient_id(self,obj):
         return obj.dataset.author.id
+
+# serializer for review comment
+class SerializerReviewComment(serializers.ModelSerializer):
+    author_username = serializers.SerializerMethodField()
+    formatted_date = serializers.SerializerMethodField()
+    class Meta:
+        model = ReviewComment
+        fields = "__all__"
+    
+    def get_author_username(self,obj):
+        return obj.author.username
+
+    def get_formatted_date(self,obj):
+        return obj.pub_date.strftime('%Y-%m-%d')
 
 # serializer for review notification class
 class SerializerNotificationReview(serializers.ModelSerializer):

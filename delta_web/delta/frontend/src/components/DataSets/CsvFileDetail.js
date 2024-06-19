@@ -22,7 +22,6 @@ const CsvFileDetail = (props) => {
       })
       .then((res) => {
         setCsvFile(res.data);
-        console.log(res.data)
         setArrReviews(res.data.reviews);
       });
   };

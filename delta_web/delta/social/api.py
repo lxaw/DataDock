@@ -24,7 +24,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 
 from .models import (Conversation,Message,Review,
-NotificationMessage,NotificationReview)
+NotificationMessage,NotificationReview,ReviewComment)
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 
 # https://stackoverflow.com/questions/739776/how-do-i-do-an-or-filter-in-a-django-query
@@ -75,6 +75,51 @@ class ViewsetReview(viewsets.ModelViewSet):
     def partial_update(self,request,*args,**kwargs):
         super().partial_update(request,*args,**kwargs)
         return Response(self.serializer_class(Review.objects.get(pk=kwargs['pk'])).data)
+
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from .models import ReviewComment
+from .serializers import SerializerReviewComment
+
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
+from .models import ReviewComment, Review
+from .serializers import SerializerReviewComment
+
+class ViewsetReviewComment(viewsets.ModelViewSet):
+    # Users need to be authenticated to use this resource
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    serializer_class = SerializerReviewComment
+
+    # Get all comments created by the user
+    def get_queryset(self):
+        return ReviewComment.objects.filter(author=self.request.user).order_by('-pub_date')
+
+    # Create a new comment
+    def perform_create(self, serializer):
+        review = Review.objects.get(pk=self.request.data['review'])
+        if not review.active:
+            raise PermissionDenied("Cannot comment on an inactive review.")
+        comment = serializer.save(author=self.request.user, review=review)
+        return Response(self.serializer_class(comment).data)
+
+    # Retrieve a specific comment
+    def retrieve(self, request, pk=None):
+        comment = ReviewComment.objects.get(pk=pk)
+        if comment.author != request.user:
+            raise PermissionDenied("You do not have permission to view this comment.")
+        return Response(self.serializer_class(comment).data)
+
+    # Update a comment partially
+    def partial_update(self, request, *args, **kwargs):
+        comment = ReviewComment.objects.get(pk=kwargs['pk'])
+        if comment.author != request.user:
+            raise PermissionDenied("You do not have permission to update this comment.")
+        super().partial_update(request, *args, **kwargs)
+        return Response(self.serializer_class(comment).data)
 
 # notification API
 class ViewsetNotificationReview(viewsets.ModelViewSet):
