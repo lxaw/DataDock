@@ -73,7 +73,10 @@ const Review = (props) => {
                 <div key={comment.id} className="border p-2 mb-2">
                   <p>{comment.text}</p>
                   <small>
-                    {comment.author_username} - {comment.formatted_date}
+                    <Link to={`/profile/${reviewData.author_username}`}>
+                      {reviewData.author_username}
+                    </Link>{" "}
+                    - {reviewData.formatted_date}
                   </small>
                 </div>
               ))}

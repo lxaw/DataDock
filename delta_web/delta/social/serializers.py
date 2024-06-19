@@ -69,9 +69,17 @@ class SerializerReview(serializers.ModelSerializer):
 
 # serializer for review comment
 class SerializerReviewComment(serializers.ModelSerializer):
+    author_username = serializers.SerializerMethodField()
+    formatted_date = serializers.SerializerMethodField()
     class Meta:
         model = ReviewComment
         fields = "__all__"
+    
+    def get_author_username(self,obj):
+        return obj.author.username
+
+    def get_formatted_date(self,obj):
+        return obj.pub_date.strftime('%Y-%m-%d')
 
 # serializer for review notification class
 class SerializerNotificationReview(serializers.ModelSerializer):
