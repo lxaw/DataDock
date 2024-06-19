@@ -51,6 +51,18 @@ class Review(models.Model):
     def __str__(self):
         return self.title
 
+class ReviewComment(models.Model):
+    author = models.ForeignKey(User,on_delete=models.CASCADE,related_name="review_comment_set")
+    text = models.CharField(max_length=350)
+    pub_date = models.DateTimeField(default=timezone.now)
+    # for deactivating inappropriate comments
+    active = models.BooleanField(default=True)
+    # parent review
+    review = models.ForeignKey(Review,on_delete=models.CASCADE,related_name='review_comment_set')
+
+    def __str__(self):
+        return self.text
+
 # basic notification class
 # used as parent for all other notifications
 class BaseNotification(models.Model):

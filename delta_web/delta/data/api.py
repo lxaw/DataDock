@@ -178,7 +178,6 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         return self.request.user.datasets.all()
 
     def create(self,request):
-        print(self.request.data)
         author = self.request.user
         is_public = self.request.data.get("is_public")
         desc = self.request.data.get('description')

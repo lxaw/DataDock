@@ -48,6 +48,19 @@ export class Alerts extends Component {
         }
         // check for changed message
         if(message !== prevProps.message){
+            // review comments
+            if(message.addReviewCommentSuccess){
+                alert.success(message.addReviewCommentSuccess)
+            }
+            if(message.addReviewCommentFail){
+                alert.error(message.addReviewCommentFail)
+            }
+            if(message.updateReviewCommentSuccess){
+                alert.success(message.updateReviewCommentSuccess)
+            }
+            if(message.updateReviewCommentFail){
+                alert.error(message.updateReviewCommentFail)
+            }
             // cart items
             if(message.addCartItemSuccess){
                 alert.success(message.addCartItemSuccess);

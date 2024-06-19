@@ -19,12 +19,15 @@ from django.contrib import admin
 # import models
 from .models import (Review,NotificationReview,
 Conversation, Message,NotificationMessage,NotificationNews,
-NotificationWhatsHot
+NotificationWhatsHot,ReviewComment
 )
 
 # Register your models here.
 class ReviewAdmin(admin.ModelAdmin):
     fields = ['author','text','title','pub_date','active','rating','dataset']
+
+class ReviewCommentAdmin(admin.ModelAdmin):
+    fields = ['author','text','pub_date','active','review']
 
 class NotificationReviewAdmin(admin.ModelAdmin):
     fields = ['text','read','pub_date','sender','recipient','review','title']
@@ -46,6 +49,7 @@ class NotificationWhatsHotAdmin(admin.ModelAdmin):
 
 # Register admin models and admin settings to the website
 admin.site.register(Review,ReviewAdmin)
+admin.site.register(ReviewComment,ReviewCommentAdmin)
 admin.site.register(NotificationReview,NotificationReviewAdmin)
 admin.site.register(Conversation,ConversationAdmin)
 admin.site.register(Message,MessageAdmin)

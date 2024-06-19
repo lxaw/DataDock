@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteReview } from "../../actions/review";
 import { FaStar } from "react-icons/fa";
+import ReviewCommentForm from "./ReviewCommentForm";
 
 const Review = (props) => {
   const { reviewData, auth, deleteReview, refreshReviews } = props;
+  const [showComments, setShowComments] = useState(false);
 
   const handleDelete = () => {
     deleteReview(reviewData.id);
@@ -24,6 +26,10 @@ const Review = (props) => {
       );
     }
     return stars;
+  };
+
+  const toggleComments = () => {
+    setShowComments(!showComments);
   };
 
   return (
@@ -55,6 +61,26 @@ const Review = (props) => {
           </button>
         </div>
       )}
+      <div className="mt-3">
+        <button className="btn btn-link" onClick={toggleComments}>
+          {showComments ? "Hide Comments" : "Show Comments"}
+        </button>
+        {showComments && (
+          <div>
+            <ReviewCommentForm review_id={reviewData.id} />
+            <div className="mt-3">
+              {reviewData.review_comments.map((comment) => (
+                <div key={comment.id} className="border p-2 mb-2">
+                  <p>{comment.text}</p>
+                  <small>
+                    {comment.author_username} - {comment.formatted_date}
+                  </small>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

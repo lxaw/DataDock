@@ -2,6 +2,76 @@ import {createMessage,returnErrors} from './messages';
 import {tokenConfig,fileTokenConfig} from './auth';
 import axios from 'axios';
 
+// Get all comments created by the user
+export const getUserReviewComments = () => (dispatch, getState) => {
+  axios
+    .get('/api/review_comment/', fileTokenConfig(getState))
+    .then((res) => {
+      // Handle the response data
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+// Create a new comment
+export const addReviewComment = (commentData) => (dispatch, getState) => {
+  axios
+    .post('/api/review_comment/', commentData, fileTokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ addReviewCommentSuccess: 'Your comment has been posted.' }));
+    })
+    .catch((err) => {
+      const errorText = err.response ? err.response.data.detail : 'Error adding comment.';
+      console.log(errorText);
+      dispatch(createMessage({ addReviewCommentFail: errorText }));
+    });
+};
+
+// Retrieve a specific comment
+export const getReviewComment = (commentId) => (dispatch, getState) => {
+  axios
+    .get(`/api/review_comment/${commentId}/`, fileTokenConfig(getState))
+    .then((res) => {
+      // Handle the response data
+      console.log(res.data);
+    })
+    .catch((err) => {
+      const errorText = err.response ? err.response.data.detail : 'Error retrieving comment.';
+      console.log(errorText);
+      dispatch(createMessage({ getCommentFail: errorText }));
+    });
+};
+
+// Update a comment
+export const updateReviewComment = (commentId, commentData) => (dispatch, getState) => {
+  axios
+    .patch(`/api/review_comment/${commentId}/`, commentData, fileTokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ updateReviewCommentSuccess: 'Comment updated successfully.' }));
+    })
+    .catch((err) => {
+      const errorText = err.response ? err.response.data.detail : 'Error updating comment.';
+      console.log(errorText);
+      dispatch(createMessage({ updateReviewCommentFail: errorText }));
+    });
+};
+
+// Delete a comment
+export const deleteReviewComment = (commentId) => (dispatch, getState) => {
+  axios
+    .delete(`/api/review_comment/${commentId}/`, fileTokenConfig(getState))
+    .then((res) => {
+      dispatch(createMessage({ deleteCommentSuccess: 'Comment deleted successfully.' }));
+    })
+    .catch((err) => {
+      const errorText = err.response ? err.response.data.detail : 'Error deleting comment.';
+      console.log(errorText);
+      dispatch(createMessage({ deleteCommentFail: errorText }));
+    });
+};
+
 export const addReview = (dictData) => (dispatch, getState) => {
   axios.post('/api/review/', dictData, fileTokenConfig(getState))
     .then((res) => {
