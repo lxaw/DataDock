@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteReview } from "../../actions/review";
+import { deleteReview, updateReviewComment, deleteReviewComment } from "../../actions/review";
 import { FaStar } from "react-icons/fa";
 import ReviewCommentForm from "./ReviewCommentForm";
 
 const Review = (props) => {
-  const { reviewData, auth, deleteReview, refreshReviews } = props;
+  const { reviewData, auth, deleteReview, updateReviewComment, deleteReviewComment, refreshReviews } = props;
   const [showComments, setShowComments] = useState(false);
+  const [reviewComments, setReviewComments] = useState([]);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editCommentText, setEditCommentText] = useState('');
 
   const handleDelete = () => {
     deleteReview(reviewData.id);
@@ -30,6 +33,38 @@ const Review = (props) => {
 
   const toggleComments = () => {
     setShowComments(!showComments);
+  };
+
+  const handleCommentAdded = (newComment) => {
+    setReviewComments(prevComments => [...prevComments, newComment]);
+  };
+
+  const handleEditComment = (comment) => {
+    setEditingCommentId(comment.id);
+    setEditCommentText(comment.text);
+  };
+
+  const handleUpdateComment = (commentId) => {
+    updateReviewComment(commentId, { text: editCommentText })
+      .then((updatedComment) => {
+        setReviewComments(prevComments =>
+          prevComments.map(comment =>
+            comment.id === commentId ? { ...comment, text: updatedComment.text } : comment
+          )
+        );
+        setEditingCommentId(null);
+      })
+      .catch(error => console.error("Error updating comment:", error));
+  };
+
+  const handleDeleteComment = (commentId) => {
+    deleteReviewComment(commentId)
+      .then(() => {
+        setReviewComments(prevComments =>
+          prevComments.filter(comment => comment.id !== commentId)
+        );
+      })
+      .catch(error => console.error("Error deleting comment:", error));
   };
 
   return (
@@ -67,17 +102,60 @@ const Review = (props) => {
         </button>
         {showComments && (
           <div>
-            <ReviewCommentForm review_id={reviewData.id} />
+            <ReviewCommentForm 
+              review_id={reviewData.id} 
+              onCommentAdded={handleCommentAdded}
+            />
             <div className="mt-3">
-              {reviewData.review_comments.map((comment) => (
+              {reviewComments.map((comment) => (
                 <div key={comment.id} className="border p-2 mb-2">
-                  <p>{comment.text}</p>
-                  <small>
-                    <Link to={`/profile/${reviewData.author_username}`}>
-                      {reviewData.author_username}
-                    </Link>{" "}
-                    - {reviewData.formatted_date}
-                  </small>
+                  {editingCommentId === comment.id ? (
+                    <div>
+                      <textarea
+                        className="form-control mb-2"
+                        value={editCommentText}
+                        onChange={(e) => setEditCommentText(e.target.value)}
+                      />
+                      <button
+                        className="btn btn-sm btn-primary mr-2"
+                        onClick={() => handleUpdateComment(comment.id)}
+                      >
+                        Save
+                      </button>
+                      <button
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => setEditingCommentId(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>{comment.text}</p>
+                      <small>
+                        <Link to={`/profile/${comment.author_username}`}>
+                          {comment.author_username}
+                        </Link>{" "}
+                        - {comment.formatted_date}
+                      </small>
+                      {auth.user.id === comment.author && (
+                        <div className="mt-2">
+                          <button
+                            className="btn btn-sm btn-outline-primary mr-2"
+                            onClick={() => handleEditComment(comment)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -92,4 +170,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { deleteReview })(Review);
+export default connect(mapStateToProps, { deleteReview, updateReviewComment, deleteReviewComment })(Review);

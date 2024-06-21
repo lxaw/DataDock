@@ -8,7 +8,7 @@ export const getUserReviewComments = () => (dispatch, getState) => {
     .get('/api/review_comment/', fileTokenConfig(getState))
     .then((res) => {
       // Handle the response data
-      console.log(res.data);
+      return res.data
     })
     .catch((err) => {
       console.log(err);
@@ -17,16 +17,20 @@ export const getUserReviewComments = () => (dispatch, getState) => {
 
 // Create a new comment
 export const addReviewComment = (commentData) => (dispatch, getState) => {
-  axios
-    .post('/api/review_comment/', commentData, fileTokenConfig(getState))
-    .then((res) => {
-      dispatch(createMessage({ addReviewCommentSuccess: 'Your comment has been posted.' }));
-    })
-    .catch((err) => {
-      const errorText = err.response ? err.response.data.detail : 'Error adding comment.';
-      console.log(errorText);
-      dispatch(createMessage({ addReviewCommentFail: errorText }));
-    });
+  return new Promise((resolve, reject) => {
+    axios
+      .post('/api/review_comment/', commentData, fileTokenConfig(getState))
+      .then((res) => {
+        dispatch(createMessage({ addReviewCommentSuccess: 'Your comment has been posted.' }));
+        resolve(res.data);
+      })
+      .catch((err) => {
+        const errorText = err.response ? err.response.data.detail : 'Error adding comment.';
+        console.log(errorText);
+        dispatch(createMessage({ addReviewCommentFail: errorText }));
+        reject(err);
+      });
+  });
 };
 
 // Retrieve a specific comment
@@ -35,7 +39,7 @@ export const getReviewComment = (commentId) => (dispatch, getState) => {
     .get(`/api/review_comment/${commentId}/`, fileTokenConfig(getState))
     .then((res) => {
       // Handle the response data
-      console.log(res.data);
+      return res.data
     })
     .catch((err) => {
       const errorText = err.response ? err.response.data.detail : 'Error retrieving comment.';
@@ -46,30 +50,37 @@ export const getReviewComment = (commentId) => (dispatch, getState) => {
 
 // Update a comment
 export const updateReviewComment = (commentId, commentData) => (dispatch, getState) => {
-  axios
-    .patch(`/api/review_comment/${commentId}/`, commentData, fileTokenConfig(getState))
-    .then((res) => {
-      dispatch(createMessage({ updateReviewCommentSuccess: 'Comment updated successfully.' }));
-    })
-    .catch((err) => {
-      const errorText = err.response ? err.response.data.detail : 'Error updating comment.';
-      console.log(errorText);
-      dispatch(createMessage({ updateReviewCommentFail: errorText }));
-    });
+  return new Promise((resolve, reject) => {
+    axios
+      .patch(`/api/review_comment/${commentId}/`, commentData, fileTokenConfig(getState))
+      .then((res) => {
+        dispatch(createMessage({ updateReviewCommentSuccess: 'Comment updated successfully.' }));
+        resolve(res.data);
+      })
+      .catch((err) => {
+        const errorText = err.response ? err.response.data.detail : 'Error updating comment.';
+        console.log(errorText);
+        dispatch(createMessage({ updateReviewCommentFail: errorText }));
+        reject(err);
+      });
+  });
 };
 
-// Delete a comment
 export const deleteReviewComment = (commentId) => (dispatch, getState) => {
-  axios
-    .delete(`/api/review_comment/${commentId}/`, fileTokenConfig(getState))
-    .then((res) => {
-      dispatch(createMessage({ deleteCommentSuccess: 'Comment deleted successfully.' }));
-    })
-    .catch((err) => {
-      const errorText = err.response ? err.response.data.detail : 'Error deleting comment.';
-      console.log(errorText);
-      dispatch(createMessage({ deleteCommentFail: errorText }));
-    });
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(`/api/review_comment/${commentId}/`, fileTokenConfig(getState))
+      .then((res) => {
+        dispatch(createMessage({ deleteReviewCommentSuccess: 'Comment deleted successfully.' }));
+        resolve(res.data);
+      })
+      .catch((err) => {
+        const errorText = err.response ? err.response.data.detail : 'Error deleting comment.';
+        console.log(errorText);
+        dispatch(createMessage({ deleteReviewCommentFail: errorText }));
+        reject(err);
+      });
+  });
 };
 
 export const addReview = (dictData) => (dispatch, getState) => {
