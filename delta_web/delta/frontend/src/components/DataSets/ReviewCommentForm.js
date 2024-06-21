@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { addReviewComment, getReviewComment, updateReviewComment, deleteReviewComment, addReview } from '../../actions/review.js';
+import { addReviewComment, } from '../../actions/review.js';
 
-const ReviewCommentForm = (props) => {
+const ReviewCommentForm = ({ review_id, auth, addReviewComment, onCommentAdded }) => {
   // id of the parent review that the comment goes on
   const [comment, setComment] = useState('');
-  const [editMode, setEditMode] = useState(false);
-  const [commentId, setCommentId] = useState(null);
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    props.addReviewComment
-    ({ text: comment, 
-        review: props.review_id,
-        author:props.auth.user.id
-    }
-    );
-    setComment('');
-  };
-
-  const handleDelete = () => {
-    props.deleteReviewComment(commentId);
+    e.preventDefault();
+    addReviewComment({
+      text: comment,
+      review: review_id,
+      author: auth.user.id
+    })
+      .then(newComment => {
+        if (newComment) {
+          onCommentAdded(newComment);
+          setComment('');
+        }
+      })
+      .catch(error => {
+        console.error("Error adding comment:", error);
+        // Handle error (e.g., show an error message to the user)
+      });
   };
 
   return (
@@ -36,17 +39,10 @@ const ReviewCommentForm = (props) => {
             rows="3"
             value={comment}
             onChange={handleCommentChange}
-            placeholder={editMode ? 'Edit your comment...' : 'Write your comment...'}
+            placeholder={'Write your comment...'}
           ></textarea>
         </div>
-        <button type="submit" className="btn btn-primary">
-          {editMode ? 'Update Comment' : 'Add Comment'}
-        </button>
-        {editMode && (
-          <button type="button" className="btn btn-danger ml-2" onClick={handleDelete}>
-            Delete Comment
-          </button>
-        )}
+        <button className="btn btn-success">Submit</button>
       </form>
     </div>
   );
@@ -56,4 +52,4 @@ const mapStateToProps = (state) => ({
     auth:state.auth,
 });
 
-export default connect(mapStateToProps, {addReviewComment,getReviewComment,updateReviewComment, deleteReviewComment})(ReviewCommentForm);
+export default connect(mapStateToProps, {addReviewComment})(ReviewCommentForm);
