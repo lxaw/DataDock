@@ -1,11 +1,14 @@
 # What is it ❓
 DataDock is a web file system designed for use by researchers and data scientists. It is essentially a file transfer system with a social media and market aspect. Researchers or data scientists can perform CRUD operations on data, and can also assess the validity of data by creating posts on data sets or ML models or by rating data sets or ML models. 
 
-### NOTE:
+### Presentation
 We are happy to announce that the service will be presented at
 
 `The 20th International Conference on Data Science
     (ICDATA'24: July 22-25, 2024; Las Vegas, USA`
+
+### Video 📹
+[Here](#) is a short video describing how to use the system. We will update this tutorial as more features are added over time.
 
 ### NOTE: Name Change
 Please note that DataDock used to be called Delta. We are working on renaming the files accordingly. At the moment, there may be some directories / files with Delta in the name.
