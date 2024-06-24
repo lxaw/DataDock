@@ -80,6 +80,15 @@ class DataSet(models.Model):
     def get_zip_file_name(self):
         return self.name + ".zip"
 
+# just to hold if user has downloaded dataset or not
+class UserDownload(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    dataset = models.ForeignKey(DataSet, on_delete=models.CASCADE)
+    download_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'dataset')
+
 # File model
 # folders are also files
 class File(models.Model):

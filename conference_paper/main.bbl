@@ -1,158 +1,109 @@
 \begin{thebibliography}{10}
 
 \bibitem{onedrive}
-``Personal cloud storage -- microsoft onedrive.''
-  https://www.microsoft.com/en-us/microsoft-365/onedrive/, 2024.
+``Personal cloud storage -- microsoft onedrive.'' https://www.microsoft.com/en-us/microsoft-365/onedrive/, 2024.
 
 \bibitem{dropbox}
 Dropbox, ``Dropbox.'' https://www.dropbox.com/, 2018.
 
 \bibitem{googledrive}
-Google, ``Google drive: Free cloud storage for personal use.''
-  https://www.google.com/drive/, 2019.
+Google, ``Google drive: Free cloud storage for personal use.'' https://www.google.com/drive/, 2019.
 
 \bibitem{kowalczyk2018data}
-D.~R. Kowalczyk and S.~Y. Shankar, ``Data sharing in the sciences,'' {\em
-  Annual Review of Information Science and Technology}, vol.~45, no.~1,
-  pp.~247--294, 2011.
+D.~R. Kowalczyk and S.~Y. Shankar, ``Data sharing in the sciences,'' {\em Annual Review of Information Science and Technology}, vol.~45, no.~1, pp.~247--294, 2011.
 
 \bibitem{stephens2015big}
-Z.~D. Stephens {\em et~al.}, ``Big data: Astronomical or genomical?,'' {\em
-  PLOS Biology}, vol.~13, no.~7, p.~e1002195, 2015.
+Z.~D. Stephens {\em et~al.}, ``Big data: Astronomical or genomical?,'' {\em PLOS Biology}, vol.~13, no.~7, p.~e1002195, 2015.
 
 \bibitem{foodData}
-L.~Whalen, B.~Turner-McGrievy, M.~McGrievy, A.~Hester, and H.~Valafar, ``On
-  creating a comprehensive food database,'' in {\em 2022 International
-  Conference on Computational Science and Computational Intelligence (CSCI)},
-  pp.~1610--1614, 2022.
+L.~Whalen, B.~Turner-McGrievy, M.~McGrievy, A.~Hester, and H.~Valafar, ``On creating a comprehensive food database,'' in {\em 2022 International Conference on Computational Science and Computational Intelligence (CSCI)}, pp.~1610--1614, 2022.
 
 \bibitem{wordification}
-L.~Whalen, D.~Craven, S.~Comandur, N.~Bickel, H.~Valafar, and S.~Dubinsky,
-  ``Wordification: A new way of teaching english spelling patterns,'' in {\em
-  2023 Congress in Computer Science, Computer Engineering, \& Applied Computing
-  (CSCE)}, pp.~1151--1158, 2023.
+L.~Whalen, D.~Craven, S.~Comandur, N.~Bickel, H.~Valafar, and S.~Dubinsky, ``Wordification: A new way of teaching english spelling patterns,'' in {\em 2023 Congress in Computer Science, Computer Engineering, \& Applied Computing (CSCE)}, pp.~1151--1158, 2023.
 
 \bibitem{eeg}
-A.~Smith, H.~Anand, S.~Milosavljevic, K.~M. Rentschler, A.~Pocivavsek, and
-  H.~Valafar, ``Application of machine learning to sleep stage
-  classification,'' in {\em 2021 International Conference on Computational
-  Science and Computational Intelligence (CSCI)}, pp.~349--354, 2021.
+A.~Smith, H.~Anand, S.~Milosavljevic, K.~M. Rentschler, A.~Pocivavsek, and H.~Valafar, ``Application of machine learning to sleep stage classification,'' in {\em 2021 International Conference on Computational Science and Computational Intelligence (CSCI)}, pp.~349--354, 2021.
 
 \bibitem{cancer}
-A.~Firooz, A.~Funkhouser, J.~Martin, W.~Edenfield, H.~Valafar, and A.~Blenda,
-  ``Comprehensive and user-analytics-friendly cancer patient database for
-  physicians and researchers.'' arXiv:2302.01337v1, 2023.
-\newblock Update in: This article has been published with doi:
-  10.1109/CSCI58124.2022.00328. PMID: 36776819; PMCID: PMC9915752.
+A.~Firooz, A.~Funkhouser, J.~Martin, W.~Edenfield, H.~Valafar, and A.~Blenda, ``Comprehensive and user-analytics-friendly cancer patient database for physicians and researchers.'' arXiv:2302.01337v1, 2023.
+\newblock Update in: This article has been published with doi: 10.1109/CSCI58124.2022.00328. PMID: 36776819; PMCID: PMC9915752.
 
 \bibitem{sun2017revisiting}
-C.~Sun, A.~Shrivastava, S.~Singh, and A.~Gupta, ``Revisiting unreasonable
-  effectiveness of data in deep learning era,'' in {\em 2017 IEEE International
-  Conference on Computer Vision (ICCV)}, pp.~843--852, 2017.
+C.~Sun, A.~Shrivastava, S.~Singh, and A.~Gupta, ``Revisiting unreasonable effectiveness of data in deep learning era,'' in {\em 2017 IEEE International Conference on Computer Vision (ICCV)}, pp.~843--852, 2017.
 
 \bibitem{khan2018iot}
-M.~A. Khan and K.~Salah, ``Iot security: Review, blockchain solutions, and open
-  challenges,'' {\em Future Generation Computer Systems}, vol.~82,
-  pp.~395--411, 2018.
+M.~A. Khan and K.~Salah, ``Iot security: Review, blockchain solutions, and open challenges,'' {\em Future Generation Computer Systems}, vol.~82, pp.~395--411, 2018.
 
 \bibitem{reinsel2018digitization}
-D.~Reinsel, J.~Gantz, and J.~Rydning, ``The digitization of the world - from
-  edge to core.''
-  https://www.seagate.com/files/www-content/our-story/trends/files/idc-seagate-dataage-whitepaper.pdf,
-  2018.
+D.~Reinsel, J.~Gantz, and J.~Rydning, ``The digitization of the world - from edge to core.'' https://www.seagate.com/files/www-content/our-story/trends/files/idc-seagate-dataage-whitepaper.pdf, 2018.
 \newblock IDC White Paper.
 
 \bibitem{wallis2013if}
-J.~C. Wallis, E.~Rolando, and C.~L. Borgman, ``If we share data, will anyone
-  use them? data sharing and reuse in the long tail of science and
-  technology,'' {\em PLOS ONE}, vol.~8, no.~7, p.~e67332, 2013.
+J.~C. Wallis, E.~Rolando, and C.~L. Borgman, ``If we share data, will anyone use them? data sharing and reuse in the long tail of science and technology,'' {\em PLOS ONE}, vol.~8, no.~7, p.~e67332, 2013.
 
 \bibitem{wilkinson2016fair}
-M.~D. Wilkinson {\em et~al.}, ``The fair guiding principles for scientific data
-  management and stewardship,'' {\em Scientific Data}, vol.~3, no.~1,
-  p.~160018, 2016.
+M.~D. Wilkinson {\em et~al.}, ``The fair guiding principles for scientific data management and stewardship,'' {\em Scientific Data}, vol.~3, no.~1, p.~160018, 2016.
 
 \bibitem{gezelter2015open}
-J.~D. Gezelter, ``Open source and open data should be standard practices,''
-  {\em The Journal of Physical Chemistry Letters}, vol.~6, no.~7,
-  pp.~1168--1169, 2015.
+J.~D. Gezelter, ``Open source and open data should be standard practices,'' {\em The Journal of Physical Chemistry Letters}, vol.~6, no.~7, pp.~1168--1169, 2015.
 
 \bibitem{vogelsberger2014introducing}
-M.~Vogelsberger {\em et~al.}, ``Introducing the illustris project: Simulating
-  the coevolution of dark and visible matter in the universe,'' {\em Monthly
-  Notices of the Royal Astronomical Society}, vol.~444, no.~2, pp.~1518--1547,
-  2014.
+M.~Vogelsberger {\em et~al.}, ``Introducing the illustris project: Simulating the coevolution of dark and visible matter in the universe,'' {\em Monthly Notices of the Royal Astronomical Society}, vol.~444, no.~2, pp.~1518--1547, 2014.
 
 \bibitem{eisner2018data}
-D.~A. Eisner, ``Reproducibility of science: Fraud, impact factors and
-  carelessness,'' {\em Journal of Molecular and Cellular Cardiology}, vol.~114,
-  pp.~364--368, 2018.
+D.~A. Eisner, ``Reproducibility of science: Fraud, impact factors and carelessness,'' {\em Journal of Molecular and Cellular Cardiology}, vol.~114, pp.~364--368, 2018.
 
 \bibitem{tenopir2011data}
-C.~Tenopir {\em et~al.}, ``Data sharing by scientists: Practices and
-  perceptions,'' {\em PLOS ONE}, vol.~6, no.~6, p.~e21101, 2011.
+C.~Tenopir {\em et~al.}, ``Data sharing by scientists: Practices and perceptions,'' {\em PLOS ONE}, vol.~6, no.~6, p.~e21101, 2011.
 
 \bibitem{box}
 Box, ``Box developer documentation.'' https://developer.box.com/, 2023.
 
 \bibitem{amazonweb}
-A.~W. Services, ``Amazon s3 api reference.''
-  https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html, 2023.
+A.~W. Services, ``Amazon s3 api reference.'' https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html, 2023.
 
 \bibitem{django}
-D.~S. Foundation, ``Django documentation.'' https://docs.djangoproject.com/,
-  2023.
+D.~S. Foundation, ``Django documentation.'' https://docs.djangoproject.com/, 2023.
 
 \bibitem{djangorest}
-D.~R. Framework, ``Django rest framework.''
-  https://www.django-rest-framework.org/, 2023.
+D.~R. Framework, ``Django rest framework.'' https://www.django-rest-framework.org/, 2023.
 
 \bibitem{react}
-React, ``React -- a javascript library for building user interfaces.''
-  https://reactjs.org/, 2023.
+React, ``React -- a javascript library for building user interfaces.'' https://reactjs.org/, 2023.
 
 \bibitem{redux}
-Redux, ``Redux - a predictable state container for js apps.''
-  https://redux.js.org/, 2023.
+Redux, ``Redux - a predictable state container for js apps.'' https://redux.js.org/, 2023.
 
 \bibitem{knox}
-jazzband, ``django-rest-knox.'' https://github.com/jazzband/django-rest-knox,
-  2024.
+jazzband, ``django-rest-knox.'' https://github.com/jazzband/django-rest-knox, 2024.
 \newblock accessed Feb. 15, 2024.
 
 \bibitem{mongodb}
 MongoDB, ``Mongodb documentation.'' https://docs.mongodb.com/, 2023.
 
 \bibitem{postgresql}
-PostgreSQL, ``Postgresql documentation.'' https://www.postgresql.org/docs/,
-  2023.
+PostgreSQL, ``Postgresql documentation.'' https://www.postgresql.org/docs/, 2023.
 
 \bibitem{mysql}
 MySQL, ``Mysql documentation.'' https://dev.mysql.com/doc/, 2023.
 
 \bibitem{axios}
-Axios, ``Axios - promise based http client for the browser and node.js.''
-  https://axios-http.com/, 2023.
+Axios, ``Axios - promise based http client for the browser and node.js.'' https://axios-http.com/, 2023.
 
 \bibitem{reduxthunk}
-R.~Thunk, ``Redux thunk - thunk middleware for redux.''
-  https://github.com/reduxjs/redux-thunk, 2023.
+R.~Thunk, ``Redux thunk - thunk middleware for redux.'' https://github.com/reduxjs/redux-thunk, 2023.
 
 \bibitem{reduxsaga}
-R.~Saga, ``Redux saga - an alternative side effect model for redux apps.''
-  https://redux-saga.js.org/, 2023.
+R.~Saga, ``Redux saga - an alternative side effect model for redux apps.'' https://redux-saga.js.org/, 2023.
 
 \bibitem{angular}
-Angular, ``Angular - one framework. mobile \& desktop..'' https://angular.io/,
-  2023.
+Angular, ``Angular - one framework. mobile \& desktop..'' https://angular.io/, 2023.
 
 \bibitem{vue}
-Vue.js, ``Vue.js - the progressive javascript framework.'' https://vuejs.org/,
-  2023.
+Vue.js, ``Vue.js - the progressive javascript framework.'' https://vuejs.org/, 2023.
 
 \bibitem{flask}
-Flask, ``Flask - web development, one drop at a time.''
-  https://flask.palletsprojects.com/, 2023.
+Flask, ``Flask - web development, one drop at a time.'' https://flask.palletsprojects.com/, 2023.
 
 \bibitem{nodejs}
 Node.js, ``Node.js - about.'' https://nodejs.org/en/about/, 2023.

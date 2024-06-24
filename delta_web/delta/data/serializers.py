@@ -6,7 +6,7 @@
 #
 from rest_framework import serializers
 from .models import (DataSet,TagDataset,File,
-                     Folder)
+                     Folder,UserDownload)
 
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -44,6 +44,7 @@ class SerializerDataSet(serializers.ModelSerializer):
     org_objs = serializers.SerializerMethodField()
     num_reviews = serializers.SerializerMethodField()
     files = serializers.SerializerMethodField()
+    has_downloaded = serializers.SerializerMethodField()
 
     class Meta:
         model = DataSet
@@ -77,6 +78,10 @@ class SerializerDataSet(serializers.ModelSerializer):
     
     def get_files(self,obj):
         return SerializerFile(obj.files.all(),many=True).data
+    
+    def get_has_downloaded(self,obj):
+        # To do
+        return ""
 
 # serializer for tag csv file
 class SerializerTagDataset(serializers.ModelSerializer):
