@@ -11,13 +11,20 @@ Below are some images of the service.
 ![Example image of cart.](conference_paper/figures/cart.png)
 
 ### Conversations
+![Example image of conversations.](conference_paper/figures/conversation_start.png)
 ![Example image of conversations.](conference_paper/figures/convo.png)
+![Example image of conversations.](conference_paper/figures/conversation_reply.png)
 
 ### Organizations
 ![Example image of organizations.](conference_paper/figures//organization.png)
 
 ### Reviews
 ![Example image of reviews.](conference_paper/figures/review.png)
+![Example image of reviews.](conference_paper/figures/review_comment.png)
+
+### Notification
+![Example image of notifications.](conference_paper/figures/notification_message.png)
+![Example image of notifications.](conference_paper/figures/notification_review.png)
 
 ### Search
 ![Example image of search.](conference_paper/figures/search.png)
