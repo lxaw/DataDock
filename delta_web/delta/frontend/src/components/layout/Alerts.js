@@ -72,17 +72,17 @@ export class Alerts extends Component {
                 alert.success(message.removeCartItemSuccess);
             }
             // files
-            if(message.addCsvFileSuccess){
-                alert.success(message.addCsvFileSuccess);
+            if(message.addDatasetSuccess){
+                alert.success(message.addDatasetSuccess);
             }
-            if(message.addCsvFileError){
-                alert.error(message.addCsvFileError);
+            if(message.addDatasetError){
+                alert.error(message.addDatasetError);
             }
-            if(message.updateCsvFileSuccess){
-                alert.success(message.updateCsvFileSuccess);
+            if(message.updateDatasetSuccess){
+                alert.success(message.updateDatasetSuccess);
             }
-            if(message.deleteCsvFile){
-                alert.success(message.deleteCsvFile);
+            if(message.deleteDataset){
+                alert.success(message.deleteDataset);
             }
             if(message.updateUser){
                 alert.success(message.updateUser);

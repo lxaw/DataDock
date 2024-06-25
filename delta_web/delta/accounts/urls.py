@@ -6,12 +6,19 @@
 #       This file handles the urls related to accounts. This is
 # mainly register, delete, login, and logout. 
 #
+
+# Django imports
 from django.urls import path, include
+
+# API imports
 from .api import (RegisterAPI,LoginAPI,UserAPI
 ,DeleteAPI,UpdateAPI,ViewsetPublicUser,ViewsetCart,
 ViewsetCartItem,PasswordTokenCheckAPIView,RequestPasswordResetEmail)
+
+# Knox imports
 from knox import views as knox_views
 
+# REST imports
 from rest_framework import routers
 
 urlpatterns = [

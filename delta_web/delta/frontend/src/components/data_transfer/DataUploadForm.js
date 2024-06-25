@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { addCsvFile } from '../../actions/file';
+import { addDataset } from '../../actions/datasets';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
@@ -96,7 +96,7 @@ const DataUploadForm = (props) => {
       dictData.append(`file.${index}.relativePath`, relativePath);
     });
   
-    props.addCsvFile(dictData).then((res) => {
+    props.addDataset(dictData).then((res) => {
       if (res.status === 200) {
         navigate('/data/download');
       }
@@ -232,4 +232,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { addCsvFile })(DataUploadForm);
+export default connect(mapStateToProps, { addDataset })(DataUploadForm);

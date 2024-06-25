@@ -8,55 +8,65 @@
 # Is the API functionality for the `accounts` app of Django.
 # Deals with all user actions, such as registration, login, logout, et cetera.
 
-from data.serializers import SerializerDataSet
-
+# Django imports
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.http import HttpResponsePermanentRedirect
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
-from unicodedata import name
+# Rest Framework imports
 from rest_framework import generics, permissions
 from rest_framework.response import Response
-from organizations.models import Organization
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework import viewsets, permissions
+
+# Knox imports
 from knox.models import AuthToken
+
+# Required serializers
 from .serializers import (UserSerializer,RegisterSerializer,
                           LoginSerializer,PublicUserSerializer,
                           CartSerializer,CartItemSerializer,
                           ResetPasswordEmailRequestSerializer,SetNewPasswordSerializer)
 from organizations.serializers import OrganizationSerializer
-from django.http import HttpResponse
-
-from rest_framework import viewsets, permissions
 
 # Email validation
 from email_validator import validate_email, EmailNotValidError
 
-from django.contrib.auth import get_user_model
-
-from django.contrib.sites.shortcuts import get_current_site
-
-# Profiles
-#from .models import Profile
-
-# Notifications
+# Social models
 from social.models import (NotificationNews,NotificationWhatsHot)
 
-# import the cart
+# Organization models
+from organizations.models import Organization
+
+# Account models
 from .models import Cart,CartItem
+
+# Data models
 from data.models import DataSet
 
-from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.http import HttpResponsePermanentRedirect
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
+# For manipulation of files
 import os
-from django.urls import reverse
+
+# This is for sending email
+# We need to make this actually work soon!
 from .utils import Util
 
+# User -- allows us to make references to the user class
+# Just put here for convenience
 User = get_user_model()
 
+#  A custom redirect
+# This is for password checking
+# 
 class CustomRedirect(HttpResponsePermanentRedirect):
-
     allowed_schemes = [os.environ.get('APP_SCHEME'), 'http', 'https']
 
 # Register API
@@ -77,22 +87,23 @@ class RegisterAPI(generics.GenericAPIView):
         
         # Save the new user
         user = serializer.save()
-        # users have a profile that is a 1-1 match, so need to create that as well.
-        # the profile stores the bio of the user.
-        #user.profile = Profile(user=user)
-        #user.profile.save()
 
+        # Note! 
+        # Even though the profile is a 1-1 with User, we use the `signals.py` file to 
+        # create the profile when the user is created.
 
-        # for registering under an organization
+        # For registering under an organization
+        # Both the organization name and key must match.
         organization_name = request.data.get('organization_name')
         organization_key = request.data.get("organization_key")
         
-        # get organization or null if key invalid
-        if organization_key != '' and organization_name != '':
-            modelOrg = Organization.objects.get(name=organization_name)
-            if organization_key == modelOrg.key:
-                modelOrg.following_users.add(user)
-                modelOrg.save()
+        try:
+            modelOrg = Organization.objects.get(name=organization_name, key=organization_key)
+            modelOrg.following_users.add(user)
+            modelOrg.save()
+        except ObjectDoesNotExist:
+            # Handle the case where no matching organization is found
+            print("No matching organization found.")
         ######
         # Create notifications for the new users.
         #
@@ -173,9 +184,8 @@ class DeleteAPI(generics.DestroyAPIView):
     def post(self,request,*args,**kwargs):
         #
         # NOTE:
-        # DO NOT ACTUALLY DELETE THE USER.
+        # DO NOT ACTUALLY DELETE THE USER. (in the future)
         # ONLY MARK THEM AS INACTIVE
-        # This was as determined by Dr. Valafar.
         # see: https://stackoverflow.com/questions/44735385/how-can-i-delete-a-user-account-in-django-rest-framework
         
         request.user.delete()
@@ -334,6 +344,9 @@ class ViewsetPublicUser(viewsets.ModelViewSet):
         user = User.objects.get(username=request.data.get('username'))
         return Response(self.serializer_class(user).data)
 
+# Viewset for the Cart
+# Cart is where users place datasets that they want to download into
+# Similar to Amazon checkout cart
 class ViewsetCart(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
@@ -343,6 +356,7 @@ class ViewsetCart(viewsets.ModelViewSet):
     def get_queryset(self):
         return Cart.objects.filter(user=self.request.user)
 
+# Cart items are a wrapper for the datasets in the cart
 class ViewsetCartItem(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
@@ -389,6 +403,9 @@ class ViewsetCartItem(viewsets.ModelViewSet):
             "user":UserSerializer(request.user,context=self.get_serializer_context()).data,
         })
 
+# Used to check password
+# Used to reset email
+# (At the moment does not work: 06/25/2024)
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
 
@@ -419,6 +436,8 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
             except UnboundLocalError as e:
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
 
+# Used to reset email
+# (At the moment does not work: 06/25/2024)
 class RequestPasswordResetEmail(generics.GenericAPIView):
     serializer_class = ResetPasswordEmailRequestSerializer
 
@@ -448,6 +467,8 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             print('no user found!')
         return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
 
+# Used to reset email
+# (At the moment does not work: 06/25/2024)
 class PasswordTokenCheckAPIView(generics.GenericAPIView):
     def get(self,request,uidb64,token):
         pass

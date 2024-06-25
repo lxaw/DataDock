@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { downloadCsvFile, deleteCsvFile } from "../../actions/file";
+import { downloadDataset, deleteDataset } from "../../actions/datasets";
 import tag_styles from "../data_transfer/tags.module.css";
 
-const CsvFile = (props) => {
+const Dataset = (props) => {
   const navigate = useNavigate();
 
   const clickDelete = () => {
@@ -12,13 +12,13 @@ const CsvFile = (props) => {
       "Would you like to delete this file? There is no going back."
     );
     if (dialog) {
-      props.deleteCsvFile(props.data.id);
+      props.deleteDataset(props.data.id);
       navigate("/data/download");
     }
   };
 
   const clickDownload = () => {
-    props.downloadCsvFile(props.data.id);
+    props.downloadDataset(props.data.id);
   };
 
   return (
@@ -72,6 +72,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { deleteCsvFile, downloadCsvFile })(
-  CsvFile
+export default connect(mapStateToProps, { deleteDataset, downloadDataset })(
+  Dataset
 );

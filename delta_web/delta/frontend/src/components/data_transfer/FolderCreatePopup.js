@@ -1,10 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import DataCard from './DataCard';
-import tag_styles from './tags.module.css';
-import { useNavigate } from 'react-router-dom';
-import { addToCart, createFolder } from '../../actions/file';
-import { FaFolderPlus, FaCartPlus } from 'react-icons/fa';
+import { addToCart, createFolder } from '../../actions/datasets';
 import popup_styles from "./popup.module.css";
 
 const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createFolder }) => {

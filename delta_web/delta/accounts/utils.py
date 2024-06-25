@@ -2,6 +2,8 @@ from django.core.mail import EmailMessage
 from django.core.mail import get_connection
 from django.conf import settings
 
+# Used to help create email
+# As of 06/25/2024 this does not do anything!
 class Util:
     @staticmethod
     def send_email(data):

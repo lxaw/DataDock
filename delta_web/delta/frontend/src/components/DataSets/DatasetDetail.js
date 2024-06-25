@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getCsvFile, deleteCsvFile, addToCart } from "../../actions/file";
+import { getDataset, deleteDataset, addToCart } from "../../actions/datasets";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReviewForm from "./ReviewForm";
 import Review from "./Review";
-import CsvFile from "./CsvFile";
+import Dataset from "./Dataset";
 
-const CsvFileDetail = (props) => {
+const DatasetDetail = (props) => {
   const { id } = useParams();
-  const [csvFile, setCsvFile] = useState(null);
+  const [csvFile, setDataset] = useState(null);
   const [arrReviews, setArrReviews] = useState([]);
 
   const retrieveData = () => {
     axios
-      .get(`/api/csv/${id}/`, {
+      .get(`/api/datasets/${id}/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${props.auth.token}`,
         },
       })
       .then((res) => {
-        setCsvFile(res.data);
+        setDataset(res.data);
         setArrReviews(res.data.reviews);
       });
   };
@@ -43,7 +43,7 @@ const CsvFileDetail = (props) => {
     <div className="container my-4" data-testid="csv_file_detail-1">
       <div className="row">
         <div className="col-md-8">
-          <CsvFile data={csvFile} />
+          <Dataset data={csvFile} />
         </div>
         <div className="col-md-4">
   <h2>{csvFile.name}</h2>
@@ -97,4 +97,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCsvFile, deleteCsvFile,addToCart})(CsvFileDetail);
+export default connect(mapStateToProps, { getDataset, deleteDataset,addToCart})(DatasetDetail);

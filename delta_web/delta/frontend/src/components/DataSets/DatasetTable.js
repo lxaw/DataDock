@@ -15,8 +15,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { tokenConfig } from "../../actions/auth";
-import { getCsvFiles, deleteCsvFile } from "../../actions/file";
+import { getCsvFiles, deleteCsvFile } from "../../actions/datasets";
 import { Link } from "react-router-dom";
 
 // https://ui.dev/react-router-url-parameters

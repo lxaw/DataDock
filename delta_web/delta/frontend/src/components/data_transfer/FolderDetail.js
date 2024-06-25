@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getFolderById, updateFolder, deleteFolder } from "../../actions/file";
+import { getFolderById, updateFolder, deleteFolder } from "../../actions/datasets";
 import DataCard from "../data_transfer/DataCard";
 import popup_styles from "./popup.module.css";
 
