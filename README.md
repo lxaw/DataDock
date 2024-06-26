@@ -134,5 +134,17 @@ From there the terminal will show what tests are found, what pass, and what warn
 
 Note that when making a behavioral test with Jest the JS file must have a `.test.js` extension. 
 
+### How to cite
+If you use this service and would like to cite it (please do!), you can use the following BibTex:
+`@misc{whalen2024datadockopensourcedata,
+      title={DataDock: An Open Source Data Hub for Research}, 
+      author={Lexington Whalen and Homayoun Valafar},
+      year={2024},
+      eprint={2406.16880},
+      archivePrefix={arXiv},
+      primaryClass={cs.DB}
+      url={https://arxiv.org/abs/2406.16880}, 
+}`
+
 ### Support ❤️
 - DataDock is an ambitious project. As such, there are many things that can be added. Please feel free to open an issue for something you think may be useful. This is intended to be a community project.
