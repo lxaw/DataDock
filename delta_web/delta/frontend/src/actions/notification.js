@@ -7,6 +7,7 @@ export const addNotificationReview = (notificationData) => (dispatch,getState) =
     .then((res)=>{
     })
     .catch((err)=>{
+        console.log(err)
     })
 }
 export const markReadNotificationReview = (notificationId) => (dispatch,getState) => {
@@ -14,7 +15,9 @@ export const markReadNotificationReview = (notificationId) => (dispatch,getState
     .then((res)=>{
         dispatch(createMessage({readNotification:"Notification has been read."}))
     })
-    .catch((err)=>{})
+    .catch((err)=>{
+        console.log(err)
+    })
 }
 
 export const addNotificationMessage = (notificationData) => (dispatch,getState) =>{
@@ -22,6 +25,7 @@ export const addNotificationMessage = (notificationData) => (dispatch,getState) 
     .then((res)=>{
     })
     .catch((err)=>{
+        console.log(err)
     })
 }
 
@@ -40,7 +44,7 @@ export const markReadNotificationNews = (notificationId) => (dispatch,getState) 
         dispatch(createMessage({readNotification:"Notification has been read."}))
     })
     .catch((err)=>{
-
+        console.log(err)
     })
 }
 
@@ -50,5 +54,7 @@ export const markReadNotificationWhatsHot = (notificationId) => (dispatch,getSta
     .then((res)=>{
         dispatch(createMessage({readNotification:"Notification has been read."}))
     })
-    .catch((err)=>{})
+    .catch((err)=>{
+        console.log(err)
+    })
 }

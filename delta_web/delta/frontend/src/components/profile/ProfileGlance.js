@@ -18,7 +18,7 @@ import axios from 'axios';
 import OrganizationCard from '../community/OrganizationCard';
 import DataSetTable from '../data_transfer/DataSetTable';
 import FolderList from "../data_transfer/FolderList"
-import { getFolders } from '../../actions/datasets';
+import { getFolders } from '../../actions/folders';
 
 <script src="https://kit.fontawesome.com/f45b95bc62.js" crossorigin="anonymous"></script>
 

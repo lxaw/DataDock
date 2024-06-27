@@ -18,7 +18,6 @@ import ConversationForm from '../conversations/ConversationForm'
 import { connect } from 'react-redux'
 import { getPublicUserData } from '../../actions/auth'
 import ConversationTable from '../conversations/ConversationTable'
-import axios from 'axios'
 import "./profile.css"
 import { getUserConversations } from '../../actions/conversation'
 
