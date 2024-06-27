@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { FaRocket, FaUsers, FaFileAlt, FaChevronLeft } from 'react-icons/fa';
 
 const Container = styled.div`
-  max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
   background-color: #fff;
