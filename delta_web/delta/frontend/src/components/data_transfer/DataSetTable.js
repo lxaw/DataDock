@@ -146,7 +146,7 @@ const DataSetTable = (props) => {
   };
   
   const handleDoubleClickDataSet = (item) => {
-    navigate(`/csvs/${item.id}`);
+    navigate(`/datasets/${item.id}`);
   };
   // for double click
   useEffect(() => {

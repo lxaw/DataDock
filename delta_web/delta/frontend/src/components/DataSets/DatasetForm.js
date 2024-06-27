@@ -153,7 +153,7 @@ const DatasetForm = (props) => {
 
     <div className="row">
       <div>
-        <Link to={`/csvs/${csvFileState.id}`}>
+        <Link to={`/datasets/${csvFileState.id}`}>
           <button className="btn btn-danger">Back</button>
         </Link>
       </div>

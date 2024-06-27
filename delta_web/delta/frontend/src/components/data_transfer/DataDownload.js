@@ -19,7 +19,6 @@ Brief description:
 
 import React, {useState,useEffect} from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
 import DataSetTable from './DataSetTable';
 import axios from "axios";
 
@@ -29,7 +28,7 @@ const DataDownload = (props) =>{
 
     // UTILITY: Grabs all public csv files
     const getCsvs = () =>{
-        axios.get('/api/public_csvs/',{headers:{'Content-Type':'application/json','Authorization':`Token ${props.auth.token}`}})
+        axios.get('/api/public_datasets/',{headers:{'Content-Type':'application/json','Authorization':`Token ${props.auth.token}`}})
         .then(res=>{
         setDataSets(res.data);
         })

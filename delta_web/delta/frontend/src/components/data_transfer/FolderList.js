@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBackspace, FaFolder } from 'react-icons/fa';
+import { FaFolder } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const FolderList = ({ folders }) => {

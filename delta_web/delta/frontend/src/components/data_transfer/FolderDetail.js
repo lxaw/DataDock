@@ -26,7 +26,7 @@ const FolderDetail = (props) => {
   const renderItems = () => {
     return datasets.map((item) => {
       const handleClick = () => {
-        navigate(`/csvs/${item.id}`);
+        navigate(`/datasets/${item.id}`);
       };
       return (
         <div className="col-4" key={item.id}>

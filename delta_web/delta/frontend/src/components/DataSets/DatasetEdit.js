@@ -16,7 +16,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DatasetForm from "./DatasetForm";
 import { connect } from "react-redux";
 
@@ -27,7 +27,7 @@ const DatasetEdit = (props) => {
   // get the csv file
   useEffect(() => {
     axios
-      .get(`/api/csv/${id}/`, {
+      .get(`/api/datasets/${id}/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${props.auth.token}`,

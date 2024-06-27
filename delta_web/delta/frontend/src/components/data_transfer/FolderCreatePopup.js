@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { addToCart, createFolder } from '../../actions/datasets';
+import { createFolder } from '../../actions/datasets';
 import popup_styles from "./popup.module.css";
 
 const FolderCreatePopup = ({ isVisible, onClose, selectedDataSets, auth, createFolder }) => {

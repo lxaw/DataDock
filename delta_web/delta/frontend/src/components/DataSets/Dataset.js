@@ -52,7 +52,7 @@ const Dataset = (props) => {
       {props.auth.user.id === props.data.author && (
         <div className="d-flex justify-content-between mt-3">
           <div>
-            <Link to={`/csvs/${props.data.id}/edit`} className="btn btn-primary me-2">
+            <Link to={`/datasets/${props.data.id}/edit`} className="btn btn-primary me-2">
               Edit
             </Link>
             <button className="btn btn-success" onClick={clickDownload}>

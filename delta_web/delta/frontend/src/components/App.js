@@ -138,12 +138,12 @@ class App extends Component{
                                             <ProfileSettings/>
                                         </PrivateRoute>
                                     }/>
-                                    <Route exact path ={"/csvs/:id"} element={
+                                    <Route exact path ={"/datasets/:id"} element={
                                         <PrivateRoute>
                                             <DatasetDetail/>
                                         </PrivateRoute>
                                     }/>
-                                    <Route exact path ={"/csvs/:id/edit"} element={
+                                    <Route exact path ={"/datasets/:id/edit"} element={
                                         <PrivateRoute>
                                             <DatasetEdit/>
                                         </PrivateRoute>

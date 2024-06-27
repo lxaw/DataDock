@@ -118,7 +118,7 @@ export const deleteCartItem = (id) => (dispatch, getState) => {
 
 // POST FILE 
 export const addDataset = (dictData) => (dispatch,getState) =>{
-    return axios.post('/api/dataset/',dictData,fileTokenConfig(getState))
+    return axios.post('/api/datasets/',dictData,fileTokenConfig(getState))
     .then((res)=>{
         dispatch(createMessage({addDatasetSuccess:"File Posted"}))
         dispatch({type:ADD_DATASET,payload:res.data});
@@ -130,7 +130,7 @@ export const addDataset = (dictData) => (dispatch,getState) =>{
 }
 // GET FILES
 export const getDatasets = () => (dispatch,getState) =>{
-    axios.get('/api/dataset/',tokenConfig(getState))
+    axios.get('/api/datasets/',tokenConfig(getState))
         .then(res => {
             return res;
         })
@@ -141,7 +141,7 @@ export const getDatasets = () => (dispatch,getState) =>{
 
 // GET FILE by ID
 export const getDataset = (id) => (dispatch,getState) =>{
-    axios.get(`/api/dataset/${id}/`,tokenConfig(getState))
+    axios.get(`/api/datasets/${id}/`,tokenConfig(getState))
         .then(res => {
             dispatch({
                 type:GET_DATASET,
@@ -166,7 +166,7 @@ tags
 id (id of file)
 */
 export const updateDataset = (dictData) => (dispatch,getState)=>{
-    axios.patch(`api/dataset/${dictData['id']}/`,dictData,fileTokenConfig(getState))
+    axios.patch(`api/datasets/${dictData['id']}/`,dictData,fileTokenConfig(getState))
         .then(res=>{
             dispatch(createMessage({updateDatasetSuccess:"File successfully updated."}))
             dispatch({
@@ -181,7 +181,7 @@ export const updateDataset = (dictData) => (dispatch,getState)=>{
 
 // DELETE FILE
 export const deleteDataset = (id) => (dispatch,getState) =>{
-    axios.delete(`api/dataset/${id}/`,fileTokenConfig(getState))
+    axios.delete(`api/datasets/${id}/`,fileTokenConfig(getState))
     .then(res=>{
         dispatch(createMessage({deleteDataset:"dataset File Deleted"}));
         dispatch({
