@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getDataset, deleteDataset, addToCart } from "../../actions/datasets";
+import { getDataset, deleteDataset } from "../../actions/datasets";
+import { addToCart } from "../../actions/cart";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReviewForm from "./ReviewForm";

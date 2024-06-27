@@ -1,7 +1,8 @@
 // Modified Cart component
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { downloadDataset,getCartItems,deleteCartItem} from '../../actions/datasets';
+import { downloadDataset } from '../../actions/datasets';
+import { getCartItems,deleteCartItem } from '../../actions/cart';
 import tag_styles from "../data_transfer/tags.module.css";
 
 const Cart = (props) => {

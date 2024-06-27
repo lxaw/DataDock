@@ -32,7 +32,7 @@ const ProfileGlance = (props) => {
     const [folders,setFolders] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/csv/', { headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${props.auth.token}` } })
+        axios.get('/api/datasets/', { headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${props.auth.token}` } })
             .then(res => {
                 setCsvFiles(res.data);
             })
