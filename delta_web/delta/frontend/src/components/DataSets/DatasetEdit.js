@@ -8,7 +8,7 @@
  * Blake Seekings (@j-blake-s)
  * Naveen Chithan (@nchithan)
  *
- * CsvFileEdit.js
+ * DatasetEdit.js
  *
  * Creates the page that will hold the Csv file editing component.
  * Gives a back button for the user to return to the data page once they are finished or decide not to edit.
@@ -16,25 +16,25 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import CsvFileForm from "./CsvFileForm";
+import { useParams } from "react-router-dom";
+import DatasetForm from "./DatasetForm";
 import { connect } from "react-redux";
 
-const CsvFileEdit = (props) => {
+const DatasetEdit = (props) => {
   const { id } = useParams();
-  const [csvFile, setCsvFile] = useState(null);
+  const [csvFile, setDataset] = useState(null);
 
   // get the csv file
   useEffect(() => {
     axios
-      .get(`/api/csv/${id}/`, {
+      .get(`/api/datasets/${id}/`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${props.auth.token}`,
         },
       })
       .then((res) => {
-        setCsvFile(res.data);
+        setDataset(res.data);
       });
   }, []);
 
@@ -44,7 +44,7 @@ const CsvFileEdit = (props) => {
   return (
     <div className="container" data-testid="csv_file_edit-1">
       <div key={csvFile.id}>
-        <CsvFileForm csvFile={csvFile} />
+        <DatasetForm csvFile={csvFile} />
       </div>
     </div>
   );
@@ -54,4 +54,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, null)(CsvFileEdit);
+export default connect(mapStateToProps, null)(DatasetEdit);

@@ -37,8 +37,8 @@ import Organizations from "./community/Organizations"
 import OrganizationDetail from "./community/OrganizationDetail"
 
 // csvFiles
-import CsvFileDetail from "./DataSets/CsvFileDetail";
-import CsvFileEdit from "./DataSets/CsvFileEdit";
+import DatasetDetail from "./DataSets/DatasetDetail";
+import DatasetEdit from "./DataSets/DatasetEdit";
 
 // data page
 import DataDownload from "./data_transfer/DataDownload";
@@ -138,14 +138,14 @@ class App extends Component{
                                             <ProfileSettings/>
                                         </PrivateRoute>
                                     }/>
-                                    <Route exact path ={"/csvs/:id"} element={
+                                    <Route exact path ={"/datasets/:id"} element={
                                         <PrivateRoute>
-                                            <CsvFileDetail/>
+                                            <DatasetDetail/>
                                         </PrivateRoute>
                                     }/>
-                                    <Route exact path ={"/csvs/:id/edit"} element={
+                                    <Route exact path ={"/datasets/:id/edit"} element={
                                         <PrivateRoute>
-                                            <CsvFileEdit/>
+                                            <DatasetEdit/>
                                         </PrivateRoute>
                                     }/>
                                     <Route exact path ="/community/organizations" element={

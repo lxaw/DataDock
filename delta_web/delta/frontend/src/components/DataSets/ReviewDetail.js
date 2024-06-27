@@ -170,7 +170,7 @@ const ReviewDetail = (props) => {
         </button>
       </form>
 
-      <Link to={`/csvs/${reviewData.dataset}`} className={styles.backLink}>
+      <Link to={`/datasets/${reviewData.dataset}`} className={styles.backLink}>
         Back
       </Link>
     </div>

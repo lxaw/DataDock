@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { updateCsvFile } from "../../actions/file";
+import { updateDataset } from "../../actions/datasets";
 import TagsInput from "../data_transfer/TagsInput";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-const CsvFileForm = (props) => {
-  const [csvFileState, setCsvFileState] = useState({
+const DatasetForm = (props) => {
+  const [csvFileState, setDatasetState] = useState({
     name: props.csvFile.name,
     id: props.csvFile.id,
     description: props.csvFile.description,
@@ -31,23 +31,23 @@ const CsvFileForm = (props) => {
     setSelectOptions(select);
 
     const tags = props.csvFile.tags.map((tagObj) => tagObj.text);
-    setCsvFileState({ ...csvFileState, tags: tags });
+    setDatasetState({ ...csvFileState, tags: tags });
   }, []);
 
   if (!csvFileState.tags) return null;
 
   const onSelectChange = (arrSelects) => {
     const arrOrgs = arrSelects.map((obj) => obj.value);
-    setCsvFileState({ ...csvFileState, registered_organizations: arrOrgs });
+    setDatasetState({ ...csvFileState, registered_organizations: arrOrgs });
   };
 
   const onChange = (e) => {
-    setCsvFileState({ ...csvFileState, [e.target.name]: e.target.value });
+    setDatasetState({ ...csvFileState, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    props.updateCsvFile(csvFileState);
+    props.updateDataset(csvFileState);
   };
 
   const onRadioChange = (e) => {
@@ -60,7 +60,7 @@ const CsvFileForm = (props) => {
       publicOrgs = true;
     }
 
-    setCsvFileState({
+    setDatasetState({
       ...csvFileState,
       is_public: isPublic,
       is_public_orgs: publicOrgs,
@@ -147,13 +147,13 @@ const CsvFileForm = (props) => {
         <TagsInput
           id="tags"
           priorTags={csvFileState.tags}
-          updateParentTags={(tags) => setCsvFileState({ ...csvFileState, tags: tags })}
+          updateParentTags={(tags) => setDatasetState({ ...csvFileState, tags: tags })}
         />
       </div>
 
     <div className="row">
       <div>
-        <Link to={`/csvs/${csvFileState.id}`}>
+        <Link to={`/datasets/${csvFileState.id}`}>
           <button className="btn btn-danger">Back</button>
         </Link>
       </div>
@@ -170,4 +170,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { updateCsvFile })(CsvFileForm);
+export default connect(mapStateToProps, { updateDataset })(DatasetForm);

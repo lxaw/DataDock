@@ -18,8 +18,8 @@ from .api import (ViewsetDataSet,
 )
 
 router = routers.DefaultRouter()
-router.register('api/csv',ViewsetDataSet,'DataSets')
-router.register('api/public_csvs',ViewsetPublicDataSet,'Publics')
+router.register('api/datasets',ViewsetDataSet,'DataSets')
+router.register('api/public_datasets',ViewsetPublicDataSet,'Publics')
 router.register('api/tags',ViewsetTagDataset,'TagDataset')
 router.register('api/folder',ViewsetFolder,'Folders')
 

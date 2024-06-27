@@ -15,8 +15,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { tokenConfig } from "../../actions/auth";
-import { getCsvFiles, deleteCsvFile } from "../../actions/file";
+import { getCsvFiles } from "../../actions/datasets";
 import { Link } from "react-router-dom";
 
 // https://ui.dev/react-router-url-parameters
@@ -26,7 +25,7 @@ const CsvFileTable = (props) => {
 
   useEffect(() => {
     axios
-      .get("/api/csv/", {
+      .get("/api/datasets/", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${props.auth.token}`,
@@ -57,7 +56,7 @@ const CsvFileTable = (props) => {
               <th>{data.file_name}</th>
               <th>{data.formatted_date}</th>
               <th>
-                <Link to={`/csvs/${data.id}`}>View File</Link>
+                <Link to={`/datasets/${data.id}`}>View File</Link>
               </th>
             </tr>
           ))}

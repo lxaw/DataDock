@@ -29,7 +29,6 @@ class Cart(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
 
 # Item for cart
-#
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart,related_name='cart_items',
                              on_delete=models.CASCADE)

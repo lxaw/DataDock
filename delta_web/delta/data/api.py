@@ -106,7 +106,6 @@ class ViewsetPublicDataSet(viewsets.ModelViewSet):
 
         zip_file_path = instance.get_zip_path()
 
-
         # increase the download count
         instance.download_count += 1
         instance.save()
@@ -268,7 +267,7 @@ class ViewsetDataSet(viewsets.ModelViewSet):
         return Response(self.get_serializer(dataSet).data)
     
     def partial_update(self, request, *args, **kwargs):
-        # super().partial_update(request,*args,**kwargs) # this causes an X-CSRF error
+        super().partial_update(request,*args,**kwargs) 
         obj = DataSet.objects.get(id=kwargs['pk'])
 
         # NOTE: likely a better way to do this

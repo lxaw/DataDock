@@ -10,19 +10,19 @@ export const DELETE_DATA_ACCEL = "DELETE_DATA_ACCEL";
 export const ADD_DATA_ACCEL = "ADD_DATA_ACCEL";
 
 // files
-export const ADD_CSV_FILE = "ADD_FILE";
-export const GET_CSV_FILE = "GET_FILE";
-export const GET_CSV_FILES = "GET_FILES";
-export const DELETE_CSV_FILE = "DELETE_FILE";
-export const CSV_FILE_UPDATE_SUCCESS = "CSV_FILE_UPDATE_SUCCESS"
-export const CSV_FILE_UPDATE_FAIL = "CSV_FILE_UPDATE_FAIL"
+export const ADD_DATASET = "ADD_FILE";
+export const GET_DATASET = "GET_FILE";
+export const GET_DATASETS = "GET_FILES";
+export const DELETE_DATASET = "DELETE_FILE";
+export const DATASET_UPDATE_SUCCESS = "DATASET_UPDATE_SUCCESS"
+export const DATASET_UPDATE_FAIL = "DATASET_UPDATE_FAIL"
 
 // cart items
 export const DELETE_CART_ITEM = "CART_ITEM_DELETE";
 export const ADD_CART_ITEM = "CART_ITEM_ADD"
 
 // public csv files
-export const GET_CSV_FILES_PUBLIC = "GET_CSV_FILES_PUBLIC"
+export const GET_DATASETS_PUBLIC = "GET_DATASETS_PUBLIC"
 
 // errors
 export const GET_ERRORS = "GET_ERRORS";

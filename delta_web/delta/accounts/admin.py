@@ -15,9 +15,12 @@ class ProfileAdmin(admin.ModelAdmin):
     # what can be visible in admin part of website
     fields = ["user","bio"]
 
+# Cart is where users can place datasets
+# Think Amazon cart
 class CartAdmin(admin.ModelAdmin):
     fields = ['user']
 
+# Cart Item is a wrapper that goes over the Dataset object
 class CartItemAdmin(admin.ModelAdmin):
     fields = ['cart','dataset']
 

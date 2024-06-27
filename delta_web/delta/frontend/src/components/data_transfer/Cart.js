@@ -1,7 +1,7 @@
 // Modified Cart component
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { downloadCsvFile,getCartItems,deleteCartItem} from '../../actions/file';
+import { downloadDataset,getCartItems,deleteCartItem} from '../../actions/datasets';
 import tag_styles from "../data_transfer/tags.module.css";
 
 const Cart = (props) => {
@@ -32,7 +32,7 @@ const Cart = (props) => {
       const dataSetId = dataSet.id
       // call download
       try{
-        const result = (await props.downloadCsvFile(dataSetId))
+        const result = (await props.downloadDataset(dataSetId))
       }catch(error){
         console.log(error)
       }
@@ -117,4 +117,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getCartItems,downloadCsvFile,deleteCartItem})(Cart);
+export default connect(mapStateToProps, { getCartItems,downloadDataset,deleteCartItem})(Cart);

@@ -6,28 +6,24 @@
 # Brief description:
 #
 # The serializers relevant to `accounts` app.
-from operator import truediv
-from rest_framework import serializers
 from django.contrib.auth.models import User
-
 from django.contrib.auth import authenticate
-
-from organizations.serializers import OrganizationSerializer
-
-from rest_framework.response import Response
-from rest_framework import status
-
-# cart
-from .models import Cart,CartItem
-# dataset
-from data.serializers import SerializerDataSet
-
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str,force_str,smart_bytes,DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 
+# Rest imports
+from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
 
+# Models
+from .models import Cart,CartItem
+
+# Serializers
+from data.serializers import SerializerDataSet
+from organizations.serializers import OrganizationSerializer
 
 # User serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -115,6 +111,8 @@ class PublicUserSerializer(serializers.ModelSerializer):
     def get_bio(self,obj):
         return obj.profile.bio
 
+# Serializer for Cart
+# Cart stores datasets (CartItems are a wrapper over dataset)
 class CartSerializer(serializers.ModelSerializer):
     cart_items = serializers.SerializerMethodField() 
     class Meta:
@@ -126,6 +124,8 @@ class CartSerializer(serializers.ModelSerializer):
 
         return CartItemSerializer(cart_items,many=True).data
 
+# Serializer for CartItem
+# CartItem is a wrapper for a dataset to download
 class CartItemSerializer(serializers.ModelSerializer):
     dataset = serializers.SerializerMethodField()
     class Meta:
@@ -136,6 +136,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         return SerializerDataSet(obj.dataset).data
 
 # request forgot password
+# (As of 06/25/2024 this does nothing!)
 class ResetPasswordEmailRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(min_length=2)
 
@@ -144,6 +145,8 @@ class ResetPasswordEmailRequestSerializer(serializers.Serializer):
     class Meta:
         fields = ['email']
 
+# request forgot password
+# (As of 06/25/2024 this does nothing!)
 class SetNewPasswordSerializer(serializers.Serializer):
     password = serializers.CharField(
         min_length=6, max_length=68, write_only=True)
