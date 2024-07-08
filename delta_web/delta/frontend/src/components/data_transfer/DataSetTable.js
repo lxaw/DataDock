@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import DataCard from './DataCard';
 import tag_styles from './tags.module.css'
 import { useNavigate } from 'react-router-dom';
-import { addToCart,createFolder } from '../../actions/datasets';
+import { addToCart } from '../../actions/cart';
+import { createFolder } from "../../actions/folders"
 import { FaFolderPlus, FaCartPlus } from 'react-icons/fa';
 import FolderCreatePopup from './FolderCreatePopup';
 

@@ -26,5 +26,6 @@ export const addMessage = (dictData) => (dispatch,getState) => {
         }))
    })
    .catch((err)=>{
+    console.log(err)
    })
 }

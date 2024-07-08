@@ -4,7 +4,6 @@
 import axios from 'axios';
 
 import { createMessage, returnErrors } from "./messages";
-import Cookies from 'js-cookie';
 
 import {
     USER_LOADED,
