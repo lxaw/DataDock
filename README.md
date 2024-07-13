@@ -1,6 +1,9 @@
 # What is it ❓
 DataDock is a web file system designed for use by researchers and data scientists. It is essentially a file transfer system with a social media and market aspect. Researchers or data scientists can perform CRUD operations on data, and can also assess the validity of data by creating posts on data sets or ML models or by rating data sets or ML models. 
 
+### Feel free to help out!
+This is an open source project. Feel free to fork, make changes, request changes, all that. We are trying to provide a comprehensive alternative to resources with much more funding, so the more the merrier!
+
 ### Presentation
 We are happy to announce that the service will be presented at
 
