@@ -11,7 +11,7 @@ We are happy to announce that the service will be presented at
     (ICDATA'24: July 22-25, 2024; Las Vegas, USA`
 
 ### Video 📹
-[Here](#) is a short video describing how to use the system. We will update this tutorial as more features are added over time.
+[Here](https://youtu.be/Wg1UT6Xwy24) is a short video describing how to use the system. We will update this tutorial as more features are added over time.
 
 ### NOTE: Name Change
 Please note that DataDock used to be called Delta. We are working on renaming the files accordingly. At the moment, there may be some directories / files with Delta in the name.
